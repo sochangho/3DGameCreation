@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BuffController 
 {
     private List<BuffState> buffStates = new List<BuffState>();
 
-    public void AddBuff<T>(float value , float duration , Buff.BuffType buffType) where T  : Buff , new()
+    public void AddBuff<T>(float value, float duration, Buff.BuffType buffType, Image img = null, List<Material> materials = null) where T  : Buff , new()
     {
         T buff = new T();
 
@@ -17,23 +17,24 @@ public class BuffController
             {
                 buff.value = value;
                 buffStates[i].buff = buff;
+                buffStates[i].duration = duration;
+                buffStates[i].Image = img;
+                buffStates[i].materials = materials;
                 return;
 
             }
 
         }
 
-        
-
+       
         BuffState buffState = new BuffState();
         buff.value = value;
         buffState.buff = buff;
         buffState.duration = duration;
         buffState.buff.buffType = buffType;
+        buffState.Image = img;
+        buffState.materials = materials;
         buffStates.Add(buffState);
-
-      
-
     }
 
 
@@ -99,8 +100,8 @@ public class BuffState
 {
     public Buff buff;
     public float duration;
+    public Image Image;
+    public List<Material> materials;
     public bool isDead = false;
 
-
- 
 }
