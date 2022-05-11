@@ -6,18 +6,36 @@ public class Player : MonoBehaviour
 {
     public PlayerType playertype;
 
-    private List<Charater> charaters = new List<Charater>();
+    public List<Charater> charaters ;
 
-    public void AddCharacter(Charater charater)
+    private List<IAttacked> objects = new List<IAttacked>();
+
+
+    private void Start()
     {
-        charaters.Add(charater);
+      for(int i = 0; i < charaters.Count; i++)
+        {
+
+            objects.Add(charaters[i]);
+        }
+        
 
     }
 
-    public List<Charater> GetCharaters()
+
+    public void AddCharacter(IAttacked obj)
+    {
+       Charater charater = ((Charater)(obj));
+       charater.player = this;
+       objects.Add(charater);
+    }
+
+    public List<IAttacked> GetObjects()
     {
 
-        return charaters;
+        return objects;
     }
+
+    
 
 }

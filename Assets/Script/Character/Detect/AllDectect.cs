@@ -4,58 +4,27 @@ using UnityEngine;
 
 public class AllDectect : Detect
 {
-    public AllDectect(Object obj)
+    public AllDectect(Charater obj)
     {
         this.gameObj = obj;
     }
 
     public override void OnDetect()
     {
-        List<Charater> charaters;
+        List<IAttacked> objects;
         if(((Charater)gameObj).player.playertype == PlayerType.Oponent)
         {
-            charaters = GameSceneManager.Instance.ownPlayer.GetCharaters();
-        }
-        else
-        {
-            charaters = GameSceneManager.Instance.oponentPlayer.GetCharaters();
-        }
-        aimFind = new AimFind();
-        aimFind.aimobj = null;
-        aimFind.distance = 0;
-        for(int i = 0; i < charaters.Count; i++)
-        {
-            float distance = Vector3.Distance(((Charater)gameObj).transform.position, charaters[i].transform.position);
-            if (aimFind.aimobj == null)
-            {
-                aimFind.aimobj = charaters[i];
-                aimFind.distance = distance;
-                continue;
-            }
-            
-
-            if(aimFind.distance > distance)
-            {
-                aimFind.aimobj = charaters[i];
-                aimFind.distance = distance;
-
-            }
-
-
-
-        }
-
-
+         objects = GameSceneManager.Instance.ownPlayer.GetObjects();
         
-        if(aimFind.aimobj != null)
-        {
-            ((Charater)gameObj).attackTarget = (Charater)(aimFind.aimobj);
         }
         else
         {
-            ((Charater)gameObj).attackTarget = null;
-        }  
+         objects = GameSceneManager.Instance.oponentPlayer.GetObjects();
+        }
 
+        Debug.Log(objects.Count);
+        gameObj.attackTarget = (Charater)FindMinDistanceObj(objects);
+       
     }
 
 

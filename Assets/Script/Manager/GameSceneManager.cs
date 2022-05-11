@@ -9,25 +9,13 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     
 
-    public void GameSceneInit()
+    public void GameSceneInit(Player own , Player oponent)
     {
-        Player[] players = FindObjectsOfType<Player>();
+        ownPlayer = own;
+        oponentPlayer = oponent;
 
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i].playertype == PlayerType.Oponent)
-            {
-                oponentPlayer = players[i];
-                
-            }
-            else
-            {
-
-                ownPlayer = players[i];
-            }
-
-
-        }
+        ownPlayer.playertype = PlayerType.Own;
+        oponentPlayer.playertype = PlayerType.Oponent;
 
     }
 }

@@ -2,19 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Detect : MonoBehaviour
+public  class Detect : MonoBehaviour
 {
-    //타워가 될수도있고 캐릭터가 될수도있음
-    public Object gameObj;
+    
+    public Charater gameObj;
 
     public struct AimFind
     {
         public Object aimobj ;
         public float distance ;
     }
+     
+    public void init(Charater charater)
+    {
+        gameObj = charater;
+    }
 
-    public AimFind aimFind;
+    virtual public void OnDetect(){}
+
+    public Object FindMinDistanceObj(List<IAttacked> objs){
+          
+          AimFind aimFind = new AimFind();
+          aimFind.aimobj = null;
+          aimFind.distance = 0;
+        
+        for (int i = 0; i < objs.Count; i++){
+            
+            float distance = Vector3.Distance(gameObj.transform.position
+       , ((Charater)objs[i]).gameObject.transform.position);
+
+            Debug.Log(distance);
+            if(aimFind.aimobj == null || aimFind.distance > distance){
+                  aimFind.aimobj = ((Charater)objs[i]);
+                  aimFind.distance = distance;
+                
+            }
+        }
+
+        return aimFind.aimobj;
+
+    }
 
 
-    abstract public void OnDetect();
 }
