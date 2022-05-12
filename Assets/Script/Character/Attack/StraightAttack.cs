@@ -14,15 +14,6 @@ public class StraightAttack : FarAwayAttack
         Vector3 direction = startDir - endDir;
 
 
-        projectile.projectileWayAction = () =>
-        {
-
-
-
-
-        }
-
-
      
 
     }

@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
-public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
+public class Charater : AimObject , IAttacked 
 {
-    public float hp;
-    private float cur_hp = 100;
-    public float defence;
-    public float range;
-    public float damage;
+ 
     public float speed;
-    public float attackDelayTime;
-    private float attackTime = 0;
-
-
-   
-    public Player player;
-    public Charater attackTarget;
-
-    private bool is_Attack = false;
+    
+    public Transform rayPoint;
+ 
    
     private Detect detect;
     private Attack attack;
@@ -27,94 +17,10 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
     private NavMeshAgent playerNav;
     private Animator animator;
     private Coroutine characterRoutin;
-
+    
     public int ID { get; set; }
 
-    readonly public BuffController buffController = new BuffController();
-
-    public float Defence
-    {
-        get
-        {
-            float v = defence;
-            List<Buff> buffs = buffController.GetBuffs();
-            
-            foreach(Buff buff in buffs)
-            {
-                if(buff is DefenceBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-    }
-
-    public float Damage
-    {
-        get
-        {
-            float v = damage;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is DamageBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-
-
-
-    }
-
-
-    public float AttackDelayTime
-    {
-        get
-        {
-            float v = defence;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is AttackDelayBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-    }
-
-
-    public float Range
-    {
-
-        get
-        {
-            float v = range;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is AttackDelayBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-
-
-    }
+    
 
     public float Speed
     {
@@ -139,7 +45,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
     }
 
     public CharaterState state;
-    public CharaterType type;
+   
 
 
 
@@ -180,19 +86,9 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
     }
 
-    public float GetDamage()
-    {
-        return damage;
-    }
-    public float GetHp()
-    {
-        return hp;
-    }
 
 
-
-
-    public void Hit(Charater attackCha)
+    public void Hit(AimObject attackCha)
     {
         if(attackCha == null)
         {
@@ -207,17 +103,24 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
         {
            
             cur_hp = 0;
+           
             player.RemoveCharacter(this);
             attackCha.attackTarget = null;
             StopCoroutine(characterRoutin);
             OnDieAni();
+            Die();
            
         }
     }
 
     public void Attack()
     {
-        
+        if(attackTarget == null)
+        {
+            return;
+        }
+
+
         attack.AttackTarget(attackTarget);
        
     }
@@ -265,7 +168,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
                     tVec3.y = 0;
                     tVec3.z = attackTarget.gameObject.transform.position.z;
 
-                    if (!is_Attack)
+                    if (FindMonsterRay() == null)
                     {
                         playerNav.speed = Speed;
                         playerNav.SetDestination(new Vector3(attackTarget.gameObject.transform.position.x,
@@ -286,17 +189,25 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
             else if(state == CharaterState.Attack)
             {
 
-                if (attackTarget == null)
+                if (FindMonsterRay() == null)
                 {
                     state = CharaterState.Detect;
                     OnIdleAni();
 
-                    is_Attack = false;
+                   
                 }
                 else
                 {
 
-                    transform.LookAt(attackTarget.transform);
+                    if (attackTarget != null)
+                    {
+                        transform.LookAt(attackTarget.transform);
+                    }
+                    else
+                    {
+                        state = CharaterState.Detect;
+                        OnIdleAni();
+                    }
                 }
 
             }
@@ -309,28 +220,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
     
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.GetComponent<IAttacked>() != null)
-        {
-           
-            is_Attack = true;
-            attackTarget = other.GetComponent<Charater>();
-        }
-
-
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<IAttacked>() != null)
-        {
-
-            is_Attack = false;
-            attackTarget = null;
-        }
-
-
-    }
+ 
 
 
     private void OnWalkAni()
@@ -391,6 +281,22 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
     }
 
+    private Collider FindMonsterRay()
+    {
+
+       
+
+        RaycastHit hit;
+        if(Physics.Raycast(rayPoint.position , transform.forward , out hit, range, LayerMask.GetMask("Monster")))
+        {
+           
+            return hit.collider;
+
+        }
+
+       
+        return null;
+    }
 
 
     public void Die()

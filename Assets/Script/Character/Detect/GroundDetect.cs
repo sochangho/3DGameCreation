@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundDetect : Detect
 {
-    public GroundDetect(Charater obj)
+    public GroundDetect(AimObject obj)
     {
         this.gameObj = obj;
     }
@@ -25,7 +25,7 @@ public class GroundDetect : Detect
 
         foreach(IAttacked obj in objects)
         {
-            if(((Charater)obj).type == CharaterType.Ground)
+            if(((AimObject)obj).type == GameObjType.Ground)
             {
                 groundObjects.Add(obj);
 
@@ -35,6 +35,6 @@ public class GroundDetect : Detect
 
         objects = groundObjects;
 
-        gameObj.attackTarget = (Charater)FindMinDistanceObj(objects);
+        gameObj.attackTarget = (AimObject)FindMinDistanceObj(objects);
     }
 }

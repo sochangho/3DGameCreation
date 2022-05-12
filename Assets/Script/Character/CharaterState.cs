@@ -7,7 +7,7 @@ public enum CharaterState
     Die
 }
 
-public enum CharaterType
+public enum GameObjType
 {
     Fly,
     Ground

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5141881137655386950}
   - component: {fileID: 5141881137655386958}
   - component: {fileID: 5141881137655386959}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: monster (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,6 +144,7 @@ MonoBehaviour:
   attackDelayTime: 0
   player: {fileID: 0}
   attackTarget: {fileID: 0}
+  rayPoint: {fileID: 0}
   state: 0
   type: 1
 --- !u!114 &5141881137655386951
@@ -180,11 +181,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5141881137655386945}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.7250948, y: 2, z: 1.5755267}
-  m_Center: {x: 0.07560396, y: 0, z: 0.054014683}
+  m_Size: {x: 1.1135435, y: 2, z: 0.913712}
+  m_Center: {x: 0.044679165, y: 0, z: -0.06813431}
 --- !u!54 &5141881137655386959
 Rigidbody:
   m_ObjectHideFlags: 0

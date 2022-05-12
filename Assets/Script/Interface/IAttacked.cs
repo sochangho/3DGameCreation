@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IAttacked 
 {
-    void Hit(Charater damage);
+    void Hit(AimObject damage);
 
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public  class Detect : MonoBehaviour
 {
     
-    public Charater gameObj;
+    public AimObject gameObj;
 
     public struct AimFind
     {
@@ -13,7 +13,7 @@ public  class Detect : MonoBehaviour
         public float distance ;
     }
      
-    public void init(Charater charater)
+    public void init(AimObject charater)
     {
         gameObj = charater;
     }
@@ -29,11 +29,11 @@ public  class Detect : MonoBehaviour
         for (int i = 0; i < objs.Count; i++){
             
             float distance = Vector3.Distance(gameObj.transform.position
-       , ((Charater)objs[i]).gameObject.transform.position);
+       , ((AimObject)objs[i]).gameObject.transform.position);
 
             Debug.Log(distance);
             if(aimFind.aimobj == null || aimFind.distance > distance){
-                  aimFind.aimobj = ((Charater)objs[i]);
+                  aimFind.aimobj = ((AimObject)objs[i]);
                   aimFind.distance = distance;
                 
             }

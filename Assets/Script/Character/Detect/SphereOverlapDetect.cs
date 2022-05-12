@@ -5,7 +5,7 @@ using UnityEngine;
 public class SphereOverlapDetect : Detect
 {
     private float detectRange;
-    public SphereOverlapDetect(Charater obj , float detectRange)
+    public SphereOverlapDetect(AimObject obj , float detectRange)
     {
         this.gameObj = obj;
         this.detectRange = detectRange;
@@ -25,7 +25,7 @@ public class SphereOverlapDetect : Detect
             }
         }
 
-        gameObj.attackTarget = (Charater)FindMinDistanceObj(objs);
+        gameObj.attackTarget = (AimObject)FindMinDistanceObj(objs);
 
     }
 }

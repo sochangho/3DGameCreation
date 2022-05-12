@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AllDectect : Detect
 {
-    public AllDectect(Charater obj)
+    public AllDectect(AimObject obj)
     {
         this.gameObj = obj;
     }
@@ -12,7 +12,7 @@ public class AllDectect : Detect
     public override void OnDetect()
     {
         List<IAttacked> objects;
-        if(((Charater)gameObj).player.playertype == PlayerType.Oponent)
+        if(((AimObject)gameObj).player.playertype == PlayerType.Oponent)
         {
          objects = GameSceneManager.Instance.ownPlayer.GetObjects();
         
@@ -23,7 +23,7 @@ public class AllDectect : Detect
         }
 
       
-        gameObj.attackTarget = (Charater)FindMinDistanceObj(objects);
+        gameObj.attackTarget = (AimObject)FindMinDistanceObj(objects);
        
     }
 

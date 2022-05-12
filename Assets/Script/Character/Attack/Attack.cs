@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class Attack : MonoBehaviour
 {
-    public Charater gameObj;
-    public void init(Charater charater)
+    public AimObject gameObj;
+    public void init(AimObject charater)
     {
         gameObj = charater;
     }
-    abstract public void AttackTarget(IAttacked target);
+    abstract public void AttackTarget(AimObject target);
 
 }
