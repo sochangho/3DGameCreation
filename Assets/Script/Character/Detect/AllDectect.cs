@@ -22,7 +22,7 @@ public class AllDectect : Detect
          objects = GameSceneManager.Instance.oponentPlayer.GetObjects();
         }
 
-        Debug.Log(objects.Count);
+      
         gameObj.attackTarget = (Charater)FindMinDistanceObj(objects);
        
     }

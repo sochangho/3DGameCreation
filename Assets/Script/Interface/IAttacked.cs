@@ -1,8 +1,9 @@
-
+using UnityEngine;
 
 public interface IAttacked 
 {
-    void Hit(float damage);
+    void Hit(Charater damage);
+
 }
 
 public interface IObjectInfo

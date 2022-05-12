@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 {
-    public float maxHp;
     public float hp;
+    private float cur_hp = 100;
     public float defence;
     public float range;
     public float damage;
@@ -13,19 +14,21 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
     public float attackDelayTime;
     private float attackTime = 0;
 
-   
 
+   
     public Player player;
     public Charater attackTarget;
 
     private bool is_Attack = false;
-    private bool is_AttackAni = false;
+   
     private Detect detect;
     private Attack attack;
 
     private NavMeshAgent playerNav;
     private Animator animator;
+    private Coroutine characterRoutin;
 
+    public int ID { get; set; }
 
     readonly public BuffController buffController = new BuffController();
 
@@ -52,7 +55,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
     {
         get
         {
-            float v = defence;
+            float v = damage;
             List<Buff> buffs = buffController.GetBuffs();
 
             foreach (Buff buff in buffs)
@@ -96,7 +99,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
         get
         {
-            float v = defence;
+            float v = range;
             List<Buff> buffs = buffController.GetBuffs();
 
             foreach (Buff buff in buffs)
@@ -168,8 +171,13 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
     }
 
     public void Start()
-    {
-        StartCoroutine(CharacterRoutin());
+    {      
+       characterRoutin =  StartCoroutine(CharacterRoutin());
+
+        cur_hp = hp;
+        Debug.Log("max 체력 :: " + cur_hp);
+        Debug.Log("초기 체력 :: " + cur_hp);
+
     }
 
     public float GetDamage()
@@ -184,15 +192,36 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
 
 
-    public void Hit(float damage)
+    public void Hit(Charater attackCha)
     {
-        Debug.Log("공격받음!!!!!");
-
-        if(hp <= 0)
+        if(attackCha == null)
         {
-            Destroy(this.gameObject);
+            return;
+        }
+
+
+        cur_hp -= (attackCha.Damage - attackCha.Damage * Defence / 100);
+
+        
+        if(cur_hp <= 0)
+        {
+           
+            cur_hp = 0;
+            player.RemoveCharacter(this);
+            attackCha.attackTarget = null;
+            StopCoroutine(characterRoutin);
+            OnDieAni();
+           
         }
     }
+
+    public void Attack()
+    {
+        
+        attack.AttackTarget(attackTarget);
+       
+    }
+
 
     IEnumerator CharacterRoutin()
     {
@@ -200,12 +229,16 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
         {
             if(state == CharaterState.Detect)
             {
-                detect.OnDetect();
+                
 
                 if (attackTarget != null)
                 {
                     state = CharaterState.Trace;
                     OnWalkAni();
+                }
+                else
+                {
+                    detect.OnDetect();
                 }
 
             }
@@ -216,53 +249,55 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
                     state = CharaterState.Detect;
                     OnIdleAni();
                 }
-
-                Vector3 cVec3;
-                cVec3.x = transform.position.x;
-                cVec3.y = 0;
-                cVec3.z = transform.position.z;
-
-                Vector3 tVec3;
-                tVec3.x = attackTarget.gameObject.transform.position.x;
-                tVec3.y = 0;
-                tVec3.z = attackTarget.gameObject.transform.position.z;
-
-                if (!is_Attack)
-                {
-                    playerNav.speed = Speed;
-                    playerNav.SetDestination(new Vector3(attackTarget.gameObject.transform.position.x,
-                        transform.position.y
-                        , attackTarget.gameObject.transform.position.z));
-                }
                 else
                 {
-                    OnAttackAni();
-                    playerNav.speed = 0;
-                    state = CharaterState.Attack;
-                    
+
+
+                    Vector3 cVec3;
+                    cVec3.x = transform.position.x;
+                    cVec3.y = 0;
+                    cVec3.z = transform.position.z;
+
+
+
+                    Vector3 tVec3;
+                    tVec3.x = attackTarget.gameObject.transform.position.x;
+                    tVec3.y = 0;
+                    tVec3.z = attackTarget.gameObject.transform.position.z;
+
+                    if (!is_Attack)
+                    {
+                        playerNav.speed = Speed;
+                        playerNav.SetDestination(new Vector3(attackTarget.gameObject.transform.position.x,
+                            transform.position.y
+                            , attackTarget.gameObject.transform.position.z));
+                    }
+                    else
+                    {
+                        OnAttackAni();
+                        playerNav.speed = 0;
+                        state = CharaterState.Attack;
+
+                       
+                    }
                 }
-
-                
-
-
-
+        
             }
-            else
+            else if(state == CharaterState.Attack)
             {
 
                 if (attackTarget == null)
                 {
                     state = CharaterState.Detect;
                     OnIdleAni();
+
                     is_Attack = false;
                 }
-
-
-                if (!is_AttackAni)
+                else
                 {
-                    StartCoroutine(AttackTime());
+
+                    transform.LookAt(attackTarget.transform);
                 }
-                
 
             }
 
@@ -272,19 +307,7 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
 
     }
 
-
-    IEnumerator AttackTime()
-    {
-        
-        is_AttackAni = true;
-        yield return new WaitForSeconds(0.5f);
-        is_AttackAni = false;
-        attack.AttackTarget(attackTarget);
-    }
-
-
-
-
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -367,4 +390,21 @@ public class Charater : MonoBehaviour , IAttacked ,IObjectInfo
         }
 
     }
+
+
+
+    public void Die()
+    {
+        StartCoroutine(DieRoutin());
+    }
+
+    IEnumerator DieRoutin()
+    {
+
+        yield return new WaitForSeconds(2f);
+        Destroy(this.gameObject);
+
+    }
+
+
 }

@@ -13,7 +13,7 @@ public class CloseRanceAttack : Attack
         }
 
         float damage = gameObj.GetComponent<IObjectInfo>().GetDamage();
-        target.Hit(damage);
+        target.Hit(gameObj);
 
     }
 }

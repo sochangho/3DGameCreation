@@ -4,12 +4,12 @@ using UnityEngine;
 using System;
 public class Projectile : MonoBehaviour
 {
-    public Action effectAction;
+    public Action<Collision> effectAction;
     public Action projectileWayAction;
     public Coroutine projectileRoutin;
     private void OnEnable()
     {
-      projectileRoutin = StartCoroutine(ProjectileWayRoutin());
+      
     }
 
     private void OnDisable()
@@ -17,9 +17,15 @@ public class Projectile : MonoBehaviour
         StopCoroutine(projectileRoutin);
     }
 
+    public void projectileAttack() {
+
+        projectileRoutin = StartCoroutine(ProjectileWayRoutin());
+
+    }
 
     IEnumerator ProjectileWayRoutin()
     {
+
         while (true)
         {
             if(projectileWayAction != null)
@@ -35,11 +41,11 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<IAttacked>() != null)
+        if(collision.gameObject.transform.parent.GetComponent<IAttacked>() != null)
         {
             if (effectAction != null)
             {
-                effectAction();
+                effectAction(collision);
             }
 
         }

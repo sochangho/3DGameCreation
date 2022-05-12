@@ -8,18 +8,35 @@ public class Player : MonoBehaviour
 
     public List<Charater> charaters ;
 
-    private List<IAttacked> objects = new List<IAttacked>();
+    public List<Transform> pos;
+
+    private int id = 0;
+
+    public struct AttackedBundle
+    {
+        public IAttacked obj;
+        public int id;
+
+    }
+
+
+
+
+    private List<AttackedBundle> objects = new List<AttackedBundle>();
 
 
     private void Start()
     {
       for(int i = 0; i < charaters.Count; i++)
         {
+            var go  = Instantiate(charaters[i]);
+            go.transform.position = pos[i].position;
 
-            objects.Add(charaters[i]);
+            AddCharacter(go);
+
         }
         
-
+     
     }
 
 
@@ -27,13 +44,34 @@ public class Player : MonoBehaviour
     {
        Charater charater = ((Charater)(obj));
        charater.player = this;
-       objects.Add(charater);
+       charater.ID = id;
+       AttackedBundle attackedBundle = new AttackedBundle();
+       attackedBundle.obj = charater;
+       attackedBundle.id = id;
+       id++;
+        
+       objects.Add(attackedBundle);
+    }
+
+    public void RemoveCharacter(IAttacked obj)
+    {
+        Charater charater = ((Charater)(obj));
+        AttackedBundle attackedBundle  = objects.Find(x => x.id == charater.ID);        
+        objects.Remove(attackedBundle);        
+        Debug.Log(objects.Count);
     }
 
     public List<IAttacked> GetObjects()
     {
+        List<IAttacked> attackeds = new List<IAttacked>();
 
-        return objects;
+        for(int i = 0; i < objects.Count; i++)
+        {
+            attackeds.Add(objects[i].obj);
+
+        }
+
+        return attackeds;
     }
 
     

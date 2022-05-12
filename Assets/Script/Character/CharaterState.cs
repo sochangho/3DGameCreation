@@ -3,7 +3,8 @@ public enum CharaterState
 {
     Detect,
     Trace,
-    Attack,   
+    Attack,
+    Die
 }
 
 public enum CharaterType
