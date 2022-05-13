@@ -5,9 +5,9 @@ using UnityEngine;
 public class ParabolaAttack : FarAwayAttack
 {
 
-    public override void ProjectileWay()
+    public override void ProjectileWay(Projectile projectile)
     {
-        base.ProjectileWay();
+        
 
         //TODO:포물선 날라가기
     }

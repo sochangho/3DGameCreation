@@ -41,13 +41,14 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.transform.parent.GetComponent<IAttacked>() != null)
-        {
-            if (effectAction != null)
-            {
-                effectAction(collision);
-            }
+        IAttacked attacked = collision.gameObject.GetComponent<IAttacked>();
+       
 
+        if (attacked != null && effectAction != null )
+        {
+            Debug.Log("ddd");
+            effectAction(collision);
+            
         }
     }
 

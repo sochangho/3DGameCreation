@@ -3,25 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
-public class Charater : AimObject , IAttacked 
+public class Charater : AimObject 
 {
  
-    public float speed;
-    
-    public Transform rayPoint;
- 
-   
-    private Detect detect;
+    public float speed;    
     private Attack attack;
-
     private NavMeshAgent playerNav;
     private Animator animator;
     private Coroutine characterRoutin;
-    
-    public int ID { get; set; }
-
-    
-
+    public CharactorData data;
     public float Speed
     {
 
@@ -51,15 +41,11 @@ public class Charater : AimObject , IAttacked
 
     public void Awake()
     {
-        detect = GetComponent<Detect>();
+        
         attack = GetComponent<Attack>();
         playerNav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        if(detect == null)
-        {
-
-            Debug.LogError("탐지 컴포넌트 null");
-        }
+       
         if (attack == null)
         {
 
@@ -70,25 +56,41 @@ public class Charater : AimObject , IAttacked
             Debug.LogError("네브 메쉬 컴포넌트 null");
         }
 
-        detect.init(this);
+ 
         attack.init(this);
         playerNav.speed = Speed;
+
+
+
 
     }
 
     public void Start()
     {      
        characterRoutin =  StartCoroutine(CharacterRoutin());
-
+       CharacterInit();
         cur_hp = hp;
         Debug.Log("max 체력 :: " + cur_hp);
         Debug.Log("초기 체력 :: " + cur_hp);
 
     }
 
+    public void CharacterInit()
+    {
+        if (data != null)
+        {
+            hp = data.hp;
+            damage = data.damage;
+            range = data.range;
+            defence = data.defence;
+            speed = data.speed;
+        }
 
 
-    public void Hit(AimObject attackCha)
+
+    }
+
+    override public void Hit(AimObject attackCha)
     {
         if(attackCha == null)
         {
@@ -103,13 +105,23 @@ public class Charater : AimObject , IAttacked
         {
            
             cur_hp = 0;
-           
-            player.RemoveCharacter(this);
-            attackCha.attackTarget = null;
-            StopCoroutine(characterRoutin);
-            OnDieAni();
-            Die();
-           
+
+
+            if (state != CharaterState.Die)
+            {
+                state = CharaterState.Die;
+                player.RemoveCharacter(this);
+                attackCha.attackTarget = null;
+
+                if (characterRoutin != null)
+                {
+
+                    StopCoroutine(characterRoutin);
+
+                }
+                OnDieAni();
+                Die();
+            }
         }
     }
 
@@ -141,7 +153,7 @@ public class Charater : AimObject , IAttacked
                 }
                 else
                 {
-                    detect.OnDetect();
+                   attack.detect.OnDetect();
                 }
 
             }
@@ -168,7 +180,7 @@ public class Charater : AimObject , IAttacked
                     tVec3.y = 0;
                     tVec3.z = attackTarget.gameObject.transform.position.z;
 
-                    if (FindMonsterRay() == null)
+                    if (!FindOverlapSphere())
                     {
                         playerNav.speed = Speed;
                         playerNav.SetDestination(new Vector3(attackTarget.gameObject.transform.position.x,
@@ -189,7 +201,7 @@ public class Charater : AimObject , IAttacked
             else if(state == CharaterState.Attack)
             {
 
-                if (FindMonsterRay() == null)
+                if (!FindOverlapSphere())
                 {
                     state = CharaterState.Detect;
                     OnIdleAni();
@@ -281,21 +293,42 @@ public class Charater : AimObject , IAttacked
 
     }
 
-    private Collider FindMonsterRay()
+
+
+    private bool FindOverlapSphere()
     {
 
-       
-
-        RaycastHit hit;
-        if(Physics.Raycast(rayPoint.position , transform.forward , out hit, range, LayerMask.GetMask("Monster")))
+        if(attackTarget == null)
         {
-           
-            return hit.collider;
+            return false;
+        }
+        
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
+
+  
+        foreach(Collider collider in colliders)
+        {
+
+            AimObject aimobj = collider.GetComponent<AimObject>();
+            if(aimobj != null && aimobj.player.playertype != player.playertype && attackTarget.ID == aimobj.ID)
+            {
+                return true;
+                
+            }
 
         }
 
-       
-        return null;
+        return false;
+
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 
 

@@ -19,11 +19,7 @@ public class Player : MonoBehaviour
 
     }
 
-
-
-
     private List<AttackedBundle> objects = new List<AttackedBundle>();
-
 
     private void Start()
     {
@@ -58,7 +54,7 @@ public class Player : MonoBehaviour
         Charater charater = ((Charater)(obj));
         AttackedBundle attackedBundle  = objects.Find(x => x.id == charater.ID);        
         objects.Remove(attackedBundle);        
-        Debug.Log(objects.Count);
+        
     }
 
     public List<IAttacked> GetObjects()

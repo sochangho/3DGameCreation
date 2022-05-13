@@ -5,10 +5,9 @@ using UnityEngine;
 public abstract class Attack : MonoBehaviour
 {
     public AimObject gameObj;
-    public void init(AimObject charater)
-    {
-        gameObj = charater;
-    }
+    [HideInInspector]
+    public Detect detect;
+    abstract public void init(AimObject charater);  
     abstract public void AttackTarget(AimObject target);
 
 }

@@ -19,3 +19,10 @@ public enum PlayerType
     Oponent,
     Own
 }
+
+public enum TowerState
+{
+    Detect,
+    Attack,
+    Die
+}

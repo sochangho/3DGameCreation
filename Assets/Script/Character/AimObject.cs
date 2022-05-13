@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AimObject : MonoBehaviour  , IObjectInfo
+public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 {
-
+    
     public AimObject attackTarget;
     public Player player;
     public float hp;
@@ -12,7 +12,7 @@ public class AimObject : MonoBehaviour  , IObjectInfo
     public float damage;
     public float defence;
     public float range;
-
+    public int ID { get; set; }
 
     public GameObjType type;
 
@@ -103,6 +103,8 @@ public class AimObject : MonoBehaviour  , IObjectInfo
 
 
 
+
+   virtual public void Hit(AimObject damage){}
 
     public float GetDamage()
     {

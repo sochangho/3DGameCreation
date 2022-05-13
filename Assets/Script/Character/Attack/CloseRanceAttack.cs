@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class CloseRanceAttack : Attack
 {
+   
 
+    override public void init(AimObject charater)
+    {
+
+        gameObj = charater;
+        detect = new GroundDetect(gameObj);
+
+    }
     override public void AttackTarget(AimObject target)
     {
         if(target == null)
@@ -13,7 +21,7 @@ public class CloseRanceAttack : Attack
         }
 
         float damage = gameObj.GetComponent<IObjectInfo>().GetDamage();
-        //target.Hit(gameObj);
+        target.Hit(gameObj);
 
     }
 }
