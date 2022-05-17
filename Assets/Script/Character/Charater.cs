@@ -10,7 +10,7 @@ public class Charater : AimObject
     private Attack attack;
     private NavMeshAgent playerNav;
     private Animator animator;
-    private Coroutine characterRoutin;
+
     public CharactorData data;
     public float Speed
     {
@@ -67,7 +67,7 @@ public class Charater : AimObject
 
     public void Start()
     {      
-       characterRoutin =  StartCoroutine(CharacterRoutin());
+       aiRoutin =  StartCoroutine(CharacterRoutin());
        CharacterInit();
         cur_hp = hp;
         Debug.Log("max Ã¼·Â :: " + cur_hp);
@@ -113,10 +113,10 @@ public class Charater : AimObject
                 player.RemoveCharacter(this);
                 attackCha.attackTarget = null;
 
-                if (characterRoutin != null)
+                if (aiRoutin != null)
                 {
 
-                    StopCoroutine(characterRoutin);
+                    StopAI();
 
                 }
                 OnDieAni();
@@ -125,12 +125,19 @@ public class Charater : AimObject
         }
     }
 
-    public void Attack()
+    override public void Attack()
     {
         if(attackTarget == null)
         {
             return;
         }
+
+
+        Vector3 pos = attackTarget.transform.position;
+
+        pos.y = transform.position.y;
+
+        transform.LookAt(pos);
 
 
         attack.AttackTarget(attackTarget);

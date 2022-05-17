@@ -17,12 +17,15 @@ public class SphereOverlapDetect : Detect
        List<IAttacked> objs = new List<IAttacked>();
        for(int i = 0; i < colliders.Length; i++)
         {            
-            var character = colliders[i].GetComponent<IAttacked>();
-            if (character != null)
-            {
-                 objs.Add(character);
+            var character = colliders[i].GetComponent<AimObject>();
 
+            if(character != null && character.player.playertype != gameObj.player.playertype)
+            {
+
+                objs.Add(character);
             }
+
+
         }
 
         gameObj.attackTarget = (AimObject)FindMinDistanceObj(objs);

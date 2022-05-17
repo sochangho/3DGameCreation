@@ -19,6 +19,6 @@ MonoBehaviour:
   range: 3
   defence: 20
   speed: 3.5
-  cost: 0
+  cost: 3
   charater: {fileID: 3444852279105730639, guid: 87fd4dce1e0b1c140b410171a25cab37, type: 3}
-  image: {fileID: 0}
+  sprite: {fileID: 21300000, guid: c2292a913454040459ac172615720322, type: 3}

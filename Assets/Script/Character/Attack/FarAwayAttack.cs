@@ -37,12 +37,7 @@ public class FarAwayAttack : Attack
         //TODO : 효과추가 , 스킬 , 공격등 , ObjectPooling 이용하기
 
 
-        Vector3 pos = target.transform.position;
-
-        pos.y = gameObj.transform.position.y;
-
-        transform.LookAt(pos);
-
+     
         Projectile pro = projectile.GetComponent<Projectile>();
 
         if(pro == null)

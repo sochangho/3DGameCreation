@@ -16,6 +16,9 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 
     public GameObjType type;
 
+
+    public Coroutine aiRoutin;
+
     readonly public BuffController buffController = new BuffController();
     public float Defence
     {
@@ -59,24 +62,6 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
     }
 
 
-    public float AttackDelayTime
-    {
-        get
-        {
-            float v = defence;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is AttackDelayBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-    }
 
 
     public float Range
@@ -102,9 +87,17 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
     }
 
 
+    public void StopAI()
+    {
+        if (aiRoutin != null)
+        {
 
+            StopCoroutine(aiRoutin);
+        }
+    }
 
-   virtual public void Hit(AimObject damage){}
+    virtual public void Attack() { }
+    virtual public void Hit(AimObject damage){}
 
     public float GetDamage()
     {

@@ -21,4 +21,4 @@ MonoBehaviour:
   speed: 4
   cost: 0
   charater: {fileID: 7827078326196004187, guid: a25d625044defd448a4bb18e993c204b, type: 3}
-  image: {fileID: 0}
+  sprite: {fileID: 21300000, guid: cb2aa75a54f52994fbf5df660422edbb, type: 3}
