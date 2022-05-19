@@ -127,10 +127,12 @@ public class OponentAreaDetect : NodeDetect
             {
                 Node node = (Node)datas[i].obj;
                 float distacne = Vector3.Distance(node.transform.position, monsterOnNode.transform.position);
+                float rangeCompareDistace = Mathf.Abs(distacne - player.aimObject.range);
+
                 if (i == 0)
                 {
                     temporaryData.obj = node;
-                    temporaryData.value = distacne;
+                    temporaryData.value = rangeCompareDistace;
                     continue;
                 }
 
@@ -138,7 +140,7 @@ public class OponentAreaDetect : NodeDetect
                 {
 
                     temporaryData.obj = node;
-                    temporaryData.value = distacne;
+                    temporaryData.value = rangeCompareDistace;
                 }
 
             }
