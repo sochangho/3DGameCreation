@@ -2018,7 +2018,7 @@ Transform:
   m_GameObject: {fileID: 5067370331603579518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 5063400833394789526}
   - {fileID: 5063629628758707186}
@@ -2079,7 +2079,7 @@ MonoBehaviour:
   cur_hp: 100
   damage: 100
   defence: 0
-  range: 10
+  range: 16
   type: 1
   speed: 2
   data: {fileID: 11400000, guid: 645057aacad71db49afe026458e4fdee, type: 2}

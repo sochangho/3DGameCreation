@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
 
         if (attacked != null && effectAction != null )
         {
-            Debug.Log("ddd");
+          
             effectAction(collision);
             
         }

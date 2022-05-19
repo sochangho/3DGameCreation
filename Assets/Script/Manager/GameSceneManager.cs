@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameSceneManager : GameManager<GameSceneManager>
 {
     public Player ownPlayer;
-    public Player oponentPlayer;
+    public OponentPlayer oponentPlayer;
 
     public GameCardBuild gameCardBuild;
     public CostGage costGage;
@@ -20,51 +20,79 @@ public class GameSceneManager : GameManager<GameSceneManager>
         EventManager.On("GameStart", RandomCardSelet);
         EventManager.On("GameStart", StartGage);
         EventManager.On("GameStart", CardCompare);
+
+
         EventManager.On("CardSelect", CardSelect);
         EventManager.On("CardSelect", RandomCardSelet);
         EventManager.On("CardSelect", CardCompare);
+
         EventManager.On("GameEnd", StopGage);
+
+
+        EventManager.On("OponentInit", PlayerInit);
+        EventManager.On("OponentInit", RandomCardSelet);
+        EventManager.On("OponentInit", AiRoutin);
+
+        EventManager.On("OponentCardSelect", CardSelect);
+        EventManager.On("OponentCardSelect", RandomCardSelet);
+
+
     }
 
 
     public void Start()
     {
-        EventManager.Emit("GameStart", null);
+        ParameterHelper playerParameter = new ParameterHelper();
+        ParameterHelper oponentParameter = new ParameterHelper();
+
+        playerParameter.objList.Add(ownPlayer);
+        oponentParameter.objList.Add(oponentPlayer);
+
+        EventManager.Emit("GameStart", playerParameter);
+        EventManager.Emit("OponentInit", oponentParameter);
     }
 
 
-    public void GameSceneInit(Player own , Player oponent)
-    {
-        ownPlayer = own;
-        oponentPlayer = oponent;
+    //public void GameSceneInit(Player own , Player oponent)
+    //{
+    //    ownPlayer = own;
+    //    oponentPlayer = oponent;
 
-        ownPlayer.playertype = PlayerType.Own;
-        oponentPlayer.playertype = PlayerType.Oponent;
-    }
+    //    ownPlayer.playertype = PlayerType.Own;
+    //    oponentPlayer.playertype = PlayerType.Oponent;
+    //}
 
 
 
 
     public void PlayerInit(object parmater)
     {
-        ownPlayer.curCost = ownPlayer.MaxCost;
+        ParameterHelper parameterHelper = (ParameterHelper)(parmater);
 
-        costGage.SetCost(ownPlayer.curCost);
-
+        Player player = parameterHelper.GetParameter<Player>();
+ 
+        if(player == null)
+        {
+            Debug.LogError("플레이어 없음");
+            return;
+        }
+  
+        player.curCost = player.MaxCost;
+        
 
         int index = 0;
-        foreach (CharactorData data in ownPlayer.characterdatas)
+        foreach (CharactorData data in player.characterdatas)
         {
-            ownPlayer.totalCardDatas.Add(index, data);
+            player.totalCardDatas.Add(index, data);
             index++;
         }
 
         for (int i = 0; i < 4; i++)
         {
             List<int> indexs = new List<int>();
-            for (int j = 0; j < ownPlayer.totalCardDatas.Count; j++)
+            for (int j = 0; j < player.totalCardDatas.Count; j++)
             {
-                if (ownPlayer.handCardDatas.Find(x => j == x.id) != null)
+                if (player.handCardDatas.Find(x => j == x.id) != null)
                 {
                     continue;
                 }
@@ -84,21 +112,43 @@ public class GameSceneManager : GameManager<GameSceneManager>
             int selectindex = indexs[random];
 
             Player.ObjectBundle objectBundle = new Player.ObjectBundle();
-            objectBundle.obj = ownPlayer.totalCardDatas[selectindex];
+            objectBundle.obj = player.totalCardDatas[selectindex];
             objectBundle.id = selectindex;
 
-            ownPlayer.handCardDatas.Add(objectBundle);
+            player.handCardDatas.Add(objectBundle);
         }
 
+
+        if(player is OponentPlayer)
+        {
+            return;
+        }
+        costGage.SetCost(player.curCost);
         gameCardBuild.CardBuildInit();
     }
 
+
+
+    // 다음 카드를 랜덤으로 
+
     public void RandomCardSelet(object parmeter)
     {
-        List<int> indexs = new List<int>();
-        for (int j = 0; j < ownPlayer.totalCardDatas.Count; j++)
+        ParameterHelper parameterHelper = (ParameterHelper)parmeter;
+
+        Player player = parameterHelper.GetParameter<Player>();
+
+        if (player == null)
         {
-            if (ownPlayer.handCardDatas.Find(x => j == x.id) != null)
+            Debug.LogError("플레이어 없음");
+            return;
+        }
+
+
+
+        List<int> indexs = new List<int>();
+        for (int j = 0; j < player.totalCardDatas.Count; j++)
+        {
+            if (player.handCardDatas.Find(x => j == x.id) != null)
             {
                 continue;
             }
@@ -118,45 +168,111 @@ public class GameSceneManager : GameManager<GameSceneManager>
         int selectindex = indexs[random];
 
         Player.ObjectBundle objectBundle = new Player.ObjectBundle();
-        objectBundle.obj = ownPlayer.totalCardDatas[selectindex];
+        objectBundle.obj = player.totalCardDatas[selectindex];
         objectBundle.id = selectindex;
 
         //다음 넥스트 카드 
-        ownPlayer.nextCardObj = objectBundle;
+        player.nextCardObj = objectBundle;
+
+
+        if (player is OponentPlayer) {
+            return;
+        }
         CharactorData nextData = (CharactorData)(objectBundle.obj);
         gameCardBuild.next.img.sprite = nextData.sprite;
     }
 
+
+
+    //다음 카드를 손위로 넣는과정 
     public void CardSelect(object parameter)
     {
+        ParameterHelper parameterHelper = (ParameterHelper)(parameter);
 
-       
-        CardInfo info = (CardInfo)parameter;
+        Player player = parameterHelper.GetParameter<Player>();
+        CardInfo info = parameterHelper.GetParameter<CardInfo>();
 
-        if (!ownPlayer.PurchaseCardCost(info.cost))
+    
+        //if(player == null)
+        //{
+        //    Debug.LogError("플레이어 x");
+        //    return;
+        //}
+
+        //if(info == null)
+        //{
+        //    Debug.LogError("카드정보 x");
+        //    return;
+        //}
+
+
+        if (!player.PurchaseCardCost(info.cost))
         {
             return;
         }
-        costGage.SetCost(ownPlayer.curCost);
+       
 
 
 
-        Player.ObjectBundle obj = ownPlayer.handCardDatas.Find(x => x.id == info.id);
-        SetSpwanObject(info.aimObject);
-        ownPlayer.handCardDatas.Remove(obj);
-        info.transform.parent = null;
-        Destroy(info.gameObject);
+        Player.ObjectBundle obj = player.handCardDatas.Find(x => x.id == info.id);
 
+        if (player is OponentPlayer)
+        {
+            OponentPlayer opplayer = (OponentPlayer)(player);
+            opplayer.SetOponentAimObject(info.aimObject);
+            player.handCardDatas.Remove(obj);
+        }
+        else
+        {
+            SetSpwanObject(info.aimObject);
+            player.handCardDatas.Remove(obj);
+            info.transform.parent = null;
+            Destroy(info.gameObject);
+        }
 
+      
         Player.ObjectBundle newCard = new Player.ObjectBundle();
 
-        newCard.id = ownPlayer.nextCardObj.id;
-        newCard.obj = ownPlayer.nextCardObj.obj;
-        ownPlayer.handCardDatas.Add(newCard);
+        newCard.id = player.nextCardObj.id;
+        newCard.obj = player.nextCardObj.obj;
+        player.handCardDatas.Add(newCard);
+
+        if(player is OponentPlayer)
+        {
+
+            return;
+        }
+
+
+
+        costGage.SetCost(player.curCost);
         gameCardBuild.CardInsert(newCard);
         
 
     }
+
+    public void MonsterSpwan(Transform transform)
+    {
+        if(spwanObjet != null)
+        {
+
+           AimObject aimObj  =  Instantiate(spwanObjet);
+           aimObj.player = ownPlayer;
+           aimObj.transform.position = transform.position;            
+           ownPlayer.AddCharacter(aimObj);
+           spwanObjet = null;
+        }
+
+
+
+    }
+
+    public void AiRoutin(object parmeter)
+    {
+       // oponentPlayer.StartAiRoutin();
+
+    }
+
 
     public void CardCompare(object parameter)
     {
@@ -185,7 +301,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     IEnumerator GamePlayerGageRoutin()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.05f);
+        WaitForSeconds wait = new WaitForSeconds(0.001f);
         while (true)
         {
             if (ownPlayer.FillGage())
@@ -194,7 +310,25 @@ public class GameSceneManager : GameManager<GameSceneManager>
                 
                 CardCompare(null);
             }
-            oponentPlayer.FillGage();
+
+
+
+           
+            
+            if(oponentPlayer.curFill > oponentPlayer.maxFill)
+            {
+                oponentPlayer.curFill = oponentPlayer.maxFill;
+
+                if(oponentPlayer.MaxCost >= oponentPlayer.curCost)
+                {
+                    oponentPlayer.curCost = oponentPlayer.MaxCost;
+                    oponentPlayer.curFill = 0;
+                }
+
+
+            }
+            oponentPlayer.curFill += oponentPlayer.fillRatio;
+
 
             costGage.FillAmountGage(ownPlayer.curFill / ownPlayer.maxFill);
             
@@ -209,6 +343,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public void SetSpwanObject(AimObject obj)
     {
+      
         spwanObjet = obj;
     }
 

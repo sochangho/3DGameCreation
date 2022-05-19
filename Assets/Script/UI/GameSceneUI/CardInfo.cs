@@ -24,7 +24,15 @@ public class CardInfo : MonoBehaviour
     
     public void SelectCard()
     {
-         EventManager.Emit("CardSelect",this);
+        if (GameSceneManager.Instance.spwanObjet == null)
+        {
+
+            ParameterHelper playerParameter = new ParameterHelper();
+            playerParameter.objList.Add(GameSceneManager.Instance.ownPlayer);
+            playerParameter.objList.Add(this);
+
+            EventManager.Emit("CardSelect", playerParameter);
+        }
     }
 
     public void SetButtonPressable(bool value)

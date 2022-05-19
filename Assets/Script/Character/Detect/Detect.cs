@@ -27,7 +27,7 @@ public  class Detect
             float distance = Vector3.Distance(gameObj.transform.position
        , ((AimObject)objs[i]).gameObject.transform.position);
 
-            Debug.Log(distance);
+           
             if(aimFind.aimobj == null || aimFind.distance > distance){
                   aimFind.aimobj = ((AimObject)objs[i]);
                   aimFind.distance = distance;

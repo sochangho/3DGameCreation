@@ -14,12 +14,12 @@ public class AllDectect : Detect
         List<IAttacked> objects;
         if(((AimObject)gameObj).player.playertype == PlayerType.Oponent)
         {
-         objects = GameSceneManager.Instance.ownPlayer.GetObjects();
+         objects = GameSceneManager.Instance.ownPlayer.GetObjects<IAttacked>();
         
         }
         else
         {
-         objects = GameSceneManager.Instance.oponentPlayer.GetObjects();
+         objects = GameSceneManager.Instance.oponentPlayer.GetObjects<IAttacked>();
         }
 
       

@@ -3321,7 +3321,7 @@ Transform:
   m_GameObject: {fileID: 726542061325079501}
   m_LocalRotation: {x: -0, y: 0.1527984, z: -0, w: 0.98825747}
   m_LocalPosition: {x: 0.77, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 726542061325438863}
   - {fileID: 726542061325438865}
@@ -3407,7 +3407,7 @@ MonoBehaviour:
   cur_hp: 100
   damage: 10
   defence: 20
-  range: 2
+  range: 4
   type: 1
   speed: 4
   data: {fileID: 11400000, guid: e6cfaab2081ad3442b93ecbf107c051b, type: 2}

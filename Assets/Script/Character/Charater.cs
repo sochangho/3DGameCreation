@@ -59,9 +59,7 @@ public class Charater : AimObject
  
         attack.init(this);
         playerNav.speed = Speed;
-
-
-
+        playerNav.baseOffset = 0.1f;
 
     }
 
@@ -70,8 +68,7 @@ public class Charater : AimObject
        aiRoutin =  StartCoroutine(CharacterRoutin());
        CharacterInit();
         cur_hp = hp;
-        Debug.Log("max 체력 :: " + cur_hp);
-        Debug.Log("초기 체력 :: " + cur_hp);
+    
 
     }
 
@@ -121,6 +118,7 @@ public class Charater : AimObject
                 }
                 OnDieAni();
                 Die();
+                playerNav.speed = 0;
             }
         }
     }

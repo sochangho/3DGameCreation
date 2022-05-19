@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     public PlayerType playertype;
 
+    public Tower tower;
+    public Transform towerPos;
     //일단 테스트 용도 
     public List<CharactorData> characterdatas;
 
@@ -14,9 +16,9 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public int curCost ;
 
-    [HideInInspector]
+    
     public float maxFill = 1;
-    [HideInInspector]
+   
     public float curFill = 0;
     [HideInInspector]
     public float fillRatio = 0.0001f;
@@ -42,8 +44,14 @@ public class Player : MonoBehaviour
     //필드위에 올라온카드 
     private List<ObjectBundle> objects = new List<ObjectBundle>();
 
-    
-    
+    public void Start()
+    {
+        Tower towerClone = Instantiate(tower);
+        towerClone.transform.position = towerPos.position;
+        
+        AddCharacter(towerClone);
+    }
+
     public void AddCharacter(IAttacked obj)
     {
         
@@ -66,13 +74,13 @@ public class Player : MonoBehaviour
         
     }
 
-    public List<IAttacked> GetObjects()
+    public List<T> GetObjects<T>() where T : IAttacked
     {
-        List<IAttacked> attackeds = new List<IAttacked>();
+        List<T> attackeds = new List<T>();
 
         for(int i = 0; i < objects.Count; i++)
         {
-            attackeds.Add((IAttacked)objects[i].obj);
+            attackeds.Add((T)objects[i].obj);
 
         }
 
@@ -81,9 +89,10 @@ public class Player : MonoBehaviour
 
     public bool FillGage()
     {
-
-        if(curFill >= maxFill)
+       
+        if (curFill >= maxFill)
         {
+          
             curFill = maxFill;
             
             if (curCost <= MaxCost)
@@ -96,6 +105,7 @@ public class Player : MonoBehaviour
             return false;
         }
 
+       
         curFill += fillRatio;
 
         return false;
