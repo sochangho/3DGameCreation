@@ -1484,7 +1484,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7404371753728937053}
-  m_LocalRotation: {x: -0, y: 0.1984098, z: -0, w: 0.98011917}
+  m_LocalRotation: {x: 0, y: 0.19841005, z: 0, w: 0.9801191}
   m_LocalPosition: {x: 0, y: 0, z: -2.87}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
@@ -1534,6 +1534,7 @@ MonoBehaviour:
   type: 0
   speed: 3
   data: {fileID: 11400000, guid: 01d30ee483816e640b0842edd309280f, type: 2}
+  is_Die: 0
   state: 0
 --- !u!136 &5374526367481231009
 CapsuleCollider:

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class BuffController 
+public class BuffController : MonoBehaviour
 {
     private AimObject aimObject;
 
@@ -15,9 +15,13 @@ public class BuffController
         this.aimObject = aimObject;
     }
 
-    public void AddBuff(Buff buff, Image img = null, List<Material> materials = null)
+    public void AddBuff(Buff buff, GameObject particle)
     {
        
+        if(aimObject == null)
+        {
+            return;
+        }
 
         
         for(int i = 0; i < buffStates.Count; i++)
@@ -35,13 +39,18 @@ public class BuffController
 
         buff.BuffStart(aimObject);
 
+        var go  = Instantiate(particle);
+        go.transform.position = new Vector3(aimObject.transform.position.x, aimObject.transform.position.y + 1f, aimObject.transform.position.z);          
+        go.transform.rotation = Quaternion.Euler(90, 0, 0);
+        go.transform.parent = aimObject.transform;
+      
+
         BuffState buffState = new BuffState();
        
         buffState.buff = buff;
         buffState.duration = buff.duration;
         buffState.buff.buffType = buff.buffType;
-        buffState.Image = img;
-        buffState.materials = materials;
+        buffState.effect = go;
         buffStates.Add(buffState);
     }
 
@@ -54,6 +63,7 @@ public class BuffController
         {
             if (!buffState.isDead)
             {
+                
                 buffs.Add(buffState.buff);
             }
                     
@@ -65,6 +75,7 @@ public class BuffController
           
             if (buffStates[i].isDead)
             {
+                Destroy(buffStates[i].effect);
                 buffStates.Remove(buffStates[i]);
             }
 
@@ -109,8 +120,7 @@ public class BuffState
 {
     public Buff buff;
     public float duration;
-    public Image Image;
-    public List<Material> materials;
+    public GameObject effect;
     public bool isDead = false;
 
 }

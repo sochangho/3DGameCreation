@@ -10,6 +10,8 @@ public class GameSceneManager : GameManager<GameSceneManager>
     public GameCardBuild gameCardBuild;
     public CostGage costGage;
     public AimObject spwanObjet;
+    public CircleRenderer circleRenderer;
+
 
     private Coroutine gamecorutin;
 

@@ -14,7 +14,7 @@ public class CharactorData : ScriptableObject
     public float defence;
     public float speed;
     public int cost;
-    public Charater charater;
+    public AimObject charater;
     public Sprite sprite;
     
     

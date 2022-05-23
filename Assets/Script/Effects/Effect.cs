@@ -6,7 +6,7 @@ public class Effect : AimObject
 {
 
    public List<Buff> buffs;
-
+   public CharactorData data;
  
         
 }

@@ -104,7 +104,7 @@ public class Tower : AimObject
 
     private void Update()
     {
-
+        buffController.BuffTimer();
         if (towerState == TowerState.Detect)
         {
 

@@ -12,6 +12,8 @@ public class Charater : AimObject
     private Animator animator;
 
     public CharactorData data;
+
+    public bool is_Die = false;
     public float Speed
     {
 
@@ -67,8 +69,8 @@ public class Charater : AimObject
     {      
        aiRoutin =  StartCoroutine(CharacterRoutin());
        CharacterInit();
-        cur_hp = hp;
-    
+       cur_hp = hp;
+       buffController.BuffTarget(this);
 
     }
 
@@ -89,8 +91,17 @@ public class Charater : AimObject
 
     override public void Hit(AimObject attackCha)
     {
+        
+
+
         if(attackCha == null)
         {
+            return;
+        }
+
+        if(state == CharaterState.Die)
+        {
+           
             return;
         }
 
@@ -103,9 +114,10 @@ public class Charater : AimObject
            
             cur_hp = 0;
 
-            attackCha.attackTarget = null;
+           
             if (state != CharaterState.Die)
             {
+                attackCha.attackTarget = null;
                 Die();
             }
         }
@@ -139,6 +151,9 @@ public class Charater : AimObject
     {
         while (true)
         {
+
+
+            buffController.BuffTimer();
             if(state == CharaterState.Detect)
             {
                 
@@ -151,6 +166,7 @@ public class Charater : AimObject
                 else
                 {
                    attack.detect.OnDetect();
+
                 }
 
             }
@@ -276,8 +292,11 @@ public class Charater : AimObject
 
     private void OnDieAni()
     {
-        animator.SetTrigger("Die");
-
+        if (!is_Die)
+        {
+            is_Die = true;
+            animator.SetTrigger("Die");
+        }
         if (animator.GetBool("Walk"))
         {
             animator.SetBool("Walk", false);
@@ -331,6 +350,7 @@ public class Charater : AimObject
 
     override public void Die()
     {
+        
         state = CharaterState.Die;
         player.RemoveCharacter(this);
         if (aiRoutin != null)

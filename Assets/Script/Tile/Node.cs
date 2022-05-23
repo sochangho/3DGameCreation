@@ -20,7 +20,7 @@ public class Node : MonoBehaviour
 
     public int nodeY;
 
-
+    private CircleRenderer circleRenderer;
 
 
     public bool is_ExistMonster = false;
@@ -70,7 +70,19 @@ public class Node : MonoBehaviour
 
     public void OnMouseEnter()
     {
-      
+        if (GameSceneManager.Instance.spwanObjet != null && GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>() != null)
+        {
+            is_select = true;
+            renderer.enabled = true;
+
+            circleRenderer =  Instantiate(GameSceneManager.Instance.circleRenderer);
+            circleRenderer.transform.position = transform.position;
+            circleRenderer.transform.rotation = Quaternion.Euler(90, 0, 0);
+            
+            circleRenderer.CreatePoints(GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>().GetEffectRenge());
+            return;
+        }
+
       
         if(GameSceneManager.Instance.spwanObjet != null &&  nodetype == NodeType.Player && !MonsterExist())
         {
@@ -88,6 +100,26 @@ public class Node : MonoBehaviour
 
             is_select = false;
             renderer.enabled = false;
+            if (circleRenderer != null)
+            {
+                Destroy(circleRenderer.gameObject);
+                circleRenderer = null;
+            }
+
+            if (GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>() != null)
+            {
+
+                GameSceneManager.Instance.spwanObjet.
+                    GetComponent<ITileCilckTrigger>().TileCilckTrigger(this, GameSceneManager.Instance.ownPlayer);
+                GameSceneManager.Instance.spwanObjet = null;
+
+            
+
+                return;
+            }
+
+        
+
             GameSceneManager.Instance.MonsterSpwan(this.transform);
             
 
@@ -103,7 +135,11 @@ public class Node : MonoBehaviour
         {
             is_select = false;
             renderer.enabled = false;
-
+            if (circleRenderer != null)
+            {
+                Destroy(circleRenderer.gameObject);
+                circleRenderer = null;
+            }
         }
 
 

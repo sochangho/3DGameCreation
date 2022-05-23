@@ -21,11 +21,7 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 
     readonly public BuffController buffController = new BuffController();
 
-    void Awake()
-    {
-        buffController.BuffTarget(this);
-
-    }
+    public AimObjectHp aimObjectHp;
 
 
     public float Defence
@@ -106,7 +102,6 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 
     virtual public void Attack() { }
     virtual public void Hit(AimObject damage){}
-
     virtual public void Die() { }
 
 
