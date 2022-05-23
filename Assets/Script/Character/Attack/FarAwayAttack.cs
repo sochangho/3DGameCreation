@@ -4,10 +4,12 @@ using UnityEngine;
 using System;
 public class FarAwayAttack : Attack
 {
-    public GameObject  projectile;
+    public Projectile projectile;
+    public ProjectileParticle projectileParticle;
+
+
+
     public Transform spwanPoint;
-
-
     public Action projectileAtion;
 
     public float speed;
@@ -25,6 +27,9 @@ public class FarAwayAttack : Attack
     }
 
 
+    
+
+
 
     override public void init(AimObject charater)
     {
@@ -36,49 +41,61 @@ public class FarAwayAttack : Attack
     {
         //TODO : 효과추가 , 스킬 , 공격등 , ObjectPooling 이용하기
 
-
-     
-        Projectile pro = projectile.GetComponent<Projectile>();
-
-        if(pro == null)
+        //오브젝트 풀로 바꾼다.
+        var go = ObjectPooling.ObjectPoolingManager.Instance.ObjectUse(projectile.name);
+        Projectile pro = go.GetComponent<Projectile>();
+        pro.transform.position = spwanPoint.position;
+        ProjectileWay(pro);
+        pro.projectileWayAction = projectileAtion;
+        
+        if(gameObj.player.playertype == PlayerType.Oponent)
         {
-
-            pro = projectile.AddComponent<Projectile>();
+            pro.gameObject.layer = 13;
+        }else if(gameObj.player.playertype == PlayerType.Own)
+        {
+            pro.gameObject.layer = 12;
         }
 
 
-
-        
-        //오브젝트 풀로 바꾼다.
-        var go = Instantiate(pro);
-        go.transform.position = spwanPoint.position;
-        ProjectileWay(go);
-        go.projectileWayAction = projectileAtion;
-        
-        go.effectAction = (Collision collision) =>
-        {
-            AimObject aimObject = collision.gameObject.GetComponent<AimObject>();
-            if (aimObject != null && aimObject.player.playertype != gameObj.player.playertype)
+      
+            pro.effectAction = (Collision collision) =>
             {
+                AimObject aimObject = collision.gameObject.GetComponent<AimObject>();
+                if (aimObject != null && aimObject.player.playertype != gameObj.player.playertype)
+                {
 
-                aimObject.Hit(gameObj);
+                    aimObject.Hit(gameObj);
 
-                //스킬 버프???
+                    //스킬 버프???
+                    GameObject particle = ObjectPooling.ObjectPoolingManager.Instance.ObjectUse(projectileParticle.name);
+                    particle.transform.position = collision.contacts[0].point;
+                    particle.transform.LookAt(collision.contacts[0].normal);
+
+                    pro.GetComponent<ObjectPooling.ObjectPool>().GameObjDead();
+                    pro.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                }
+
+         
+            };
+
+
+        pro.groundAction = (Collision collision) => {
+
+            if (collision.gameObject.tag == "Ground")
+            {
                
-                //오브젝트 풀로 바꾼다.
-                Destroy(go.gameObject);
-            }
-            else
-            {
+                GameObject particle = ObjectPooling.ObjectPoolingManager.Instance.ObjectUse(projectileParticle.name);
+                particle.transform.position = collision.contacts[0].point;
+                particle.transform.LookAt(collision.contacts[0].normal);
 
-                //Destroy(go.gameObject);
-                return;
+                pro.GetComponent<ObjectPooling.ObjectPool>().GameObjDead();
+                pro.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
-
 
         };
 
-        go.projectileAttack();
+        
+        pro.projectileAttack();
 
     }
 

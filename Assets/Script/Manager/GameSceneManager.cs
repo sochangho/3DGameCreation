@@ -13,14 +13,14 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     private Coroutine gamecorutin;
 
-
+    
     public void Awake()
     {
         EventManager.On("GameStart", PlayerInit);
         EventManager.On("GameStart", RandomCardSelet);
         EventManager.On("GameStart", StartGage);
         EventManager.On("GameStart", CardCompare);
-
+        EventManager.On("GameStart", ProjectileEndEffectCreate);
 
         EventManager.On("CardSelect", CardSelect);
         EventManager.On("CardSelect", RandomCardSelet);
@@ -51,18 +51,6 @@ public class GameSceneManager : GameManager<GameSceneManager>
         EventManager.Emit("GameStart", playerParameter);
         EventManager.Emit("OponentInit", oponentParameter);
     }
-
-
-    //public void GameSceneInit(Player own , Player oponent)
-    //{
-    //    ownPlayer = own;
-    //    oponentPlayer = oponent;
-
-    //    ownPlayer.playertype = PlayerType.Own;
-    //    oponentPlayer.playertype = PlayerType.Oponent;
-    //}
-
-
 
 
     public void PlayerInit(object parmater)
@@ -191,19 +179,6 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
         Player player = parameterHelper.GetParameter<Player>();
         CardInfo info = parameterHelper.GetParameter<CardInfo>();
-
-    
-        //if(player == null)
-        //{
-        //    Debug.LogError("플레이어 x");
-        //    return;
-        //}
-
-        //if(info == null)
-        //{
-        //    Debug.LogError("카드정보 x");
-        //    return;
-        //}
 
 
         if (!player.PurchaseCardCost(info.cost))
@@ -340,6 +315,86 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     }
     
+    private void ProjectileEndEffectCreate(object parameter)
+    {
+
+        List<CharactorData> ownCharactorDatas =  ownPlayer.characterdatas;
+        List<CharactorData> oponentCharactorDatas = oponentPlayer.characterdatas;
+
+        List<CharactorData> totalDatas = new List<CharactorData>();
+
+        totalDatas.AddRange(ownCharactorDatas);
+        totalDatas.AddRange(ownCharactorDatas);
+
+        FarAwayAttack awayAttackOwnTower = ownPlayer.tower.GetComponent<FarAwayAttack>();
+        FarAwayAttack awayAttackOponentTower = oponentPlayer.tower.GetComponent<FarAwayAttack>();
+
+        if(awayAttackOwnTower != null)
+        {
+
+            if (awayAttackOwnTower.projectile != null)
+            {
+                ObjectPooling.ObjectPoolingManager.Instance.
+                       AddObjects(awayAttackOwnTower.projectile.name, awayAttackOwnTower.projectile.gameObject, 5);
+            }
+
+            if (awayAttackOwnTower.projectileParticle != null)
+            {
+                ObjectPooling.ObjectPoolingManager.Instance.
+                        AddObjects(awayAttackOwnTower.projectileParticle.name, awayAttackOwnTower.projectileParticle.gameObject, 5);
+            }
+
+        }
+
+        if(awayAttackOponentTower != null)
+        {
+            if (awayAttackOponentTower.projectile != null)
+            {
+                ObjectPooling.ObjectPoolingManager.Instance.
+                       AddObjects(awayAttackOponentTower.projectile.name, awayAttackOponentTower.projectile.gameObject, 5);
+            }
+            if (awayAttackOponentTower.projectileParticle != null)
+            {
+                ObjectPooling.ObjectPoolingManager.Instance.
+                        AddObjects(awayAttackOponentTower.projectileParticle.name, awayAttackOponentTower.projectileParticle.gameObject, 5);
+            }
+        }
+
+
+
+        foreach(var data in totalDatas)
+        {
+            FarAwayAttack farAwayAttack = data.charater.GetComponent<FarAwayAttack>();
+            if (farAwayAttack != null)
+            {
+
+
+
+                if (farAwayAttack.projectile != null)
+                {
+                    ObjectPooling.ObjectPoolingManager.Instance.
+                        AddObjects(farAwayAttack.projectile.name, farAwayAttack.projectile.gameObject, 5);
+                }
+
+                if (farAwayAttack.projectileParticle != null)
+                {
+                    ObjectPooling.ObjectPoolingManager.Instance.
+                        AddObjects(farAwayAttack.projectileParticle.name, farAwayAttack.projectileParticle.gameObject, 5);
+                }
+
+
+
+            }
+
+        }
+
+
+
+
+    }
+
+
+
 
     public void SetSpwanObject(AimObject obj)
     {

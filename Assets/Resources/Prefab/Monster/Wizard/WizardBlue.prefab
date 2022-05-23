@@ -708,9 +708,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameObj: {fileID: 0}
-  projectile: {fileID: 6066891441116246477, guid: 89b8e500184c5b544b3c620230cc6492, type: 3}
+  projectile: {fileID: 3588478771887092020, guid: 2f99d853b1685f24999ace55c9b532cb, type: 3}
+  projectileParticle: {fileID: -2203991768603233768, guid: fc87bd5b7312d49d791633293250d799, type: 3}
   spwanPoint: {fileID: 5705389053659395902}
-  speed: 10
+  speed: 30
 --- !u!114 &468161455304020153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,7 +751,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -1001,7 +1002,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996376818721352970}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1

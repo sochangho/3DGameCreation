@@ -14,9 +14,12 @@ public class StraightAttack : FarAwayAttack
         Vector3 direction = endDir - startDir;
 
 
-        projectileAtion = () => {
-            
-            projectile.transform.Translate(direction.normalized * Speed * Time.deltaTime); };
+        projectileAtion = () =>
+        {
 
+            //projectile.transform.Translate(direction.normalized * Speed * Time.deltaTime); };
+            projectile.GetComponent<Rigidbody>().AddForce(direction.normalized * Speed , ForceMode.Force);
+
+        };
     }
 }

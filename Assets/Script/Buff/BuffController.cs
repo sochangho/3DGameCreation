@@ -4,34 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BuffController 
 {
+    private AimObject aimObject;
+
     private List<BuffState> buffStates = new List<BuffState>();
 
-    public void AddBuff<T>(float value, float duration, Buff.BuffType buffType, Image img = null, List<Material> materials = null) where T  : Buff , new()
+
+    public void BuffTarget(AimObject aimObject)
     {
-        T buff = new T();
+
+        this.aimObject = aimObject;
+    }
+
+    public void AddBuff(Buff buff, Image img = null, List<Material> materials = null)
+    {
+       
 
         
         for(int i = 0; i < buffStates.Count; i++)
         {
-            if(buffStates[i].buff is T)
+            if(buffStates[i].buff.buffName == buff.buffName)
             {
-                buff.value = value;
-                buffStates[i].buff = buff;
-                buffStates[i].duration = duration;
-                buffStates[i].Image = img;
-                buffStates[i].materials = materials;
+             
+                buffStates[i].duration = buff.duration; 
                 return;
 
             }
 
         }
 
-       
+
+        buff.BuffStart(aimObject);
+
         BuffState buffState = new BuffState();
-        buff.value = value;
+       
         buffState.buff = buff;
-        buffState.duration = duration;
-        buffState.buff.buffType = buffType;
+        buffState.duration = buff.duration;
+        buffState.buff.buffType = buff.buffType;
         buffState.Image = img;
         buffState.materials = materials;
         buffStates.Add(buffState);
@@ -82,11 +90,12 @@ public class BuffController
             }
 
             buffStates[i].duration -= Time.deltaTime;
-
+            buffStates[i].buff.Buffproceeding(aimObject);
             if (buffStates[i].duration < 0)
             {
                 buffStates[i].duration = 0;
                 buffStates[i].isDead = true;
+                buffStates[i].buff.BuffEnd(aimObject);
             }
 
         }

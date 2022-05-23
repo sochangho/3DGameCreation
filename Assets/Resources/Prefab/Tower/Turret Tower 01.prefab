@@ -198,7 +198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameObj: {fileID: 0}
-  projectile: {fileID: 6066891441116246477, guid: 89b8e500184c5b544b3c620230cc6492, type: 3}
+  projectile: {fileID: 3603774760875360054, guid: a15414631c280b14fa978153cbe4bd0e, type: 3}
+  projectileParticle: {fileID: -7418818672972785613, guid: 7c8a46a0fcce6b14aaed29200025f9a2, type: 3}
   spwanPoint: {fileID: 415964816}
   speed: 10
 --- !u!65 &760000486
@@ -400,8 +401,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7470318968700474304}
   m_LocalRotation: {x: 0.00071936287, y: 0.011889719, z: 0.000008557397, w: 0.99992913}
-  m_LocalPosition: {x: -0, y: 4.98, z: -0.02}
-  m_LocalScale: {x: 1, y: 1, z: 1.7986}
+  m_LocalPosition: {x: 0.247, y: 4.98, z: -0.101}
+  m_LocalScale: {x: 1.6089, y: 1.3361, z: 1.1107434}
   m_Children:
   - {fileID: 6463465266499610675}
   - {fileID: 415964816}

@@ -56,13 +56,46 @@ public class Player : MonoBehaviour
     {
         
        AimObject aimeObject = ((AimObject)(obj));
+
+
+      if(playertype == PlayerType.Own)
+       {
+            aimeObject.gameObject.layer = 11;
+
+
+            List<AimObject> oponentObjects = GameSceneManager.Instance.oponentPlayer.GetObjects<AimObject>();
+
+            foreach (AimObject oponentObject in oponentObjects)
+            {
+                oponentObject.attackTarget = null;
+            }
+
+
+        }
+       else
+       {
+            aimeObject.gameObject.layer = 10;
+
+
+            List<AimObject> ownObjects = GameSceneManager.Instance.ownPlayer.GetObjects<AimObject>();
+
+            foreach (AimObject ownObject in ownObjects)
+            {
+                ownObject.attackTarget = null;
+            }
+
+        }
+       
        aimeObject.player = this;
        aimeObject.ID = id;
        ObjectBundle attackedBundle = new ObjectBundle();
        attackedBundle.obj = aimeObject;
        attackedBundle.id = id;
        id++;
-        
+       
+       
+
+       
        objects.Add(attackedBundle);
     }
 

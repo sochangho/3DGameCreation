@@ -86,6 +86,22 @@ public class Tower : AimObject
         }
     }
 
+    public override void Die()
+    {
+        if(this.player.playertype == PlayerType.Oponent)
+        {
+            // 패배
+            // 처음으로 되돌아간다.
+            // 게임씬매니저의 함수 호출
+
+        }else if(this.player.playertype == PlayerType.Own)
+        {
+            // 승 
+            // 다음 스테이지 카드 하나획득 
+            // 게임씬매니저의 함수 호출
+        }
+    }
+
     private void Update()
     {
 
@@ -114,8 +130,9 @@ public class Tower : AimObject
             else
             {
 
+                Vector3 lookPos = new Vector3(attackTarget.transform.position.x, rotationHead.transform.position.y, attackTarget.transform.position.z);
 
-                rotationHead.LookAt(attackTarget.transform);
+                rotationHead.LookAt(lookPos);
 
                 if (Time.time < curTime + AttackDelayTime)
                 {

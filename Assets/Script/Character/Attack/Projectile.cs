@@ -5,6 +5,7 @@ using System;
 public class Projectile : MonoBehaviour
 {
     public Action<Collision> effectAction;
+    public Action<Collision> groundAction;
     public Action projectileWayAction;
     public Coroutine projectileRoutin;
     private void OnEnable()
@@ -14,7 +15,7 @@ public class Projectile : MonoBehaviour
 
     private void OnDisable()
     {
-        StopCoroutine(projectileRoutin);
+        //StopCoroutine(projectileRoutin);
     }
 
     public void projectileAttack() {
@@ -48,8 +49,18 @@ public class Projectile : MonoBehaviour
         {
           
             effectAction(collision);
-            
+
+
         }
+
+
+        if(groundAction != null)
+        {
+            groundAction(collision);
+
+        }
+
+   
     }
 
 }

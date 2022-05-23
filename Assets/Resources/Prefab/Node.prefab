@@ -114,3 +114,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d9cba4c4de971664f91dcb264d9089d4, type: 2}
   - {fileID: 2100000, guid: 198c336b09f06fd4383c31c965c3dbee, type: 2}
   - {fileID: 2100000, guid: 3b28cc9474ee67b4f846370c1fa6d875, type: 2}
+  nodeX: 0
+  nodeY: 0
+  is_ExistMonster: 0

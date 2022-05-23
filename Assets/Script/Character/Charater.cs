@@ -103,25 +103,17 @@ public class Charater : AimObject
            
             cur_hp = 0;
 
-
+            attackCha.attackTarget = null;
             if (state != CharaterState.Die)
             {
-                state = CharaterState.Die;
-                player.RemoveCharacter(this);
-                attackCha.attackTarget = null;
-
-                if (aiRoutin != null)
-                {
-
-                    StopAI();
-
-                }
-                OnDieAni();
                 Die();
-                playerNav.speed = 0;
             }
         }
     }
+
+
+
+
 
     override public void Attack()
     {
@@ -337,10 +329,23 @@ public class Charater : AimObject
     }
 
 
-    public void Die()
+    override public void Die()
     {
+        state = CharaterState.Die;
+        player.RemoveCharacter(this);
+        if (aiRoutin != null)
+        {
+
+            StopAI();
+
+        }
+        OnDieAni();    
+        playerNav.speed = 0;
         StartCoroutine(DieRoutin());
     }
+
+
+   
 
     IEnumerator DieRoutin()
     {

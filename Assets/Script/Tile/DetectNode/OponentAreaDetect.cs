@@ -226,7 +226,7 @@ public class OponentAreaDetect : NodeDetect
 
             if (t.value == temporary.value) {
 
-                Debug.Log("가중치 :" + t.value);
+              
                 finds.Add(t);
             }
             else

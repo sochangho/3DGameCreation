@@ -20,6 +20,14 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
     public Coroutine aiRoutin;
 
     readonly public BuffController buffController = new BuffController();
+
+    void Awake()
+    {
+        buffController.BuffTarget(this);
+
+    }
+
+
     public float Defence
     {
         get
@@ -98,6 +106,15 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 
     virtual public void Attack() { }
     virtual public void Hit(AimObject damage){}
+
+    virtual public void Die() { }
+
+
+    public PlayerType AttackedObjectType()
+    {
+
+        return player.playertype;
+    }
 
     public float GetDamage()
     {
