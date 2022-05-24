@@ -15,8 +15,9 @@ public class BuffController : MonoBehaviour
         this.aimObject = aimObject;
     }
 
-    public void AddBuff(Buff buff, GameObject particle)
+    public void AddBuff(Buff buff, GameObject particle) 
     {
+
        
         if(aimObject == null)
         {
@@ -104,6 +105,7 @@ public class BuffController : MonoBehaviour
             buffStates[i].buff.Buffproceeding(aimObject);
             if (buffStates[i].duration < 0)
             {
+                Debug.Log("End");
                 buffStates[i].duration = 0;
                 buffStates[i].isDead = true;
                 buffStates[i].buff.BuffEnd(aimObject);

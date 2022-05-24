@@ -1,8 +1,9 @@
 ﻿
 using UnityEngine;
 
-public class Buff : MonoBehaviour 
+public abstract class Buff : MonoBehaviour 
 {
+    public GameObject buffEffect;
     public string buffName;
     public float value;
     public float duration;
@@ -21,4 +22,5 @@ public class Buff : MonoBehaviour
 
    public virtual void BuffEnd(AimObject parameter) { }
 
+    public abstract  Buff GetCloneBuff();
 }

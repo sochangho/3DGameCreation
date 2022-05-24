@@ -5,7 +5,7 @@ using UnityEngine;
 public class OponentTargetEffect : Effect , ITileCilckTrigger
 {
 
-    public GameObject partcleEffect;
+  
 
  
 
@@ -43,8 +43,9 @@ public class OponentTargetEffect : Effect , ITileCilckTrigger
 
             for(int j = 0; j< buffs.Count; j++)
             {
+              
 
-                aimObject.buffController.AddBuff(buffs[j] , partcleEffect);
+                aimObject.buffController.AddBuff(buffs[j].GetCloneBuff() , buffs[j].buffEffect);
 
             }
 

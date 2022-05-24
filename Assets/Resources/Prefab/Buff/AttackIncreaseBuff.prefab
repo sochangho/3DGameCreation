@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d61d07c269ce64eaf7e5d76962d870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffEffect: {fileID: 1243344884189982, guid: 45f65dac6d4ed0340b8b84ba959847d7, type: 3}
   buffName: DamageBuff
   value: 40
   duration: 10

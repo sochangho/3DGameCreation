@@ -10,6 +10,7 @@ public class Charater : AimObject
     private Attack attack;
     private NavMeshAgent playerNav;
     private Animator animator;
+    
 
     public CharactorData data;
 
@@ -41,8 +42,13 @@ public class Charater : AimObject
 
 
 
-    public void Awake()
+    override public void Awake()
     {
+        CharacterInit();
+        cur_hp = hp;
+
+
+        base.Awake();
         
         attack = GetComponent<Attack>();
         playerNav = GetComponent<NavMeshAgent>();
@@ -60,6 +66,7 @@ public class Charater : AimObject
 
  
         attack.init(this);
+        buffController.BuffTarget(this);
         playerNav.speed = Speed;
         playerNav.baseOffset = 0.1f;
 
@@ -68,9 +75,8 @@ public class Charater : AimObject
     public void Start()
     {      
        aiRoutin =  StartCoroutine(CharacterRoutin());
-       CharacterInit();
-       cur_hp = hp;
-       buffController.BuffTarget(this);
+       
+       
 
     }
 
@@ -108,7 +114,9 @@ public class Charater : AimObject
 
         cur_hp -= (attackCha.Damage - attackCha.Damage * Defence / 100);
 
+        base.Hit(attackCha);
         
+
         if(cur_hp <= 0)
         {
            

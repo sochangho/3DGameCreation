@@ -6,7 +6,7 @@ public class AimObjectHp : MonoBehaviour
 {
     Transform cam;
     public Image image;
-
+    
    
     // Start is called before the first frame update
     void Start()
@@ -21,10 +21,10 @@ public class AimObjectHp : MonoBehaviour
             Vector3.forward, cam.rotation * Vector3.up);      
     }
 
-    public void FillHpImg()
+    public void FillHpImg(AimObject aimObject)
     {
         
-
+        image.fillAmount = aimObject.cur_hp / aimObject.hp;
     }
 
 

@@ -14,8 +14,7 @@ public class Tower : AimObject
     public float attackdelayTime = 0.3f;
     private float curTime = 0;
 
-
-
+   
     public float AttackDelayTime
     {
         get
@@ -36,8 +35,9 @@ public class Tower : AimObject
     }
 
 
-    public void Awake()
+   override public void Awake()
     {
+        base.Awake();
         detect = new SphereOverlapDetect(this, range);
         attack = GetComponent<Attack>();
         attack.init(this);
@@ -69,7 +69,7 @@ public class Tower : AimObject
 
         cur_hp -= (damage.Damage - damage.Damage * Defence / 100);
 
-
+        base.Hit(damage);
         if (cur_hp <= 0)
         {
 

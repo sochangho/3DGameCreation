@@ -23,6 +23,16 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 
     public AimObjectHp aimObjectHp;
 
+   virtual public void Awake()
+   {
+        aimObjectHp = GetComponentInChildren<AimObjectHp>();
+        
+        if(aimObjectHp != null)
+        {
+            aimObjectHp.FillHpImg(this);
+
+        }
+   }
 
     public float Defence
     {
@@ -101,9 +111,18 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
     }
 
     virtual public void Attack() { }
-    virtual public void Hit(AimObject damage){}
+    virtual public void Hit(AimObject damage){ HpImgSet();  }
     virtual public void Die() { }
 
+    public void HpImgSet()
+    {
+        if (aimObjectHp != null)
+        {
+            aimObjectHp.FillHpImg(this);
+
+        }
+
+    }
 
     public PlayerType AttackedObjectType()
     {

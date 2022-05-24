@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b206d06c2038b4ba078f781bf10871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffEffect: {fileID: 1985021036806770, guid: 872d641a39b1d6a4584d42c9cc50cc0c, type: 3}
   buffName: HpBuff
   value: 10
   duration: 1

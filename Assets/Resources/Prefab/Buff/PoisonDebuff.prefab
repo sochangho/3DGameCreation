@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50529e7821ee36b4c916805244ecd420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffEffect: {fileID: 1063023884491312, guid: 1b2ec506d1f91204583551b636401423, type: 3}
   buffName: Poison
   value: 3
   duration: 10
