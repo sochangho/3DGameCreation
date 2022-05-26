@@ -4,187 +4,153 @@ using UnityEngine;
 
 public class StageManager : GameManager<StageManager>
 {
-    public Transform startTransform;
-    public GameObject nodePrefab;
-    public LineRenderer line;
+
     StageNode<TemporaryData> root;
 
+    readonly public Dictionary<int, List<StageNode<TemporaryData>>> nodesDic = new Dictionary<int, List<StageNode<TemporaryData>>>();
+
+    public int nodelevel { get; set; } = 0;
    
 
-    int maxlevel = 5;
-    int index = 0;
-    
-   public void MakeinitStage()
+    int maxlevel = 7;
+    int maxNodeCnt = 3;
+
+
+    public void MakeinitStage(object parmater)
    {
-        TemporaryData dataTemp = new TemporaryData();
-        dataTemp.obj = null;
-        dataTemp.value = index;
-        index++;
-
-        root = new StageNode<TemporaryData>();
-        root.data = dataTemp;
-
-        var node  = Instantiate(nodePrefab);
-        node.transform.position = startTransform.position;
-        root.nodePos = node.transform.position;
-        //루트 노드 초기화 
-
-        maxlevel--;
-
-        int randomCnt = Random.Range(2, 4);
-
-        int interval = -1;
-
-        for (int i = 0; i < randomCnt; i++)
+        int index = 0;
+        for (int i = 0; i < maxlevel; i++)
         {
-            TemporaryData dataChildTemp = new TemporaryData();
-            dataChildTemp.obj = null;
-            dataChildTemp.value = index;
-            index++;
-            StageNode<TemporaryData> childNode = new StageNode<TemporaryData>();
-            childNode.data = dataChildTemp;
-
-            var nodeChilde = Instantiate(nodePrefab);
-           
-            Vector3 nodeChildePos
-                = new Vector3(root.nodePos.x + interval , root.nodePos.y + 2, root.nodePos.z);
-
-            interval++;
-            nodeChilde.transform.position = nodeChildePos;
-            childNode.nodePos = nodeChilde.transform.position;
-
-            var go  = Instantiate(line);
-
-            go.SetPosition(0, root.nodePos);
-            go.SetPosition(1, childNode.nodePos);
-
-           
-
-            root.children.Add(childNode);
-            childNode.parent.Add(root);
-            MakeStageNode(childNode);
-
-           
+            nodesDic.Add(i, new List<StageNode<TemporaryData>>());
         }
 
+        TemporaryData data = new TemporaryData();
+        data.obj = null;
+     
+
+        StageNode<TemporaryData> stageNode = new StageNode<TemporaryData>();
+        stageNode.data = data;
+        stageNode.level = nodelevel;
+        stageNode.index = index;
+        AddNodesDicData(stageNode.level, stageNode);
         
+        
+        
+        nodelevel++;
 
-    }
-   
-    private void MakeStageNode(StageNode<TemporaryData> stageNode)
-    {
-        if(maxlevel == 0)
+        for(int i = 1; i < nodesDic.Count; i++)
         {
-            return;
-        }
-        maxlevel--;
-        int randomCnt = Random.Range(1, 4);
-        int interval = 0;
-        for (int i = 0; i < randomCnt; i++)
-        {
-            TemporaryData dataChildTemp = new TemporaryData();
-            dataChildTemp.obj = null;
-            dataChildTemp.value = index;
-            index++;
-            StageNode<TemporaryData> childNode = new StageNode<TemporaryData>();
-            childNode.data = dataChildTemp;
+            int randomCnt = Random.Range(1, maxNodeCnt + 1);
+            index = 0;
+            for(int r = 0; r < randomCnt; r++)
+            {
+                TemporaryData newdata = new TemporaryData();
+                newdata.obj = null;
+                
 
-            //노드 생성 ----------------------------------------------------------------------------------
-            var nodeChilde = Instantiate(nodePrefab);
-            
-            Vector3 nodeChildePos
-                = new Vector3(root.nodePos.x + interval * Mathf.Abs(stageNode.nodePos.y - root.nodePos.y)/randomCnt, stageNode.nodePos.y + 4, stageNode.nodePos.z);
-            interval++;
+                StageNode<TemporaryData> newstageNode = new StageNode<TemporaryData>();
+                newstageNode.data = newdata;
+                newstageNode.level = nodelevel;
+                newstageNode.index = index;
+                AddNodesDicData(newstageNode.level, newstageNode);
 
-            nodeChilde.transform.position = nodeChildePos;
-            childNode.nodePos = nodeChilde.transform.position;
-
-            var go = Instantiate(line);
-
-            go.SetPosition(0, stageNode.nodePos);
-            go.SetPosition(1, childNode.nodePos);
+                index++;
+            }
 
             
-            //---------------------------------------------------------------------------------------------
-            stageNode.children.Add(childNode);
-            childNode.parent.Add(stageNode);
-            MakeStageNode(childNode);
+            nodelevel++;
 
         }
 
-       
+        NodesLink();
     }
+    
 
 
-    public void FindZerochildLink()
+    private void NodesLink()
     {
 
-        List<StageNode<TemporaryData>> stageNodes = new List<StageNode<TemporaryData>>();
-
-        DetectTreeZero(stageNodes, root);
-
         
-        foreach(var stageNode in stageNodes)
+        for(int i = 0; i < nodesDic.Count; i++)
         {
-            if(stageNode.parent.Count == 0)
+            if (!nodesDic.ContainsKey(i))
             {
                 continue;
             }
 
-            var next = stageNode.parent[0].children[0].children;
-            List<StageNode<TemporaryData>> tempStageNodes = new List<StageNode<TemporaryData>>();
-            foreach(var n in next)
-            {
-                tempStageNodes.Add(n);
+            int next = i + 1;
 
-            }
-            
-            if(tempStageNodes.Count == 0)
+            if (!nodesDic.ContainsKey(next))
             {
                 continue;
             }
 
-            int randomIndex = Random.Range(0, tempStageNodes.Count);
 
-            StageNode<TemporaryData> childe = tempStageNodes[randomIndex];
+            if(nodesDic[i].Count == 1)
+            {
 
-            stageNode.children.Add(childe);
-            childe.parent.Add(stageNode);
+                nodesDic[i][0].children.AddRange(nodesDic[next]);
+
+                for(int childeInx = 0; childeInx < nodesDic[next].Count; childeInx++)
+                {
+                    nodesDic[next][childeInx].parent.Add(nodesDic[i][0]);
+                }
 
 
-            var go = Instantiate(line);
+            }
+            else
+            {
+                for (int j = 0; j < nodesDic[i].Count; j++)
+                {
 
-            go.SetPosition(0, stageNode.nodePos);
-            go.SetPosition(1, childe.nodePos);
+                    if (nodesDic[next].Count > 0)
+                    {
+
+                        int random = Random.Range(0, nodesDic[next].Count);
+                        nodesDic[i][j].children.Add(nodesDic[next][random]);
+                        nodesDic[next][random].parent.Add(nodesDic[i][j]);
+                    }
+                }
+
+
+
+            }
+
+
+
 
         }
+
+
+
+        
+
+
+
+
+
 
 
     }
 
 
-    private void DetectTreeZero(List<StageNode<TemporaryData>> stageNodes, StageNode<TemporaryData> stageNode)
+
+
+
+    
+
+    private void AddNodesDicData(int level , StageNode<TemporaryData> stageNode)
     {
-        if(stageNode.children.Count == 0)
+        if (nodesDic.ContainsKey(level))
         {
-            stageNodes.Add(stageNode);
-
+            nodesDic[level].Add(stageNode);
         }
-
-        foreach (var child in stageNode.children)
-        {
-            DetectTreeZero(stageNodes, child);
-
-        }
-
-
-
     }
 
 
     private void PrintTree(StageNode<TemporaryData> stageNode)
     {
-        Debug.Log(stageNode.data.value);
+       
 
 
         foreach(var child in stageNode.children)
@@ -195,7 +161,7 @@ public class StageManager : GameManager<StageManager>
 
     }
 
-    public void Show()
+    public void Show(object paramater)
     {
         PrintTree(root);
     }
