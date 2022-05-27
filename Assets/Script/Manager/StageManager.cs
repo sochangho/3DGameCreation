@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class StageManager : GameManager<StageManager>
@@ -15,6 +16,54 @@ public class StageManager : GameManager<StageManager>
     int maxlevel = 7;
     int maxNodeCnt = 3;
 
+    public void DataSaveNode(object parameter)
+    {
+        MaptotalData maptotalData = new MaptotalData();
+        maptotalData.mapNodesDatas = new List<MapNodesData>();
+
+        for (int i = 0; i < nodesDic.Count; i++)
+        {
+            for(int j = 0; j < nodesDic[i].Count; j++)
+            {
+               MapNodesData mapNodesData = new MapNodesData();
+               Nodedatas nodedatas = (Nodedatas)nodesDic[i][j].data.obj;
+                mapNodesData.level = nodesDic[i][j].level;
+                mapNodesData.index = nodesDic[i][j].index;
+                mapNodesData.type = (int)nodedatas.state;
+                mapNodesData.parentIndex = new List<int>();
+                mapNodesData.childeIndex = new List<int>();
+                for (int parent = 0;  parent < nodesDic[i][j].parent.Count; parent++)
+                {
+
+                    mapNodesData.parentIndex.Add(nodesDic[i][j].parent[parent].index);
+
+                }
+
+                for (int childe = 0; childe < nodesDic[i][j].children.Count; childe++)
+                {
+                    mapNodesData.childeIndex.Add(nodesDic[i][j].children[childe].index);
+                }
+
+                //for(int d = 0; d < nodedatas.datas.Count; d++)
+                //{
+                //    mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
+                //}
+                maptotalData.mapNodesDatas.Add(mapNodesData);
+            }
+
+        }
+
+        File.WriteAllText(Application.dataPath + "/MapNodes.json", JsonUtility.ToJson(maptotalData));
+
+    }
+
+    public void DataLoadNode()
+    {
+
+
+
+    }
+
 
     public void MakeinitStage(object parmater)
    {
@@ -25,7 +74,7 @@ public class StageManager : GameManager<StageManager>
         }
 
         TemporaryData data = new TemporaryData();
-        data.obj = null;
+        data.obj = RandomCardSetting();
      
 
         StageNode<TemporaryData> stageNode = new StageNode<TemporaryData>();
@@ -40,12 +89,12 @@ public class StageManager : GameManager<StageManager>
 
         for(int i = 1; i < nodesDic.Count; i++)
         {
-            int randomCnt = Random.Range(1, maxNodeCnt + 1);
+            int randomCnt = Random.Range(2, maxNodeCnt + 1);
             index = 0;
             for(int r = 0; r < randomCnt; r++)
             {
                 TemporaryData newdata = new TemporaryData();
-                newdata.obj = null;
+                newdata.obj = RandomCardSetting();
                 
 
                 StageNode<TemporaryData> newstageNode = new StageNode<TemporaryData>();
@@ -122,18 +171,49 @@ public class StageManager : GameManager<StageManager>
         }
 
 
+        for (int i = 1; i < nodesDic.Count; i++)
+        {
+            if (!nodesDic.ContainsKey(i))
+            {
+                continue;
+            }
+            if (!nodesDic.ContainsKey(i - 1))
+            {
+                continue;
+            }
+            if (nodesDic[i - 1].Count == 0)
+            {
+                continue;
+            }
+            for (int j = 0; j < nodesDic[i].Count; j++)
+            {
+                if (nodesDic[i][j].parent.Count == 0)
+                {
 
-        
+                    int randomIndex = Random.Range(0, nodesDic[i - 1].Count);
+                    nodesDic[i][j].parent.Add(nodesDic[i - 1][randomIndex]);
+                    nodesDic[i - 1][randomIndex].children.Add(nodesDic[i][j]);
+                }
+
+            }
 
 
 
 
+        }
 
-
-
+        DataSaveNode(null);
     }
 
+    private Nodedatas RandomCardSetting()
+    {
+        Nodedatas nodedatas = new Nodedatas();
+        nodedatas.RandomNodeData();
+        return nodedatas;
+    }
 
+    
+    
 
 
 

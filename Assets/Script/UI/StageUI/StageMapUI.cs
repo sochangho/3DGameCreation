@@ -12,6 +12,8 @@ public class StageMapUI : MonoBehaviour
     void Start()
     {
         EventManager.On("MapfirstInit", StageManager.Instance.MakeinitStage);
+        //EventManager.On("MapfirstInit", StageManager.Instance.DataSaveNode);
+        
         //EventManager.On("MapfirstInit", StageManager.Instance.FindZerochildLink);
         //EventManager.On("MapfirstInit", StageManager.Instance.Show);
 
@@ -29,7 +31,7 @@ public class StageMapUI : MonoBehaviour
          maplevel.transform.parent = content;
          maplevel.layoutGroup = content.GetComponent<GridLayoutGroup>();
          maplevel.levelButtonSetting();
-        
+         
 
 
 

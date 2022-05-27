@@ -6,6 +6,7 @@ public class MapLevel : MonoBehaviour
 {
     public int level;
     public Button button;
+    public Image lineImg;
     public GridLayoutGroup layoutGroup;
 
     public void levelButtonSetting()
@@ -29,11 +30,57 @@ public class MapLevel : MonoBehaviour
                 Button cloneBtn = Instantiate(button);
                 cloneBtn.transform.parent = this.transform;
                 cloneBtn.GetComponent<RectTransform>().position = pos;
+                Nodedatas nodedatas =  (Nodedatas)nodesDic[level][i].data.obj;
+                cloneBtn.gameObject.GetComponent<NodeButton>().SceneInit(nodedatas.state);
+
+            }
+
+        }
+        LineImgLink();
+    }
+
+    public void LineImgLink()
+    {
+
+        var nodesDic = StageManager.Instance.nodesDic;
+
+
+        for(int i = 0; i < nodesDic.Count; i++)
+        {
+            for(int j = 0; j < nodesDic[i].Count; j++)
+            {
+                
+
+              
+
+                for(int childe = 0; childe < nodesDic[i][j].children.Count; childe++)
+                {
+                    Vector2 pointStart = nodesDic[i][j].nodePos;
+                    Vector2 pointEnd =  nodesDic[i][j].children[childe].nodePos;
+                    Vector2 differenceVector = pointEnd - pointStart;
+                    Vector2 clonePoint = (pointStart + pointEnd) / 2;
+                    float distance = Vector2.Distance(pointStart, pointEnd);
+
+                    var line  = Instantiate(lineImg);
+                    line.transform.parent = this.transform;
+                    line.GetComponent<RectTransform>().position = clonePoint;
+                    line.GetComponent<RectTransform>().sizeDelta =  new Vector2(50 , distance * 7/10);
+                    float angle = Mathf.Atan2(differenceVector.x, differenceVector.y) * Mathf.Rad2Deg;
+                    line.transform.rotation = Quaternion.Euler(0, 0, -angle);
+
+                    
+                }
+
+
 
             }
 
         }
 
+
     }
+
+
+
 
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d84edce61c4d94fb4b6e3eff24e429, type: 3}
   m_Name: MetalonGreen
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: MetalonGreen
   subscript: 
   hp: 150
   damage: 30
