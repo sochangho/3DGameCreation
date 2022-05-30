@@ -11,10 +11,14 @@ public class StageManager : GameManager<StageManager>
     readonly public Dictionary<int, List<StageNode<TemporaryData>>> nodesDic = new Dictionary<int, List<StageNode<TemporaryData>>>();
 
     public int nodelevel { get; set; } = 0;
-   
+    public int playerlevel { get; set; }
+    public int playerindex { get; set; }
 
     int maxlevel = 7;
     int maxNodeCnt = 3;
+
+    
+
 
     public void DataSaveNode(object parameter)
     {

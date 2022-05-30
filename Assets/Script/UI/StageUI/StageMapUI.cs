@@ -11,7 +11,7 @@ public class StageMapUI : MonoBehaviour
 
     void Start()
     {
-        EventManager.On("MapfirstInit", StageManager.Instance.MakeinitStage);
+        
 
         
        
@@ -22,7 +22,7 @@ public class StageMapUI : MonoBehaviour
     
     public void MapUICreate()
     {
-        EventManager.Emit("MapfirstInit", null);
+       // EventManager.Emit("MapfirstInit", null);
       
 
        
