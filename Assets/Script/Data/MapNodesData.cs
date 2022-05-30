@@ -18,6 +18,22 @@ public class MapNodesData
 public class MaptotalData
 {
    public List<MapNodesData> mapNodesDatas;
+   
 
+
+    public void PrintData()
+    {
+        for(int i = 0; i < mapNodesDatas.Count; i++)
+        {
+            Debug.Log("·¹º§ : " + mapNodesDatas[i].level);
+            Debug.Log("ÀÎµ¦½º : " + mapNodesDatas[i].index);
+            
+
+
+        }
+
+
+
+    }
 
 }

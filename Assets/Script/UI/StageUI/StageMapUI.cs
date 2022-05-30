@@ -7,15 +7,14 @@ public class StageMapUI : MonoBehaviour
 
     public MapLevel mapLevel;
     public Transform content;
-
+    public GameObject scrollView;
 
     void Start()
     {
         EventManager.On("MapfirstInit", StageManager.Instance.MakeinitStage);
-        //EventManager.On("MapfirstInit", StageManager.Instance.DataSaveNode);
+
         
-        //EventManager.On("MapfirstInit", StageManager.Instance.FindZerochildLink);
-        //EventManager.On("MapfirstInit", StageManager.Instance.Show);
+       
 
         MapUICreate();
     }
@@ -30,6 +29,8 @@ public class StageMapUI : MonoBehaviour
          MapLevel maplevel = Instantiate(mapLevel);         
          maplevel.transform.parent = content;
          maplevel.layoutGroup = content.GetComponent<GridLayoutGroup>();
+         float xSize = scrollView.GetComponent<RectTransform>().rect.width;
+         maplevel.layoutGroup.cellSize = new Vector2(xSize, maplevel.layoutGroup.cellSize.y);
          maplevel.levelButtonSetting();
          
 

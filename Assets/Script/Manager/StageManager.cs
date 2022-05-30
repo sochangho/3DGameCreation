@@ -30,8 +30,11 @@ public class StageManager : GameManager<StageManager>
                 mapNodesData.level = nodesDic[i][j].level;
                 mapNodesData.index = nodesDic[i][j].index;
                 mapNodesData.type = (int)nodedatas.state;
+
                 mapNodesData.parentIndex = new List<int>();
                 mapNodesData.childeIndex = new List<int>();
+                mapNodesData.monsterNames = new List<string>();
+
                 for (int parent = 0;  parent < nodesDic[i][j].parent.Count; parent++)
                 {
 
@@ -44,10 +47,10 @@ public class StageManager : GameManager<StageManager>
                     mapNodesData.childeIndex.Add(nodesDic[i][j].children[childe].index);
                 }
 
-                //for(int d = 0; d < nodedatas.datas.Count; d++)
-                //{
-                //    mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
-                //}
+                for (int d = 0; d < nodedatas.datas.Count; d++)
+                {
+                    mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
+                }
                 maptotalData.mapNodesDatas.Add(mapNodesData);
             }
 
@@ -57,8 +60,58 @@ public class StageManager : GameManager<StageManager>
 
     }
 
-    public void DataLoadNode()
+    public void DataLoadNode(object paramter)
     {
+        string pathData = File.ReadAllText(Application.dataPath + "/MapNodes.json");
+        MaptotalData maptotalData = JsonUtility.FromJson<MaptotalData>(pathData);
+
+        for(int i = 0;  i < maptotalData.mapNodesDatas.Count; i++)
+        {
+            TemporaryData temporaryData = new TemporaryData();
+            Nodedatas nodedatas = new Nodedatas();
+            StageNode<TemporaryData> stageNode = new StageNode<TemporaryData>();
+            
+            
+            List<string> monsterNames =  maptotalData.mapNodesDatas[i].monsterNames;
+           
+            for(int strindex = 0; strindex < monsterNames.Count; strindex++)
+            {
+                string pathStr = string.Format("data/{0}", monsterNames[strindex]);
+                CharactorData loadCharactor =  Resources.Load<CharactorData>(pathStr);
+                nodedatas.datas.Add(loadCharactor);
+
+            }
+
+            nodedatas.state = (StageNodeState)maptotalData.mapNodesDatas[i].type;
+            temporaryData.obj = nodedatas;
+
+            stageNode.data = temporaryData;
+            stageNode.level = maptotalData.mapNodesDatas[i].level;
+            stageNode.index = maptotalData.mapNodesDatas[i].index;
+
+            if (!nodesDic.ContainsKey(stageNode.level))
+            {
+                nodesDic.Add(stageNode.level, new List<StageNode<TemporaryData>>());
+
+            }
+
+            nodesDic[stageNode.level].Add(stageNode);
+
+            if(!nodesDic.ContainsKey(stageNode.level - 1))
+            {
+                continue;
+            }
+
+            List<int> parants = maptotalData.mapNodesDatas[i].parentIndex;
+            for (int parent = 0; parent < parants.Count; parent++)
+            {
+                StageNode<TemporaryData>  parantnode =  nodesDic[stageNode.level - 1][parants[parent]];
+                stageNode.parent.Add(parantnode);
+                parantnode.children.Add(stageNode);
+            }
+
+
+        }
 
 
 
