@@ -11,7 +11,8 @@ public class NodeButton : MonoBehaviour
     private Button button;
     private Image image;
     private string sceneName;
-    
+
+    public StageNode<TemporaryData> nodeInfo { get; set; }
 
     public void SceneInit(StageNodeState state)
     {
@@ -45,6 +46,32 @@ public class NodeButton : MonoBehaviour
 
     private void OnClickNode()
     {
+
+        //정보전달
+       RerayDataManager dataManager = RerayDataManager.Instance;
+
+
+       Nodedatas nodedatas = (Nodedatas)nodeInfo.data.obj;
+
+        if (nodedatas.state != StageNodeState.Shop)
+        {
+            List<CharactorData> charactorDatas = nodedatas.datas;
+
+            TowerData[] towerDatas = Resources.LoadAll<TowerData>("TowerData");
+
+            if(towerDatas.Length == 0)
+            {
+                Debug.LogError("타워 데이터 X");
+                return;
+            }            
+            int random = Random.Range(0, towerDatas.Length);
+            dataManager.DataAdd(charactorDatas, towerDatas[random]);
+
+        }
+
+
+        PlayerPrefs.GetInt("playerlevel" , nodeInfo.level);
+        PlayerPrefs.GetInt("playerindex" , nodeInfo.index);
 
         SceneManager.LoadScene(sceneName);
 

@@ -181,10 +181,12 @@ MonoBehaviour:
   defence: 30
   range: 15
   type: 1
+  aimObjectHp: {fileID: 0}
   towerState: 0
   rotationHead: {fileID: 8202520541579468702}
   attack: {fileID: 0}
   attackdelayTime: 1
+  data: {fileID: 11400000, guid: d8dac084cbcb86f42a43c330bae7e327, type: 2}
 --- !u!114 &760000487
 MonoBehaviour:
   m_ObjectHideFlags: 0

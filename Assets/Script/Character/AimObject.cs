@@ -6,6 +6,7 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 {
     
     public AimObject attackTarget;
+   
     public Player player;
     public float hp;
     public float cur_hp = 100;

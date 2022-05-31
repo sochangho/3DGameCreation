@@ -32,6 +32,25 @@ public class MapLevel : MonoBehaviour
                 cloneBtn.GetComponent<RectTransform>().position = pos;
                 Nodedatas nodedatas =  (Nodedatas)nodesDic[level][i].data.obj;
                 cloneBtn.gameObject.GetComponent<NodeButton>().SceneInit(nodedatas.state);
+                cloneBtn.GetComponent<NodeButton>().nodeInfo = nodesDic[level][i];
+                cloneBtn.interactable = false;
+                int curlevel = PlayerPrefs.GetInt("playerlevel");
+                int curindex = PlayerPrefs.GetInt("playerindex");
+
+                for(int parent = 0; parent < nodesDic[level][i].parent.Count; parent++)
+                {
+                    StageNode<TemporaryData> parentNode = nodesDic[level][i].parent[parent];
+                    if (parentNode.level == curlevel && parentNode.index == curindex)
+                    {
+
+                        cloneBtn.interactable = true;
+                        break;
+                    }
+
+                }
+
+
+
 
             }
 
@@ -55,6 +74,11 @@ public class MapLevel : MonoBehaviour
 
                 for(int childe = 0; childe < nodesDic[i][j].children.Count; childe++)
                 {
+
+                   
+
+
+
                     Vector2 pointStart = nodesDic[i][j].nodePos;
                     Vector2 pointEnd =  nodesDic[i][j].children[childe].nodePos;
                     Vector2 differenceVector = pointEnd - pointStart;

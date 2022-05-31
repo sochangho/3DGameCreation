@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f6eca2e682d81f4899bf26e55b42853, type: 3}
+  m_Name: tower
+  m_EditorClassIdentifier: 
+  towerName: "\uD0C0\uC6CC"
+  subscript: 
+  hp: 1000
+  damage: 30
+  defence: 50
+  range: 20
+  AttackDelayTime: 1
+  aimObject: {fileID: 760000488, guid: 748ee6ab08c352f44b07213b6775c7ed, type: 3}
+  sprite: {fileID: 21300000, guid: 96f667f193cd3ee4e8a4a5b672614af3, type: 3}

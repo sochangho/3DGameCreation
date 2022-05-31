@@ -14,7 +14,8 @@ public class Tower : AimObject
     public float attackdelayTime = 0.3f;
     private float curTime = 0;
 
-   
+    public TowerData data;
+
     public float AttackDelayTime
     {
         get
@@ -37,6 +38,7 @@ public class Tower : AimObject
 
    override public void Awake()
     {
+        TowerInit();
         base.Awake();
         detect = new SphereOverlapDetect(this, range);
         attack = GetComponent<Attack>();
@@ -100,6 +102,22 @@ public class Tower : AimObject
             // 다음 스테이지 카드 하나획득 
             // 게임씬매니저의 함수 호출
         }
+    }
+
+
+    private void TowerInit()
+    {
+
+        if (data != null)
+        {
+            hp = data.hp;
+            damage = data.damage;
+            range = data.range;
+            defence = data.defence;
+            attackdelayTime = data.AttackDelayTime;
+        }
+
+        cur_hp = hp;
     }
 
     private void Update()

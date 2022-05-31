@@ -55,6 +55,16 @@ public class GameSceneManager : GameManager<GameSceneManager>
     }
 
 
+    public void DataSet()
+    {
+
+
+
+
+    }
+
+
+
     public void PlayerInit(object parmater)
     {
         ParameterHelper parameterHelper = (ParameterHelper)(parmater);

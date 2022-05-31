@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 public class StageSceneConfig : MonoBehaviour
 {
     public Inventory inventory;
     public Canvas canvas;
+    public Canvas infoCanvas;
+    public Button cardInventoryButton;
+
     public List<CharactorData> datas;
+    public List<TowerData> towerdatas;
 
     private void Awake()
     {
@@ -29,10 +34,13 @@ public class StageSceneConfig : MonoBehaviour
         else
         {
             EventManager.Emit("LoadScene", null);
+           // EventManager.Emit("MakeScene", null);
         }
 
 
-
+        cardInventoryButton.onClick.AddListener(InventoryButtonClick);
+        cardInventoryButton.onClick.AddListener(ButtonUiActive);
+        
     }
 
 
@@ -59,6 +67,15 @@ public class StageSceneConfig : MonoBehaviour
             }
         }
 
+        foreach(TowerData towerData in towerdatas)
+        {
+
+            playerData.towerNames.Add(towerData.name);
+        }
+
+
+        playerData.towerName = playerData.towerNames[0];
+
         File.WriteAllText(Application.dataPath + "/player.json", JsonUtility.ToJson(playerData));
     }
 
@@ -68,7 +85,24 @@ public class StageSceneConfig : MonoBehaviour
        Inventory go =  Instantiate(inventory);
        go.transform.parent = canvas.transform;
        go.GetComponent<RectTransform>().localPosition = new Vector2(-6.654907f, -11f);
+       
     }
+    public void TowerInvButtonClick()
+    {
+
+    }
+   
+    public void ButtonUiActive()
+    {
+        if (cardInventoryButton.interactable)
+        {
+            cardInventoryButton.interactable = false;
+        }
+        else
+        {
+            cardInventoryButton.interactable = true;
+        }
 
 
+    }
 }

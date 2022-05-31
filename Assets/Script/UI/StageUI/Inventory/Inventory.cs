@@ -1,21 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using System.IO;
 public class Inventory : MonoBehaviour , Iinformation
 {
     public Transform cardsContent;
+    public Transform towersContent;
     public List<Transform> deckcardTransforms;
     
     public CardElement cardElementPrefab;
 
     public DeckCard deckCardPrefab;
+    public TowerCard towerCardPrefab;
+    public CardDiscription towerCardInfo;
 
+
+    public Button exitButton;
+
+
+    public string useTowerDataName;
 
     public void Awake()
     {
         InventoryLoad();
+        exitButton.onClick.AddListener(FindObjectOfType<StageSceneConfig>().ButtonUiActive);
+        exitButton.onClick.AddListener(Exit);
     }
+
+    public void Start()
+    {
+        ChangeContent changeContent = GetComponent<ChangeContent>();
+
+        changeContent.ShowCards();
+
+    }
+
 
     public void InventoryLoad()
     {
@@ -113,11 +133,39 @@ public class Inventory : MonoBehaviour , Iinformation
                 }
             }
 
+        }
+
+        List<string> towers = playerdata.towerNames;
+        useTowerDataName = playerdata.towerName;
+        
+        for(int i = 0; i < towers.Count; i++)
+        {
+           TowerCard towerCard =  Instantiate(towerCardPrefab);
+           towerCard.transform.parent = towersContent;
+           towerCard.transform.localScale = new Vector2(1, 1);
+
+            string path = string.Format("TowerData/{0}", towers[i]);
+            TowerData towerData = Resources.Load<TowerData>(path);
+            towerCard.Setting(towerData);
 
 
 
+           if(towerData.name == useTowerDataName)
+            {
+                towerCard.GetComponent<Button>().interactable = false;
+                towerCard.selectObj.SetActive(true);
+                towerCardInfo.Set(towerCard.data.towerName, towerCard.data.subscript);
+            }
+            else
+            {
+                towerCard.GetComponent<Button>().interactable = true;
+                towerCard.selectObj.SetActive(false);
+            }
 
         }
+
+
+
 
     }
     
@@ -149,6 +197,18 @@ public class Inventory : MonoBehaviour , Iinformation
                playerData.cardDackNames.Add(cardname);
             }
         }
+
+        for (int i = 0; i < towersContent.childCount; i++)
+        {
+            TowerCard element = towersContent.GetChild(i).GetComponent<TowerCard>();
+
+            string towername = element.data.name;
+
+            playerData.towerNames.Add(towername);
+
+        }
+
+        playerData.towerName = useTowerDataName;
 
         File.WriteAllText(Application.dataPath + "/player.json", JsonUtility.ToJson(playerData));
 
@@ -196,7 +256,7 @@ public class Inventory : MonoBehaviour , Iinformation
                     {
                        deckCard.transform.parent = deckcardTransforms[i];
                        deckCard.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
-
+                        deckCard.transform.localScale = new Vector2(1, 1);
                     }
                     else
                     {
@@ -246,6 +306,9 @@ public class Inventory : MonoBehaviour , Iinformation
 
 
     }
+
+    
+
 
     public void informationPrint(string str) { }
 
