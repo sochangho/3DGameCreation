@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public int MaxCost = 10;
-    [HideInInspector]
+    //[HideInInspector]
     public int curCost ;
 
     
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 
     }
 
+    public bool gameStart { get; set; } = false;
 
     //전체 카드 
     public Dictionary<int, CharactorData> totalCardDatas = new Dictionary<int, CharactorData>();
@@ -44,13 +45,16 @@ public class Player : MonoBehaviour
     //필드위에 올라온카드 
     private List<ObjectBundle> objects = new List<ObjectBundle>();
 
-    public void Start()
+
+    public void TowerSet()
     {
         Tower towerClone = Instantiate(tower);
         towerClone.transform.position = towerPos.position;
-        
+
         AddCharacter(towerClone);
+
     }
+
 
     public void AddCharacter(IAttacked obj)
     {
@@ -92,10 +96,11 @@ public class Player : MonoBehaviour
        attackedBundle.obj = aimeObject;
        attackedBundle.id = id;
        id++;
-       
-       
 
-       
+        aimeObject.playerTypeFill();
+
+
+
        objects.Add(attackedBundle);
     }
 

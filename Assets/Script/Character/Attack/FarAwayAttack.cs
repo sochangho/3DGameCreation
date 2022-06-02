@@ -43,6 +43,16 @@ public class FarAwayAttack : Attack
 
         //오브젝트 풀로 바꾼다.
         var go = ObjectPooling.ObjectPoolingManager.Instance.ObjectUse(projectile.name);
+
+        if(go == null)
+        {
+
+            ObjectPooling.ObjectPoolingManager.Instance
+                .AddObjects(projectile.name, projectile.gameObject, 5);
+            go = ObjectPooling.ObjectPoolingManager.Instance.ObjectUse(projectile.name);
+        }
+
+
         Projectile pro = go.GetComponent<Projectile>();
         pro.transform.position = spwanPoint.position;
         ProjectileWay(pro);

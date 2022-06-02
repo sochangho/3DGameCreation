@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
+using UnityEngine.UI;
 public class Charater : AimObject 
 {
  
@@ -70,15 +70,20 @@ public class Charater : AimObject
         playerNav.speed = Speed;
         playerNav.baseOffset = 0.1f;
 
+      
+
+
+
     }
 
     public void Start()
     {      
        aiRoutin =  StartCoroutine(CharacterRoutin());
        
-       
-
     }
+
+
+ 
 
     public void CharacterInit()
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
 {
     
@@ -121,6 +121,26 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
         {
             aimObjectHp.FillHpImg(this);
 
+        }
+
+    }
+
+    public Image oponentFill;
+    public Image playerFill;
+
+    public void playerTypeFill()
+    {
+
+        if (player.playertype == PlayerType.Own)
+        {
+            oponentFill.gameObject.SetActive(false);
+            aimObjectHp.image = (Image)playerFill;
+        }
+        else
+        {
+
+            playerFill.gameObject.SetActive(false);
+            aimObjectHp.image = (Image)oponentFill;
         }
 
     }

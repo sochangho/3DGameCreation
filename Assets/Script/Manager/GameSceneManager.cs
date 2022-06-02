@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
+using UnityEngine.SceneManagement;
 public class GameSceneManager : GameManager<GameSceneManager>
 {
     public Player ownPlayer;
@@ -11,13 +12,17 @@ public class GameSceneManager : GameManager<GameSceneManager>
     public CostGage costGage;
     public AimObject spwanObjet;
     public CircleRenderer circleRenderer;
-
+    public GameStateUi stateUi;
 
     private Coroutine gamecorutin;
 
     
     public void Awake()
     {
+        EventManager.On("GamePlayinit", GamePlayerLoadData);
+        EventManager.On("GamePlayinit", GameOponentDataLoad);
+        EventManager.On("GamePlayinit", GameReady);
+
         EventManager.On("GameStart", PlayerInit);
         EventManager.On("GameStart", RandomCardSelet);
         EventManager.On("GameStart", StartGage);
@@ -44,6 +49,85 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public void Start()
     {
+        EventManager.Emit("GamePlayinit", null);
+    }
+
+
+    public void GamePlayerLoadData(object parameter)
+    {
+        ownPlayer.characterdatas.Clear();
+        string pathData = File.ReadAllText(Application.dataPath + "/player.json");
+        PlayerData playerData = JsonUtility.FromJson<PlayerData>(pathData);
+
+        List<string> deckCardnames  =  playerData.cardDackNames;
+        
+        for(int i = 0; i < deckCardnames.Count; i++)
+        {
+            string cardDatapath = string.Format("data/{0}", deckCardnames[i]);
+            CharactorData data = Resources.Load<CharactorData>(cardDatapath);
+
+            if(data == null)
+            { 
+                cardDatapath = string.Format("EffectData/{0}", deckCardnames[i]);
+                data = Resources.Load<CharactorData>(cardDatapath);
+
+                if(data == null)
+                {
+                    Debug.LogError("카드 데이터 x");
+                    return;
+                }
+            }
+            ownPlayer.characterdatas.Add(data);
+        }
+
+
+        string towername = playerData.towerName;
+        string towerDatapath = string.Format("TowerData/{0}", towername);
+        TowerData towerData = Resources.Load<TowerData>(towerDatapath);
+
+        if(towerData == null)
+        {
+            Debug.LogError("타워 데이터 x");
+            return;
+        }
+
+        ownPlayer.tower = (Tower)towerData.aimObject;
+        ownPlayer.TowerSet();
+    }
+
+
+    public void GameOponentDataLoad(object parameter)
+    {
+        oponentPlayer.characterdatas.Clear();
+        RerayDataManager rerayDataManager = RerayDataManager.Instance;
+
+        for(int i = 0; i < rerayDataManager.charactorDatas.Count; i++)
+        {
+            oponentPlayer.characterdatas.Add(rerayDataManager.charactorDatas[i]);
+
+        }
+
+        oponentPlayer.tower =  (Tower)rerayDataManager.towerData.aimObject;
+        oponentPlayer.TowerSet();
+
+    }
+
+    public void GameReady(object parameter)
+    {
+        ownPlayer.gameStart = false;
+        oponentPlayer.gameStart = false;
+
+        stateUi.GameStart();
+
+        //Invoke("GameStart", 2f);
+    }
+
+    public void GameStart()
+    {
+       
+        ownPlayer.gameStart = true;
+        oponentPlayer.gameStart = true;
+
         ParameterHelper playerParameter = new ParameterHelper();
         ParameterHelper oponentParameter = new ParameterHelper();
 
@@ -53,16 +137,6 @@ public class GameSceneManager : GameManager<GameSceneManager>
         EventManager.Emit("GameStart", playerParameter);
         EventManager.Emit("OponentInit", oponentParameter);
     }
-
-
-    public void DataSet()
-    {
-
-
-
-
-    }
-
 
 
     public void PlayerInit(object parmater)
@@ -406,7 +480,12 @@ public class GameSceneManager : GameManager<GameSceneManager>
     }
 
 
+    public void SceneTransition()
+    {
+        SceneManager.LoadScene("StageScene");
 
+
+    }
 
     public void SetSpwanObject(AimObject obj)
     {
@@ -414,13 +493,8 @@ public class GameSceneManager : GameManager<GameSceneManager>
         spwanObjet = obj;
     }
 
+    
 
-
-    private void OnMouseDown()
-    {
-        
-
-
-    }
+ 
 
 }

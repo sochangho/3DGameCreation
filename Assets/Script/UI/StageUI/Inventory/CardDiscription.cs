@@ -11,8 +11,11 @@ public class CardDiscription : MonoBehaviour
     public void Set(string cardname , string discripstion)
     {
         nameText.text = cardname;
-        discripstionText.text = discripstion;
 
+        if (discripstionText != null)
+        {
+            discripstionText.text = discripstion;
+        }
     }
 
    

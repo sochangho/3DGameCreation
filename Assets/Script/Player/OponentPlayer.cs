@@ -103,7 +103,10 @@ public class OponentPlayer : Player
     
     private void OponentCardSelectRoutin()
     {
-
+        if (!gameStart)
+        {
+            return;
+        }
 
         if (aiState == OponentAIState.Select)
         {

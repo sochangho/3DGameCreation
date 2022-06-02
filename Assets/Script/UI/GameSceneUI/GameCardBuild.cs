@@ -74,12 +74,12 @@ public class GameCardBuild : MonoBehaviour
             {
 
 
-               if(cardInfo.cost < cost)
+               if(cardInfo.cost <= cost)
                 {
                     cardInfo.SetButtonPressable(true);
                     
                 }
-                else
+                else 
                 {
                     cardInfo.SetButtonPressable(false);
                    

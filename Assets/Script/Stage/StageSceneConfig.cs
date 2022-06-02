@@ -21,9 +21,9 @@ public class StageSceneConfig : MonoBehaviour
         EventManager.On("LoadScene", StageManager.Instance.DataLoadNode);
 
 
-        if (!PlayerPrefs.HasKey("playersave"))
+        if (!PlayerPrefs.HasKey("playersave") || PlayerPrefs.GetInt("playersave") == 0)
         {
-            PlayerPrefs.SetInt("playersave", 0);
+            PlayerPrefs.SetInt("playersave", 1);
             PlayerPrefs.SetInt("playerlevel", 0);
             PlayerPrefs.SetInt("playerindex", 0);
             PlayerPrefs.SetInt("gold", 0);

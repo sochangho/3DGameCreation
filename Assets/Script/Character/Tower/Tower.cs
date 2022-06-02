@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Tower : AimObject
 {
 
@@ -15,6 +15,7 @@ public class Tower : AimObject
     private float curTime = 0;
 
     public TowerData data;
+
 
     public float AttackDelayTime
     {
@@ -43,7 +44,9 @@ public class Tower : AimObject
         detect = new SphereOverlapDetect(this, range);
         attack = GetComponent<Attack>();
         attack.init(this);
+      
     }
+
 
 
 
@@ -83,24 +86,45 @@ public class Tower : AimObject
                 towerState = TowerState.Die;
                 player.RemoveCharacter(this);
                 damage.attackTarget = null;
-
+                Die();
             }       
         }
     }
 
     public override void Die()
     {
-        if(this.player.playertype == PlayerType.Oponent)
+        GameSceneManager.Instance.ownPlayer.gameStart = false;
+        GameSceneManager.Instance.oponentPlayer.gameStart = false;
+        if (this.player.playertype == PlayerType.Oponent)
+        {
+
+          
+            GameSceneManager.Instance.stateUi.Win(()=> {
+
+                GameSceneManager.Instance.SceneTransition();
+
+                DataAddManager.Instance.DataAdd(this);
+
+                int gold = PlayerPrefs.GetInt("gold");
+                gold += 1000;
+                PlayerPrefs.SetInt("gold", gold);
+
+            });
+
+        }
+        else if(this.player.playertype == PlayerType.Own)
         {
             // 패배
             // 처음으로 되돌아간다.
             // 게임씬매니저의 함수 호출
 
-        }else if(this.player.playertype == PlayerType.Own)
-        {
-            // 승 
-            // 다음 스테이지 카드 하나획득 
-            // 게임씬매니저의 함수 호출
+            GameSceneManager.Instance.stateUi.GameOver(() => {
+                PlayerPrefs.SetInt("playersave", 0);
+
+                GameSceneManager.Instance.SceneTransition();
+
+            });
+            
         }
     }
 
