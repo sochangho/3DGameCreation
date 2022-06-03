@@ -59,7 +59,7 @@ public class OponentAreaDetect : NodeDetect
 
         Node findNode = null;
 
-        if (player.aimObject.GetComponent<CloseRanceAttack>() != null)
+        if (player.card.GetComponent<CloseRanceAttack>() != null)
         {
             List<TemporaryData> datas = MonsterweightDetect(detectNode , new MaxHeap());
 
@@ -89,7 +89,7 @@ public class OponentAreaDetect : NodeDetect
 
             findNode = (Node)temporaryData.obj;
         }
-        else if(player.aimObject.GetComponent<FarAwayAttack>() != null)
+        else if(player.card.GetComponent<FarAwayAttack>() != null)
         {
 
             List<TemporaryData> datas = MonsterweightDetect(detectNode , new MinHeap());
@@ -127,7 +127,8 @@ public class OponentAreaDetect : NodeDetect
             {
                 Node node = (Node)datas[i].obj;
                 float distacne = Vector3.Distance(node.transform.position, monsterOnNode.transform.position);
-                float rangeCompareDistace = Mathf.Abs(distacne - player.aimObject.range);
+                AimObject aimObject = (AimObject)player.card;
+                float rangeCompareDistace = Mathf.Abs(distacne - aimObject.range);
 
                 if (i == 0)
                 {

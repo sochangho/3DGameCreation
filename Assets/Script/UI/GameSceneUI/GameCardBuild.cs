@@ -30,10 +30,27 @@ public class GameCardBuild : MonoBehaviour
 
             cardInfo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             cardInfo.id = objectBundle.id;
-            cardInfo.icon.sprite = ((CharactorData)data).sprite;
-            cardInfo.cost = ((CharactorData)data).cost;
-            cardInfo.costText.text = cardInfo.cost.ToString();
-            cardInfo.aimObject = ((CharactorData)data).charater;
+
+            if (data is CharactorData)
+            {
+                CharactorData charactorData = (CharactorData)data;
+
+                cardInfo.icon.sprite = charactorData.sprite;
+                cardInfo.cost = charactorData.cost;
+                cardInfo.costText.text = cardInfo.cost.ToString();
+                cardInfo.card = charactorData.charater;
+            }
+            else if(data is EffectData)
+            {
+                EffectData effectData = (EffectData)data;
+
+                cardInfo.icon.sprite = effectData.sprite;
+                cardInfo.cost = effectData.cost;
+                cardInfo.costText.text = cardInfo.cost.ToString();
+                cardInfo.card = effectData.effect;
+
+            }
+
         }
     }
 
@@ -49,16 +66,31 @@ public class GameCardBuild : MonoBehaviour
             return;
         }
 
-        CharactorData data = (CharactorData)objectBundle.obj;
+        ScriptableObject data = (ScriptableObject)objectBundle.obj;
 
        
         newCardinfo.transform.parent = FindEmptyChild();
         newCardinfo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         newCardinfo.id = objectBundle.id;
-        newCardinfo.icon.sprite = data.sprite;
-        newCardinfo.cost = data.cost;
-        newCardinfo.costText.text = newCardinfo.cost.ToString();
-        newCardinfo.aimObject = data.charater;
+
+        if (data is CharactorData)
+        {
+            CharactorData characterData = (CharactorData)data; 
+            newCardinfo.icon.sprite = characterData.sprite;
+            newCardinfo.cost = characterData.cost;
+            newCardinfo.costText.text = characterData.cost.ToString();
+            newCardinfo.card = characterData.charater;
+        }
+        else if(data is EffectData)
+        {
+            EffectData effectData = (EffectData)data;
+
+            newCardinfo.icon.sprite = effectData.sprite;
+            newCardinfo.cost = effectData.cost;
+            newCardinfo.costText.text = effectData.cost.ToString();
+            newCardinfo.card = effectData.effect;
+
+        }
 
     }
 

@@ -6,29 +6,31 @@ public class DataAddManager : GameManager<DataAddManager>
 {
 
 
-   public void DataAdd(AimObject aimObject)
+   public void DataAdd(Card card)
    {
         string pathData = File.ReadAllText(Application.dataPath + "/player.json");
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(pathData);
 
         List<string> dataStrs = null;
         string dataStr = null;
-        if(aimObject is Charater)
+
+
+        if(card is Charater)
         {
-            Charater charater = (Charater)aimObject;
+            Charater charater = (Charater)card;
             dataStrs = playerData.cardNames;
             dataStr = charater.data.name;
-        }else if(aimObject is Effect)
+        }else if(card is Effect)
         {
 
-            Effect effect = (Effect)aimObject;
+            Effect effect = (Effect)card;
 
             dataStrs = playerData.cardNames;
             dataStr = effect.data.name;
         }
-        else if(aimObject is Tower)
+        else if(card is Tower)
         {
-            Tower tower = (Tower)aimObject;
+            Tower tower = (Tower)card;
             dataStrs = playerData.towerNames;
             dataStr = tower.data.name;
 

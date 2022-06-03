@@ -5,9 +5,9 @@ using UnityEngine;
 public class OponentTargetEffect : Effect , ITileCilckTrigger
 {
 
-  
 
- 
+
+    public int range;
 
 
     public void TileCilckTrigger(Node node, Player player)

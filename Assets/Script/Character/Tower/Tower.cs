@@ -14,7 +14,7 @@ public class Tower : AimObject
     public float attackdelayTime = 0.3f;
     private float curTime = 0;
 
-    public TowerData data;
+   // public TowerData data;
 
 
     public float AttackDelayTime
@@ -131,14 +131,14 @@ public class Tower : AimObject
 
     private void TowerInit()
     {
-
-        if (data != null)
+        TowerData towerdata = (TowerData)data;
+        if (towerdata != null)
         {
-            hp = data.hp;
-            damage = data.damage;
-            range = data.range;
-            defence = data.defence;
-            attackdelayTime = data.AttackDelayTime;
+            hp = towerdata.hp;
+            damage = towerdata.damage;
+            range = towerdata.range;
+            defence = towerdata.defence;
+            attackdelayTime = towerdata.AttackDelayTime;
         }
 
         cur_hp = hp;

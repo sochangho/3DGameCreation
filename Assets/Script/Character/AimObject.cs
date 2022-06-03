@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
+public class AimObject : Card ,IAttacked,IObjectInfo
 {
     
     public AimObject attackTarget;
    
+   
     public Player player;
+    
     public float hp;
+    
     public float cur_hp = 100;
+    
     public float damage;
+    
     public float defence;
+    
     public float range;
     public int ID { get; set; }
 
@@ -102,18 +108,18 @@ public class AimObject : MonoBehaviour,IAttacked,IObjectInfo
     }
 
 
-    public void StopAI()
-    {
-        if (aiRoutin != null)
-        {
-
-            StopCoroutine(aiRoutin);
-        }
-    }
+  
 
     virtual public void Attack() { }
     virtual public void Hit(AimObject damage){ HpImgSet();  }
     virtual public void Die() { }
+
+    public void StopAI()
+    {
+        StopCoroutine(aiRoutin);
+
+    }
+
 
     public void HpImgSet()
     {

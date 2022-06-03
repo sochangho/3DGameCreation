@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public Tower tower;
     public Transform towerPos;
     //일단 테스트 용도 
-    public List<CharactorData> characterdatas;
+    public List<ScriptableObject> cardDatas;
 
     [HideInInspector]
     public int MaxCost = 10;
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     public bool gameStart { get; set; } = false;
 
     //전체 카드 
-    public Dictionary<int, CharactorData> totalCardDatas = new Dictionary<int, CharactorData>();
+    public Dictionary<int, ScriptableObject> totalCardDatas = new Dictionary<int, ScriptableObject>();
 
     //손위에 카드들 
     readonly public List<ObjectBundle> handCardDatas = new List<ObjectBundle>();

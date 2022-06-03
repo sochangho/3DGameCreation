@@ -43,15 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266db655ba5ad7c488ba9781a3bb454c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTarget: {fileID: 0}
-  player: {fileID: 0}
-  hp: 0
-  cur_hp: 0
-  damage: 0
-  defence: 0
-  range: 10
-  type: 1
+  data: {fileID: 11400000, guid: 7bdebaff3badc6f45bd6e82460f16fd7, type: 2}
   buffs:
   - {fileID: -230961282158230117, guid: 67d38a0607290dc43b1fb09794864d29, type: 3}
-  data: {fileID: 11400000, guid: 9ea7942c2ec533f418238538744bc90d, type: 2}
-  partcleEffect: {fileID: 1243344884189982, guid: 45f65dac6d4ed0340b8b84ba959847d7, type: 3}
+  range: 10

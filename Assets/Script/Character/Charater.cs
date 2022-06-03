@@ -12,7 +12,7 @@ public class Charater : AimObject
     private Animator animator;
     
 
-    public CharactorData data;
+    //public CharactorData data;
 
     public bool is_Die = false;
     public float Speed
@@ -87,13 +87,14 @@ public class Charater : AimObject
 
     public void CharacterInit()
     {
-        if (data != null)
+        CharactorData charactorData = (CharactorData)data;
+        if (charactorData != null)
         {
-            hp = data.hp;
-            damage = data.damage;
-            range = data.range;
-            defence = data.defence;
-            speed = data.speed;
+            hp = charactorData.hp;
+            damage = charactorData.damage;
+            range = charactorData.range;
+            defence = charactorData.defence;
+            speed = charactorData.speed;
         }
 
 

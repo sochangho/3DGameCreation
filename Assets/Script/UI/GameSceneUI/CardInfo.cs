@@ -9,7 +9,7 @@ public class CardInfo : MonoBehaviour
     public Image icon;
     public int cost;
     public Text costText;
-    public AimObject aimObject;
+    public Card card;
     public GameObject blind;
 
     private Button button;

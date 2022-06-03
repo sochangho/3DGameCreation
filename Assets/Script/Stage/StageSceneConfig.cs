@@ -11,6 +11,7 @@ public class StageSceneConfig : MonoBehaviour
     public Button cardInventoryButton;
 
     public List<CharactorData> datas;
+    public List<EffectData> effectdatas;
     public List<TowerData> towerdatas;
 
     private void Awake()
@@ -33,8 +34,8 @@ public class StageSceneConfig : MonoBehaviour
         }
         else
         {
-            EventManager.Emit("LoadScene", null);
-           // EventManager.Emit("MakeScene", null);
+            //EventManager.Emit("LoadScene", null);
+           EventManager.Emit("MakeScene", null);
         }
 
 
@@ -56,15 +57,14 @@ public class StageSceneConfig : MonoBehaviour
 
         foreach (CharactorData data in datas)
         {
-            if (data.charater is Effect)
-            {
-
-                playerData.effectNams.Add(data.name);
-            }
-            else
-            {
+            
                 playerData.cardNames.Add(data.name);
-            }
+            
+        }
+
+        foreach(EffectData data in effectdatas)
+        {
+            playerData.effectNams.Add(data.name);
         }
 
         foreach(TowerData towerData in towerdatas)

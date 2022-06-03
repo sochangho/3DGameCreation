@@ -37,7 +37,7 @@ public class Inventory : MonoBehaviour , Iinformation
     }
 
 
-    public void InventoryLoad()
+    private void InventoryLoad()
     {
         string pathstr = File.ReadAllText(Application.dataPath + "/player.json");
 
@@ -63,7 +63,7 @@ public class Inventory : MonoBehaviour , Iinformation
         {
            
             string pathStr = string.Format("EffectData/{0}", effectnames[i]);
-            CharactorData cardData = Resources.Load<CharactorData>(pathStr);
+            EffectData cardData = Resources.Load<EffectData>(pathStr);
             CardElement element = Instantiate(cardElementPrefab);
             
             element.transform.parent = cardsContent;
@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour , Iinformation
 
                 Compare(effectname);
                 string pathStr = string.Format("EffectData/{0}", effectname);
-                CharactorData cardData = Resources.Load<CharactorData>(pathStr);
+                EffectData cardData = Resources.Load<EffectData>(pathStr);
                 DeckCard deck = Instantiate(deckCardPrefab);
                 
                 for (int j = 0; j < deckcardTransforms.Count; j++)
@@ -154,7 +154,7 @@ public class Inventory : MonoBehaviour , Iinformation
             {
                 towerCard.GetComponent<Button>().interactable = false;
                 towerCard.selectObj.SetActive(true);
-                towerCardInfo.Set(towerCard.data.towerName, towerCard.data.subscript);
+                towerCardInfo.Set(towerCard.data);
             }
             else
             {
@@ -178,7 +178,7 @@ public class Inventory : MonoBehaviour , Iinformation
         {
             CardElement element = cardsContent.GetChild(i).GetComponent<CardElement>();
 
-            if(element.data.charater is Effect)
+            if(element.data is EffectData)
             {
                 playerData.effectNams.Add(element.data.name);
             }
@@ -216,7 +216,7 @@ public class Inventory : MonoBehaviour , Iinformation
 
 
 
-    private void CardDeckSet(InventoryCard inventoryCard, CharactorData data)
+    private void CardDeckSet(InventoryCard inventoryCard, ScriptableObject data)
     {
 
         for (int i = 0; i < cardsContent.childCount; i++)
@@ -243,7 +243,7 @@ public class Inventory : MonoBehaviour , Iinformation
     }
 
 
-    private void CardElementSet(InventoryCard inventoryCard , CharactorData data)
+    private void CardElementSet(InventoryCard inventoryCard , ScriptableObject data)
     {
         inventoryCard.Setting(data ,
             () =>

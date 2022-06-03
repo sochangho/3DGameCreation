@@ -5,9 +5,9 @@ using UnityEngine;
 public class OwnTargetEffect : Effect , ITileCilckTrigger
 {
 
-    
-        
 
+
+    public int range;
 
 
 

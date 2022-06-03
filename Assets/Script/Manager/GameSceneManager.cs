@@ -10,7 +10,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public GameCardBuild gameCardBuild;
     public CostGage costGage;
-    public AimObject spwanObjet;
+    public Card spwanObjet;
     public CircleRenderer circleRenderer;
     public GameStateUi stateUi;
 
@@ -55,7 +55,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public void GamePlayerLoadData(object parameter)
     {
-        ownPlayer.characterdatas.Clear();
+        ownPlayer.cardDatas.Clear();
         string pathData = File.ReadAllText(Application.dataPath + "/player.json");
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(pathData);
 
@@ -64,21 +64,27 @@ public class GameSceneManager : GameManager<GameSceneManager>
         for(int i = 0; i < deckCardnames.Count; i++)
         {
             string cardDatapath = string.Format("data/{0}", deckCardnames[i]);
-            CharactorData data = Resources.Load<CharactorData>(cardDatapath);
+            ScriptableObject data = Resources.Load<CharactorData>(cardDatapath);
 
-            if(data == null)
-            { 
-                cardDatapath = string.Format("EffectData/{0}", deckCardnames[i]);
-                data = Resources.Load<CharactorData>(cardDatapath);
+            if (data == null)
+            {
+                string effectDatapath = string.Format("EffectData/{0}", deckCardnames[i]);
+                data = Resources.Load<EffectData>(effectDatapath);
 
                 if(data == null)
                 {
                     Debug.LogError("카드 데이터 x");
                     return;
                 }
+
             }
-            ownPlayer.characterdatas.Add(data);
+            
+            ownPlayer.cardDatas.Add(data);
+            
         }
+
+    
+
 
 
         string towername = playerData.towerName;
@@ -98,12 +104,12 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public void GameOponentDataLoad(object parameter)
     {
-        oponentPlayer.characterdatas.Clear();
+        oponentPlayer.cardDatas.Clear();
         RerayDataManager rerayDataManager = RerayDataManager.Instance;
 
         for(int i = 0; i < rerayDataManager.charactorDatas.Count; i++)
         {
-            oponentPlayer.characterdatas.Add(rerayDataManager.charactorDatas[i]);
+            oponentPlayer.cardDatas.Add(rerayDataManager.charactorDatas[i]);
 
         }
 
@@ -155,7 +161,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
         
 
         int index = 0;
-        foreach (CharactorData data in player.characterdatas)
+        foreach (ScriptableObject data in player.cardDatas)
         {
             player.totalCardDatas.Add(index, data);
             index++;
@@ -237,7 +243,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
         }
 
 
-        int random = Random.Range(0, indexs.Count - 1);
+        int random = Random.Range(0, indexs.Count);
 
         int selectindex = indexs[random];
 
@@ -252,8 +258,21 @@ public class GameSceneManager : GameManager<GameSceneManager>
         if (player is OponentPlayer) {
             return;
         }
-        CharactorData nextData = (CharactorData)(objectBundle.obj);
-        gameCardBuild.next.img.sprite = nextData.sprite;
+
+        if(objectBundle.obj is CharactorData)
+        {
+            CharactorData nextData = (CharactorData)(objectBundle.obj);
+            gameCardBuild.next.img.sprite = nextData.sprite;
+
+        }
+        else if(objectBundle.obj is EffectData)
+        {
+            EffectData nextData = (EffectData)(objectBundle.obj);
+            gameCardBuild.next.img.sprite = nextData.sprite;
+
+        }
+
+       
     }
 
 
@@ -280,12 +299,12 @@ public class GameSceneManager : GameManager<GameSceneManager>
         if (player is OponentPlayer)
         {
             OponentPlayer opplayer = (OponentPlayer)(player);
-            opplayer.SetOponentAimObject(info.aimObject);
+            opplayer.SetOponentAimObject(info.card);
             player.handCardDatas.Remove(obj);
         }
         else
         {
-            SetSpwanObject(info.aimObject);
+            SetSpwanObject(info.card);
             player.handCardDatas.Remove(obj);
             info.transform.parent = null;
             Destroy(info.gameObject);
@@ -317,7 +336,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
         if(spwanObjet != null)
         {
 
-           AimObject aimObj  =  Instantiate(spwanObjet);
+           AimObject aimObj  =  (AimObject)Instantiate(spwanObjet);
            aimObj.player = ownPlayer;
            aimObj.transform.position = transform.position;            
            ownPlayer.AddCharacter(aimObj);
@@ -404,10 +423,10 @@ public class GameSceneManager : GameManager<GameSceneManager>
     private void ProjectileEndEffectCreate(object parameter)
     {
 
-        List<CharactorData> ownCharactorDatas =  ownPlayer.characterdatas;
-        List<CharactorData> oponentCharactorDatas = oponentPlayer.characterdatas;
+        List<ScriptableObject> ownCharactorDatas =  ownPlayer.cardDatas;
+        List<ScriptableObject> oponentCharactorDatas = oponentPlayer.cardDatas;
 
-        List<CharactorData> totalDatas = new List<CharactorData>();
+        List<ScriptableObject> totalDatas = new List<ScriptableObject>();
 
         totalDatas.AddRange(ownCharactorDatas);
         totalDatas.AddRange(ownCharactorDatas);
@@ -450,7 +469,15 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
         foreach(var data in totalDatas)
         {
-            FarAwayAttack farAwayAttack = data.charater.GetComponent<FarAwayAttack>();
+            if(data is EffectData)
+            {
+                continue;
+            }
+
+
+            CharactorData charactorData = (CharactorData)data;
+
+            FarAwayAttack farAwayAttack = charactorData.charater.GetComponent<FarAwayAttack>();
             if (farAwayAttack != null)
             {
 
@@ -487,9 +514,15 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     }
 
-    public void SetSpwanObject(AimObject obj)
+    public void SetSpwanObject(Card obj)
     {
       
+        if(obj.GetComponent<ICardClickTrigger>() != null)
+        {
+            obj.GetComponent<ICardClickTrigger>().CardCilckTrigger(ownPlayer);
+            return;
+        }
+
         spwanObjet = obj;
     }
 

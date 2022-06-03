@@ -7,15 +7,26 @@ using UnityEngine.Events;
 public class InventoryCard : MonoBehaviour
 {
 
-    public CharactorData data;
+    public ScriptableObject data;
     public Image image;
     public Button button;
 
 
-    public void Setting(CharactorData data, UnityAction clickAction)
+    public void Setting(ScriptableObject data, UnityAction clickAction)
     {
         this.data = data;
-        image.sprite = this.data.sprite;
+        if (data is CharactorData)
+        {
+            CharactorData charactorData = (CharactorData)this.data;
+            image.sprite = charactorData.sprite;
+
+        }
+        else if(data is EffectData)
+        {
+            EffectData effectData = (EffectData)this.data;
+            image.sprite = effectData.sprite;
+        }
+       
         button.onClick.AddListener(clickAction);
     }
 

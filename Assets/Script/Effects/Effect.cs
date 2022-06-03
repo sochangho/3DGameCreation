@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect : AimObject
+public class Effect : Card
 {
 
    public List<Buff> buffs;
-   public CharactorData data;
+   //public CharactorData data;
  
         
 }

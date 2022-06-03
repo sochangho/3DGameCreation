@@ -5,6 +5,9 @@ using UnityEngine;
 public class CardElement : InventoryCard 
 {
     public GameObject infoObject;
+
+    public GameObject effectinfoObject;
+
     private EventTrigger eventTrigger;
     private GameObject infoObjectClone;
     private StageSceneConfig config;
@@ -32,11 +35,6 @@ public class CardElement : InventoryCard
     {
         if (!is_enter)
         {
-           var info  =  Instantiate(infoObject);
-           info.transform.parent = config.infoCanvas.transform;
-          
-           info.GetComponent<RectTransform>().position = Input.mousePosition; 
-           infoObjectClone = info;
             CreateInfo();
            is_enter = true; 
         }
@@ -62,8 +60,27 @@ public class CardElement : InventoryCard
 
     private void CreateInfo()
     {
-      var information =  infoObjectClone.GetComponent<CardDiscription>();
-      information.Set(data.name, data.subscript);
+
+        GameObject info = null;
+      if(data is CharactorData)
+      {
+          info =  Instantiate(infoObject);
+          
+      }
+      else if(data is EffectData)
+      {
+
+           info = Instantiate(effectinfoObject);
+      }
+
+
+        info.transform.parent = config.infoCanvas.transform;
+        info.GetComponent<RectTransform>().position = Input.mousePosition;
+        infoObjectClone = info;
+
+
+        var information =infoObjectClone.GetComponent<CardDiscription>();
+        information.Set(data);
 
     }
 }

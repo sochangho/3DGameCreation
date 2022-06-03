@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OponentPlayer : Player
 {
-    public AimObject aimObject;
+    public Card card;
     public Coroutine oponentAIRoutin;
     public OponentAIState aiState = OponentAIState.Select;
 
@@ -62,21 +62,26 @@ public class OponentPlayer : Player
     }
 
 
-    public void SetOponentAimObject(AimObject aimObject)
+    public void SetOponentAimObject(Card card)
     {
+        if(card.GetComponent<ICardClickTrigger>() != null)
+        {
+            card.GetComponent<ICardClickTrigger>().CardCilckTrigger(this);
+            return;
+        }
 
-        this.aimObject = aimObject;
+        this.card = card;
     }
 
     public void MonsterSpwan(Transform transform)
     {
-        if (aimObject != null)
+        if (card != null)
         {
 
-            AimObject aimObj = Instantiate(aimObject);           
+            AimObject aimObj = (AimObject)Instantiate(card);           
             aimObj.transform.position = transform.position;
             AddCharacter(aimObj);
-            aimObject = null;
+            card = null;
         }
 
 
@@ -217,7 +222,7 @@ public class OponentPlayer : Player
 
                 CardInfo cardInfo = new CardInfo();
                 cardInfo.id = selectObj.id;
-                cardInfo.aimObject = data.charater;
+                cardInfo.card = data.charater;
                 cardInfo.cost = data.cost;
 
 

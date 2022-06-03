@@ -7,15 +7,12 @@ public class CardDiscription : MonoBehaviour
 
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI discripstionText;
+    
 
-    public void Set(string cardname , string discripstion)
+
+    virtual public void Set(ScriptableObject scriptable)
     {
-        nameText.text = cardname;
-
-        if (discripstionText != null)
-        {
-            discripstionText.text = discripstion;
-        }
+        
     }
 
    

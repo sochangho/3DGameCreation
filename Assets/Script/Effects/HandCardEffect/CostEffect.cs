@@ -5,12 +5,13 @@ using UnityEngine;
 public class CostEffect : HandCardEffect
 {
 
+
     public int value;
     public override void CardCilckTrigger(Player player)
     {
-       
+
 
         player.MaxCost += value;
-
+        
     }
 }

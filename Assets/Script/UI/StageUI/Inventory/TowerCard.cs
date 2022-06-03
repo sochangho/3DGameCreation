@@ -25,7 +25,7 @@ public class TowerCard : MonoBehaviour
         button.interactable = false;
         selectObj.SetActive(true);
         FindObjectOfType<Inventory>().useTowerDataName = data.name;
-        FindObjectOfType<Inventory>().towerCardInfo.Set(data.towerName, data.subscript);
+        FindObjectOfType<Inventory>().towerCardInfo.Set(data);
         for (int i = 0; i < p.childCount; i++)
         {
             if(data.name != p.GetChild(i).GetComponent<TowerCard>().data.name)
