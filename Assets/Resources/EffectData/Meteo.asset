@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5934d8c6a225da4b89d0893a2635961, type: 3}
+  m_Name: Meteo
+  m_EditorClassIdentifier: 
+  effectName: "\uBA54\uD14C\uC624"
+  subscrips: 
+  cost: 3
+  effect: {fileID: 2096948806329273965, guid: fa5abcd795c7b5e4fa22e3c47c7688a9, type: 3}
+  sprite: {fileID: 21300000, guid: 92b315788e6ebb34f90dddacbca17e68, type: 3}

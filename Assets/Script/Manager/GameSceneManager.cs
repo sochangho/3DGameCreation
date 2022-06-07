@@ -7,8 +7,8 @@ public class GameSceneManager : GameManager<GameSceneManager>
 {
     public Player ownPlayer;
     public OponentPlayer oponentPlayer;
-
     public GameCardBuild gameCardBuild;
+    public OponentInfoGroup opoenentinfoGroup;
     public CostGage costGage;
     public Card spwanObjet;
     public CircleRenderer circleRenderer;
@@ -105,11 +105,17 @@ public class GameSceneManager : GameManager<GameSceneManager>
     public void GameOponentDataLoad(object parameter)
     {
         oponentPlayer.cardDatas.Clear();
+       
         RerayDataManager rerayDataManager = RerayDataManager.Instance;
 
         for(int i = 0; i < rerayDataManager.charactorDatas.Count; i++)
         {
             oponentPlayer.cardDatas.Add(rerayDataManager.charactorDatas[i]);
+        }
+
+        for(int i = 0; i < rerayDataManager.effectDatas.Count; i++)
+        {
+            oponentPlayer.cardDatas.Add(rerayDataManager.effectDatas[i]);
 
         }
 

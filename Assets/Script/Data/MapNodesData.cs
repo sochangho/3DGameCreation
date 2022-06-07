@@ -10,6 +10,7 @@ public class MapNodesData
    public int level;
    public int index;
    public List<string> monsterNames;
+   public List<string> effectNames;
    public List<int> parentIndex;
    public List<int> childeIndex;
 }

@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect : Card
+public  class Effect : Card , ICardSelectCondition
 {
 
    public List<Buff> buffs;
-   //public CharactorData data;
- 
-        
+
+   virtual public bool CardSelection()
+    {
+
+        return true;
+    }
+
+
 }
 
  

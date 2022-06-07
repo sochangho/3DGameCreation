@@ -21,7 +21,7 @@ public class Node : MonoBehaviour
     public int nodeY;
 
     private CircleRenderer circleRenderer;
-
+    private CircleRenderer oponentCircleRenderer;
 
     public bool is_ExistMonster = false;
 
@@ -73,13 +73,9 @@ public class Node : MonoBehaviour
         if (GameSceneManager.Instance.spwanObjet != null && GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>() != null)
         {
             is_select = true;
-            renderer.enabled = true;
+            //renderer.enabled = true;
 
-            circleRenderer =  Instantiate(GameSceneManager.Instance.circleRenderer);
-            circleRenderer.transform.position = transform.position;
-            circleRenderer.transform.rotation = Quaternion.Euler(90, 0, 0);
-            
-            circleRenderer.CreatePoints(GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>().GetEffectRenge());
+            EffectCircleCreate(GameSceneManager.Instance.ownPlayer);
             return;
         }
 
@@ -102,7 +98,7 @@ public class Node : MonoBehaviour
             renderer.enabled = false;
             if (circleRenderer != null)
             {
-                Destroy(circleRenderer.gameObject);
+                DestroyCircle(GameSceneManager.Instance.ownPlayer);
                 circleRenderer = null;
             }
 
@@ -137,7 +133,7 @@ public class Node : MonoBehaviour
             renderer.enabled = false;
             if (circleRenderer != null)
             {
-                Destroy(circleRenderer.gameObject);
+                DestroyCircle(GameSceneManager.Instance.ownPlayer);
                 circleRenderer = null;
             }
         }
@@ -145,8 +141,49 @@ public class Node : MonoBehaviour
 
     }
 
+    public void EffectCircleCreate(Player player)
+    {
 
 
+        if (player is OponentPlayer)
+        {
+           oponentCircleRenderer = Instantiate(GameSceneManager.Instance.circleRenderer);
+            oponentCircleRenderer.transform.position = transform.position;
+            oponentCircleRenderer.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+            Material[] materials = new Material[1];
+
+            materials[0] = oponentCircleRenderer.oponentMaterial;
+            oponentCircleRenderer.line.materials = materials;
+            oponentCircleRenderer.CreatePoints(GameSceneManager.Instance.oponentPlayer.card.GetComponent<ITileCilckTrigger>().GetEffectRenge());
+
+
+        }
+        else
+        {
+
+            circleRenderer = Instantiate(GameSceneManager.Instance.circleRenderer);
+            circleRenderer.transform.position = transform.position;
+            circleRenderer.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+
+            circleRenderer.CreatePoints(GameSceneManager.Instance.spwanObjet.GetComponent<ITileCilckTrigger>().GetEffectRenge());
+        }
+    }
+
+    public void DestroyCircle(Player player)
+    {
+        if (player is OponentPlayer)
+        {
+            Destroy(oponentCircleRenderer.gameObject);
+        }
+        else
+        {
+
+            Destroy(circleRenderer.gameObject);
+
+        }
+    }
 
 
     public void NodeTypeChage(int value)

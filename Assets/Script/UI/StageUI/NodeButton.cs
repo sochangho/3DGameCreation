@@ -55,9 +55,12 @@ public class NodeButton : MonoBehaviour
 
         if (nodedatas.state != StageNodeState.Shop)
         {
-            List<CharactorData> charactorDatas = nodedatas.datas;
+            List<ScriptableObject> datas = nodedatas.datas;
 
             TowerData[] towerDatas = Resources.LoadAll<TowerData>("TowerData");
+
+
+
 
             if(towerDatas.Length == 0)
             {
@@ -65,7 +68,7 @@ public class NodeButton : MonoBehaviour
                 return;
             }            
             int random = Random.Range(0, towerDatas.Length);
-            dataManager.DataAdd(charactorDatas, towerDatas[random]);
+            dataManager.DataAdd(datas, towerDatas[random]);
 
         }
 

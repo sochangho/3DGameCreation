@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-public class Charater : AimObject 
+public class Charater : AimObject , ICardSelectCondition
 {
  
     public float speed;    
@@ -379,7 +379,10 @@ public class Charater : AimObject
     }
 
 
-   
+    public bool CardSelection()
+    {
+        return true;
+    }
 
     IEnumerator DieRoutin()
     {

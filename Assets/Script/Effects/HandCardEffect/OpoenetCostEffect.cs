@@ -21,7 +21,36 @@ public class OpoenetCostEffect : HandCardEffect
 
         }
 
-        usedPlayer.MaxCost += value; 
 
+        if (usedPlayer.MaxCost + value < 0)
+        {
+
+            usedPlayer.MaxCost = 0;
+        }
+        else
+        {
+
+
+            usedPlayer.MaxCost += value;
+        }
     }
+
+
+    public override bool CardSelection()
+    {
+       int maxCost =  GameSceneManager.Instance.ownPlayer.MaxCost;
+
+
+        if(maxCost + value >= 0)
+        {
+
+            return true;
+        }
+
+
+        return false;
+
+        
+    }
+
 }

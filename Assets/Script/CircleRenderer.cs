@@ -7,7 +7,11 @@ public class CircleRenderer : MonoBehaviour
     public int segments;
     public float xradius;
     public float yradius;
-    LineRenderer line;
+    public LineRenderer line;
+    public Material oponentMaterial;
+   
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +20,7 @@ public class CircleRenderer : MonoBehaviour
 
    public void CreatePoints(float radius)
     {
-        line = gameObject.GetComponent<LineRenderer>();
+       
         line.positionCount = segments + 1;
         line.useWorldSpace = false;
         float x;

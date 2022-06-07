@@ -51,7 +51,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b5655b92aa1a544c8356c57af5658aa, type: 2}
+  - {fileID: 2100000, guid: c78bf77c4d6ea1241ab2855278feda65, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -145,3 +145,5 @@ MonoBehaviour:
   segments: 30
   xradius: 10
   yradius: 10
+  line: {fileID: 7808773964640916857}
+  oponentMaterial: {fileID: 2100000, guid: 7b5655b92aa1a544c8356c57af5658aa, type: 2}

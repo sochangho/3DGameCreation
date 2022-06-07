@@ -13,7 +13,7 @@ public enum StageNodeState
 
 public class Nodedatas
 {
-    public List<CharactorData> datas = new List<CharactorData>();
+    public List<ScriptableObject> datas = new List<ScriptableObject>();
     public StageNodeState state;
 
     public void RandomNodeData()
@@ -36,13 +36,13 @@ public class Nodedatas
         }
 
         CharactorData[] charactorDatas = Resources.LoadAll<CharactorData>("data");
-       
+        EffectData[] effectDatas = Resources.LoadAll<EffectData>("EffectData");
         if(charactorDatas.Length == 0)
         {
             return;
         }
 
-        int randomCnt = Random.Range(6, 10);
+        int randomCnt = Random.Range(5, 6);
 
         for (int i = 0; i < randomCnt; i++)
         {
@@ -50,8 +50,18 @@ public class Nodedatas
 
             datas.Add(charactorDatas[randomIndex]);
 
+        }
+
+        randomCnt = Random.Range(3, 5);
+
+        for(int i = 0; i < randomCnt; i++)
+        {
+            int randomIndex = Random.Range(0, effectDatas.Length);
+            datas.Add(effectDatas[randomIndex]);
 
         }
+
+
 
     }
 

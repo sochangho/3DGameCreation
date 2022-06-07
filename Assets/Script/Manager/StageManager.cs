@@ -38,6 +38,7 @@ public class StageManager : GameManager<StageManager>
                 mapNodesData.parentIndex = new List<int>();
                 mapNodesData.childeIndex = new List<int>();
                 mapNodesData.monsterNames = new List<string>();
+                mapNodesData.effectNames = new List<string>();
 
                 for (int parent = 0;  parent < nodesDic[i][j].parent.Count; parent++)
                 {
@@ -53,8 +54,19 @@ public class StageManager : GameManager<StageManager>
 
                 for (int d = 0; d < nodedatas.datas.Count; d++)
                 {
-                    mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
+                    if (nodedatas.datas[d] is CharactorData)
+                    {
+                        mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
+                    }
+                    else if(nodedatas.datas[d] is EffectData)
+                    {
+
+                        mapNodesData.effectNames.Add(nodedatas.datas[d].name);
+                    }
                 }
+
+                
+                
                 maptotalData.mapNodesDatas.Add(mapNodesData);
             }
 
@@ -77,12 +89,23 @@ public class StageManager : GameManager<StageManager>
             
             
             List<string> monsterNames =  maptotalData.mapNodesDatas[i].monsterNames;
-           
-            for(int strindex = 0; strindex < monsterNames.Count; strindex++)
+            List<string> effectNames = maptotalData.mapNodesDatas[i].effectNames;
+
+
+            for (int strindex = 0; strindex < monsterNames.Count; strindex++)
             {
                 string pathStr = string.Format("data/{0}", monsterNames[strindex]);
                 CharactorData loadCharactor =  Resources.Load<CharactorData>(pathStr);
                 nodedatas.datas.Add(loadCharactor);
+
+            }
+
+
+            for (int strindex = 0; strindex < effectNames.Count; strindex++)
+            {
+                string pathStr = string.Format("EffectData/{0}", effectNames[strindex]);
+                EffectData loadEffect = Resources.Load<EffectData>(pathStr);
+                nodedatas.datas.Add(loadEffect);
 
             }
 
