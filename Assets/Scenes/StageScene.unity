@@ -709,6 +709,7 @@ MonoBehaviour:
   mapLevel: {fileID: 5018878648442599181, guid: 4c4c31747a0820b41a4b492a2f1ba404, type: 3}
   content: {fileID: 1712830286}
   scrollView: {fileID: 439763016}
+  cloneMapLevel: {fileID: 0}
 --- !u!114 &616896780
 MonoBehaviour:
   m_ObjectHideFlags: 0

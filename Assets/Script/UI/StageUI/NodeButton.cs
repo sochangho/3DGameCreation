@@ -41,8 +41,16 @@ public class NodeButton : MonoBehaviour
         {
             image = GetComponent<Image>();
         }
-        button.onClick.AddListener(OnClickNode);
+        button.onClick.AddListener(OnClickMove);
     }
+
+    private void OnClickMove()
+    {
+
+        FindObjectOfType<StageMapUI>().cloneMapLevel.MoveArrow(this.GetComponent<RectTransform>().position , OnClickNode);
+    }
+
+
 
     private void OnClickNode()
     {
@@ -76,7 +84,8 @@ public class NodeButton : MonoBehaviour
        PlayerPrefs.SetInt("playerlevel" , nodeInfo.level);
        PlayerPrefs.SetInt("playerindex" , nodeInfo.index);
 
-        SceneManager.LoadScene(sceneName);
+       StageManager.Instance.ClearChange(nodeInfo.level, nodeInfo.index);
+       SceneManager.LoadScene(sceneName);
 
     }
 

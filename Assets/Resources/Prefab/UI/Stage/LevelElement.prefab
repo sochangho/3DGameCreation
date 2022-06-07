@@ -91,4 +91,6 @@ MonoBehaviour:
   level: 0
   button: {fileID: 8802231466962894960, guid: a606157fb131c27478ffeebd6f89966d, type: 3}
   lineImg: {fileID: 2585644714708870985, guid: 323bd1f2be794a440bc7a4d7159ed071, type: 3}
+  dot: {fileID: 7521983310643546145, guid: b96ff1b35f4406b489dda4ded2e40c4a, type: 3}
+  mapArrow: {fileID: -2815269121242627031, guid: dca803aa2af60f54695339f60087d858, type: 3}
   layoutGroup: {fileID: 0}

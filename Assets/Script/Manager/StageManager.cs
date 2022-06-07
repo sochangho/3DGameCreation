@@ -34,12 +34,12 @@ public class StageManager : GameManager<StageManager>
                 mapNodesData.level = nodesDic[i][j].level;
                 mapNodesData.index = nodesDic[i][j].index;
                 mapNodesData.type = (int)nodedatas.state;
-
+                mapNodesData.clear = (int)nodesDic[i][j].clear;
                 mapNodesData.parentIndex = new List<int>();
                 mapNodesData.childeIndex = new List<int>();
                 mapNodesData.monsterNames = new List<string>();
                 mapNodesData.effectNames = new List<string>();
-
+               
                 for (int parent = 0;  parent < nodesDic[i][j].parent.Count; parent++)
                 {
 
@@ -75,6 +75,20 @@ public class StageManager : GameManager<StageManager>
         File.WriteAllText(Application.dataPath + "/MapNodes.json", JsonUtility.ToJson(maptotalData));
 
     }
+
+
+    public void ClearChange(int level , int index)
+    {
+        string pathData = File.ReadAllText(Application.dataPath + "/MapNodes.json");
+        MaptotalData maptotalData = JsonUtility.FromJson<MaptotalData>(pathData);
+
+
+      var findData =  maptotalData.mapNodesDatas.Find(x => x.level == level && x.index == index);
+      findData.clear = (int)Clear.Yes;
+
+      File.WriteAllText(Application.dataPath + "/MapNodes.json", JsonUtility.ToJson(maptotalData));
+    }
+
 
     public void DataLoadNode(object paramter)
     {
@@ -115,7 +129,7 @@ public class StageManager : GameManager<StageManager>
             stageNode.data = temporaryData;
             stageNode.level = maptotalData.mapNodesDatas[i].level;
             stageNode.index = maptotalData.mapNodesDatas[i].index;
-
+            stageNode.clear = (Clear)maptotalData.mapNodesDatas[i].clear;
             if (!nodesDic.ContainsKey(stageNode.level))
             {
                 nodesDic.Add(stageNode.level, new List<StageNode<TemporaryData>>());
@@ -161,6 +175,7 @@ public class StageManager : GameManager<StageManager>
         stageNode.data = data;
         stageNode.level = nodelevel;
         stageNode.index = index;
+        stageNode.clear = Clear.No;
         AddNodesDicData(stageNode.level, stageNode);
         
         
@@ -181,6 +196,7 @@ public class StageManager : GameManager<StageManager>
                 newstageNode.data = newdata;
                 newstageNode.level = nodelevel;
                 newstageNode.index = index;
+                newstageNode.clear = Clear.No;
                 AddNodesDicData(newstageNode.level, newstageNode);
 
                 index++;

@@ -13,6 +13,7 @@ public class MapNodesData
    public List<string> effectNames;
    public List<int> parentIndex;
    public List<int> childeIndex;
+   public int clear;
 }
 
 [System.Serializable]
