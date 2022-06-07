@@ -25,7 +25,7 @@ public class DataAddManager : GameManager<DataAddManager>
 
             Effect effect = (Effect)card;
 
-            dataStrs = playerData.cardNames;
+            dataStrs = playerData.effectNams;
             dataStr = effect.data.name;
         }
         else if(card is Tower)

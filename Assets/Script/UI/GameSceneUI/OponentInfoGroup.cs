@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class OponentInfoGroup : MonoBehaviour
 {
-    public OponentInfo infoUi;
+    public InfoCreater infoUi;
 
     public void CreateInfoUi(string str)
     {
-        OponentInfo go = Instantiate(infoUi);
+        InfoCreater go = Instantiate(infoUi);
         go.transform.parent = this.transform;
         go.infoText.text = str;
         

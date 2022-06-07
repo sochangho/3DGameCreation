@@ -8,6 +8,7 @@ public class EffectData : ScriptableObject
     public string effectName;
     public string subscrips;
     public int cost;
+    public int price;
     public Effect effect;
     public Sprite sprite;
 

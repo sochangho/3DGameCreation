@@ -20,5 +20,6 @@ MonoBehaviour:
   defence: 30
   speed: 4
   cost: 3
+  price: 1500
   charater: {fileID: 7691027885607889394, guid: 52a3f2133508cd940a9dea4958f2e064, type: 3}
   sprite: {fileID: 21300000, guid: 242dbc4d6b8e76e44a12486a37897a64, type: 3}

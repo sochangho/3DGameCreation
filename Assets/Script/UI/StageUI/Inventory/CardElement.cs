@@ -9,7 +9,7 @@ public class CardElement : InventoryCard
     public GameObject effectinfoObject;
 
     private EventTrigger eventTrigger;
-    private GameObject infoObjectClone;
+    protected GameObject infoObjectClone;
     private StageSceneConfig config;
     private bool is_enter;
 
@@ -58,7 +58,7 @@ public class CardElement : InventoryCard
     }
 
 
-    private void CreateInfo()
+    virtual protected void CreateInfo()
     {
 
         GameObject info = null;

@@ -26,8 +26,10 @@ public class InventoryCard : MonoBehaviour
             EffectData effectData = (EffectData)this.data;
             image.sprite = effectData.sprite;
         }
-       
+
+        
         button.onClick.AddListener(clickAction);
+        
     }
 
 }

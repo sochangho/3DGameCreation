@@ -10,8 +10,8 @@ public class CardPurchase : MonoBehaviour
 
     public SkinnedMeshRenderer skinned;
     public Animator animator;
-    
- 
+    public Canvas canvas;
+    public ShopPopup shopPopup;
 
     private void OnMouseEnter()
     {
@@ -65,11 +65,12 @@ public class CardPurchase : MonoBehaviour
 
     private void ShopPopupOpen()
     {
-
-       
+       var go =  Instantiate(shopPopup);
+        go.transform.parent = canvas.transform;
+        go.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
     }
 
-    private void ShopPopupClose()
+    public void ShopPopupClose()
     {
         is_pop = false;
 

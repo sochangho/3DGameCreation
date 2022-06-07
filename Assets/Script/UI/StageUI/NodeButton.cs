@@ -73,8 +73,8 @@ public class NodeButton : MonoBehaviour
         }
 
 
-       // PlayerPrefs.SetInt("playerlevel" , nodeInfo.level);
-       // PlayerPrefs.SetInt("playerindex" , nodeInfo.index);
+       PlayerPrefs.SetInt("playerlevel" , nodeInfo.level);
+       PlayerPrefs.SetInt("playerindex" , nodeInfo.index);
 
         SceneManager.LoadScene(sceneName);
 
