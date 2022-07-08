@@ -44,7 +44,7 @@ public class ShopPopup : MonoBehaviour
         {
            PurchaseCard pgo =  Instantiate(purchaseCard);
            pgo.transform.parent = content;
-
+           pgo.transform.localScale = Vector3.one;
            pgo.Setting(charactorDatas[i], ()=> { OpenPopup(pgo);  });
 
            string findname =  characterNames.Find(x => x == charactorDatas[i].name);
@@ -62,7 +62,7 @@ public class ShopPopup : MonoBehaviour
         {
             PurchaseCard pgo = Instantiate(purchaseCard);
             pgo.transform.parent = content;
-
+            pgo.transform.localScale = Vector3.one;
             pgo.Setting(effectDatas[i], () => { OpenPopup(pgo); });
 
 

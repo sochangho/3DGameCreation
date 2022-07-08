@@ -13,11 +13,6 @@ public class StageMapUI : MonoBehaviour
 
     void Start()
     {
-        
-
-        
-       
-
         MapUICreate();
     }
 
@@ -34,7 +29,7 @@ public class StageMapUI : MonoBehaviour
          float xSize = scrollView.GetComponent<RectTransform>().rect.width;
          maplevel.layoutGroup.cellSize = new Vector2(xSize, maplevel.layoutGroup.cellSize.y);
          maplevel.levelButtonSetting();
-
+         maplevel.GetComponent<RectTransform>().localScale = Vector3.one;
          cloneMapLevel = maplevel;
     }
 

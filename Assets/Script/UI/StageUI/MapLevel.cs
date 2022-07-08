@@ -14,6 +14,8 @@ public class MapLevel : MonoBehaviour
 
     private MapArrow cloneArrow;
 
+   
+
     public void levelButtonSetting()
     {
         var nodesDic = StageManager.Instance.nodesDic;
@@ -141,35 +143,7 @@ public class MapLevel : MonoBehaviour
     }
 
 
-    public void MoveArrow(Vector2 vector , System.Action action)
-    {
-        Vector2 sizeButton = button.GetComponent<RectTransform>().sizeDelta;
-        Vector2 pos = new Vector2(vector.x, vector.y + sizeButton.y);
-        StartCoroutine(GoArrow(pos , action));
+  
 
-    }
-
-    IEnumerator GoArrow(Vector2 pos , System.Action action)
-    {
-        Vector2 arrowPos = cloneArrow.GetComponent<RectTransform>().position;
-        Vector2 dir = (pos - arrowPos).normalized;
-
-        while(Vector2.Distance(pos , arrowPos) > 1f)
-        {
-            cloneArrow.GetComponent<RectTransform>().Translate(dir * 30 * Time.deltaTime);
-
-            arrowPos = cloneArrow.GetComponent<RectTransform>().position;
-
-            yield return null;
-        }
-
-
-        if(action != null)
-        {
-            action();
-        }
-
-
-    }
 
 }

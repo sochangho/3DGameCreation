@@ -31,6 +31,7 @@ public class PurchaseCard : CardElement
 
 
         info.transform.parent = FindObjectOfType<Canvas>().transform;
+        info.transform.localScale = Vector3.one;
         info.GetComponent<RectTransform>().position = Input.mousePosition;
         infoObjectClone = info;
 

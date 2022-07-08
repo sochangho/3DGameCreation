@@ -34,6 +34,7 @@ public class StageSceneConfig : MonoBehaviour
         }
         else
         {
+
            EventManager.Emit("LoadScene", null);
            //EventManager.Emit("MakeScene", null);
             

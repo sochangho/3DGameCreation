@@ -92,8 +92,23 @@ public class StageManager : GameManager<StageManager>
 
     public void DataLoadNode(object paramter)
     {
+        if(!File.Exists(Application.dataPath + "/MapNodes.json"))
+        {
+            PlayerPrefs.SetInt("playersave", 1);
+            PlayerPrefs.SetInt("playerlevel", 0);
+            PlayerPrefs.SetInt("playerindex", 0);
+            PlayerPrefs.SetInt("gold", 0);
+
+            EventManager.Emit("MakeScene", null);
+            return;
+        }
+
         string pathData = File.ReadAllText(Application.dataPath + "/MapNodes.json");
+
+
         MaptotalData maptotalData = JsonUtility.FromJson<MaptotalData>(pathData);
+
+
 
         for(int i = 0;  i < maptotalData.mapNodesDatas.Count; i++)
         {

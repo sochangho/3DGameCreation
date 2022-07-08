@@ -11,7 +11,7 @@ public class InfoCreater : MonoBehaviour
     public void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-
+        GetComponent<RectTransform>().localScale = Vector2.one;
         StartCoroutine(LifeRoutin());
     }
 

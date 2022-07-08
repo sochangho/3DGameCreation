@@ -20,7 +20,8 @@ public class GameCardBuild : MonoBehaviour
             object data = objectBundle.obj;
 
             CardInfo cardInfo  = Instantiate(info);
-
+            
+           
             if(FindEmptyChild() == null)
             {
                 return;
@@ -29,6 +30,9 @@ public class GameCardBuild : MonoBehaviour
             cardInfo.transform.parent = FindEmptyChild();
 
             cardInfo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            cardInfo.GetComponent<RectTransform>().localScale = Vector3.one;
+            cardInfo.GetComponent<RectTransform>().sizeDelta = new Vector2(cardInfo.transform.parent.GetComponent<RectTransform>().sizeDelta.x,
+                cardInfo.transform.parent.GetComponent<RectTransform>().sizeDelta.y);
             cardInfo.id = objectBundle.id;
 
             if (data is CharactorData)
@@ -72,6 +76,12 @@ public class GameCardBuild : MonoBehaviour
         newCardinfo.transform.parent = FindEmptyChild();
         newCardinfo.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         newCardinfo.id = objectBundle.id;
+
+        newCardinfo.GetComponent<RectTransform>().localScale = Vector3.one;
+        newCardinfo.GetComponent<RectTransform>().sizeDelta = new Vector2(newCardinfo.transform.parent.GetComponent<RectTransform>().sizeDelta.x,
+            newCardinfo.transform.parent.GetComponent<RectTransform>().sizeDelta.y);
+        newCardinfo.id = objectBundle.id;
+
 
         if (data is CharactorData)
         {

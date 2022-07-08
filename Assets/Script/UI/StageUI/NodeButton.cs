@@ -47,7 +47,7 @@ public class NodeButton : MonoBehaviour
     private void OnClickMove()
     {
 
-        FindObjectOfType<StageMapUI>().cloneMapLevel.MoveArrow(this.GetComponent<RectTransform>().position , OnClickNode);
+        OnClickNode();
     }
 
 
