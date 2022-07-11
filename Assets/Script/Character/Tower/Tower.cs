@@ -93,39 +93,16 @@ public class Tower : AimObject
 
     public override void Die()
     {
-        GameSceneManager.Instance.ownPlayer.gameStart = false;
-        GameSceneManager.Instance.oponentPlayer.gameStart = false;
-        if (this.player.playertype == PlayerType.Oponent)
+        if (GameSceneManager.Instance.is_gameEnd)
         {
-
-          
-            GameSceneManager.Instance.stateUi.Win(()=> {
-
-                GameSceneManager.Instance.SceneTransition();
-
-                DataAddManager.Instance.DataAdd(this);
-
-                int gold = PlayerPrefs.GetInt("gold");
-                gold += 1000;
-                PlayerPrefs.SetInt("gold", gold);
-
-            });
-
+            return;
         }
-        else if(this.player.playertype == PlayerType.Own)
-        {
-            // 패배
-            // 처음으로 되돌아간다.
-            // 게임씬매니저의 함수 호출
-
-            GameSceneManager.Instance.stateUi.GameOver(() => {
-                PlayerPrefs.SetInt("playersave", 0);
-
-                GameSceneManager.Instance.SceneTransition();
-
-            });
-            
-        }
+        GameSceneManager.Instance.is_gameEnd = true;
+        ParameterHelper parameterHelper = new ParameterHelper();
+        parameterHelper.objList.Add(this.player);
+        parameterHelper.objList.Add(this);
+       
+        EventManager.Emit("GameEnd", parameterHelper);
     }
 
 

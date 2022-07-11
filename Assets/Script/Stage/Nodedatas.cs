@@ -16,6 +16,10 @@ public class Nodedatas
     public List<ScriptableObject> datas = new List<ScriptableObject>();
     public StageNodeState state;
 
+
+
+
+
     public void RandomNodeData()
     {
         int randomState = Random.Range(0, 100);
@@ -63,6 +67,24 @@ public class Nodedatas
 
 
 
+    }
+
+
+    public List<T> GetCardDatas<T>() where T : ScriptableObject
+    {
+        List<T> getdatas = new List<T>();
+
+        foreach(var data in datas)
+        {
+            if(data is T)
+            {
+                T tData = (T)data;
+                getdatas.Add(tData);
+            }
+        }
+
+
+        return getdatas;
     }
 
 

@@ -8,13 +8,6 @@ public class MapArrow : MonoBehaviour
 
 
   
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "StageButton")
-        {
-            Debug.Log("ButtonCollsion");
-        }
-    }
-
+    
 
 }

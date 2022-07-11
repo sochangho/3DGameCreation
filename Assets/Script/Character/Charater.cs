@@ -69,11 +69,6 @@ public class Charater : AimObject , ICardSelectCondition
         buffController.BuffTarget(this);
         playerNav.speed = Speed;
         playerNav.baseOffset = 0.1f;
-
-      
-
-
-
     }
 
     public void Start()
@@ -82,7 +77,12 @@ public class Charater : AimObject , ICardSelectCondition
        
     }
 
-
+    public void CharacterStop()
+    {
+        OnIdleAni();
+        buffController.AllBuffDelete();
+        StopCoroutine(aiRoutin);
+    }
  
 
     public void CharacterInit()

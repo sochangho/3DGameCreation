@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameSceneManager : GameManager<GameSceneManager>
 {
@@ -13,10 +13,12 @@ public class GameSceneManager : GameManager<GameSceneManager>
     public Card spwanObjet;
     public CircleRenderer circleRenderer;
     public GameStateUi stateUi;
+    public EndGame endGame;
 
     private Coroutine gamecorutin;
 
-    
+   public bool is_gameEnd = false;
+
     public void Awake()
     {
         EventManager.On("GamePlayinit", GamePlayerLoadData);
@@ -34,7 +36,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
         EventManager.On("CardSelect", CardCompare);
 
         EventManager.On("GameEnd", StopGage);
-
+        EventManager.On("GameEnd", VectoryJudgment);
 
         EventManager.On("OponentInit", PlayerInit);
         EventManager.On("OponentInit", RandomCardSelet);
@@ -42,7 +44,6 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
         EventManager.On("OponentCardSelect", CardSelect);
         EventManager.On("OponentCardSelect", RandomCardSelet);
-
 
     }
 
@@ -281,7 +282,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
        
     }
 
-
+    
 
     //다음 카드를 손위로 넣는과정 
     public void CardSelect(object parameter)
@@ -337,6 +338,82 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     }
 
+    public void VectoryJudgment(object parameter)
+    {
+
+
+
+
+        ParameterHelper parameterHelper = (ParameterHelper)parameter;
+
+        Player player = parameterHelper.GetParameter<Player>();
+        Tower tower = parameterHelper.GetParameter<Tower>();
+        ownPlayer.gameStart = false;
+        oponentPlayer.gameStart = false;
+
+        List<AimObject> ownAims = ownPlayer.GetObjects<AimObject>();
+        List<AimObject> oponentAims = oponentPlayer.GetObjects<AimObject>();
+
+        foreach(AimObject ownAim in ownAims)
+        {
+                       
+            if(ownAim is Charater )
+            {
+                Charater charater = (Charater)ownAim;
+                charater.CharacterStop();
+            }
+        }
+
+        foreach (AimObject oponentAim in oponentAims)
+        {
+            
+            if (oponentAim is Charater)
+            {
+                Charater charater = (Charater)oponentAim;
+                charater.CharacterStop();
+            }
+        }
+
+
+        
+        if (player.playertype == PlayerType.Oponent)
+        {
+
+
+            stateUi.Win(() => {
+
+
+                endGame.gameObject.SetActive(true);
+                DataAddManager.Instance.DataAdd(tower);
+
+                int gold = PlayerPrefs.GetInt("gold");
+                gold += 1000;
+                PlayerPrefs.SetInt("gold", gold);
+
+                endGame.EndGameSet("게임 클리어\ngold+1000", SceneTransition);
+
+
+            });
+
+        }
+        else if (player.playertype == PlayerType.Own)
+        {
+            // 패배
+            // 처음으로 되돌아간다.
+            // 게임씬매니저의 함수 호출
+
+            stateUi.GameOver(() => {
+                PlayerPrefs.SetInt("playersave", 0);
+                endGame.gameObject.SetActive(true);
+                endGame.EndGameSet(" 패배 ", SceneTransition);
+
+            });
+
+        }
+
+    }
+
+
     public void MonsterSpwan(Transform transform)
     {
         if(spwanObjet != null)
@@ -352,6 +429,10 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
 
     }
+
+
+
+
 
     public void AiRoutin(object parmeter)
     {
@@ -370,7 +451,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
     {
 
 
-        StartCoroutine(GamePlayerGageRoutin());
+        gamecorutin = StartCoroutine(GamePlayerGageRoutin());
 
     }
 

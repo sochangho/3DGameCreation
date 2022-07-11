@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+
 using UnityEngine.SceneManagement;
 
 public class NodeButton : MonoBehaviour
@@ -11,9 +14,24 @@ public class NodeButton : MonoBehaviour
     private Button button;
     private Image image;
     private string sceneName;
-
+    private EventTrigger eventTrigger;
     public StageNode<TemporaryData> nodeInfo { get; set; }
 
+    public void Start()
+    {
+        eventTrigger = GetComponent<EventTrigger>();
+        EventTrigger.Entry enterEntry = new EventTrigger.Entry();
+        enterEntry.eventID = EventTriggerType.PointerEnter;
+        enterEntry.callback.AddListener((data) => { OnEnterViewDatas((PointerEventData)data); });
+
+        EventTrigger.Entry existEntry = new EventTrigger.Entry();
+        existEntry.eventID = EventTriggerType.PointerExit;
+        existEntry.callback.AddListener((data) => { OnExitViewDatas((PointerEventData)data); });
+
+        eventTrigger.triggers.Add(enterEntry);
+        eventTrigger.triggers.Add(existEntry);
+
+    }
     public void SceneInit(StageNodeState state)
     {
         foreach(SceneData data in sceneDatas)
@@ -50,6 +68,19 @@ public class NodeButton : MonoBehaviour
         OnClickNode();
     }
 
+    private void OnEnterViewDatas(PointerEventData data)
+    {
+        Nodedatas nodedatas = (Nodedatas)nodeInfo.data.obj;
+        List<CharactorData> charactorDatas= nodedatas.GetCardDatas<CharactorData>();
+        List<EffectData> effectDatas = nodedatas.GetCardDatas<EffectData>();
+
+    }
+
+    private void OnExitViewDatas(PointerEventData data)
+    {
+
+
+    }
 
 
     private void OnClickNode()

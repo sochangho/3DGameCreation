@@ -125,6 +125,9 @@ public class Player : MonoBehaviour
         return attackeds;
     }
 
+    
+
+
     public bool FillGage()
     {
        

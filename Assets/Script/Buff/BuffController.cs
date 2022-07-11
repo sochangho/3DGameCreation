@@ -103,7 +103,7 @@ public class BuffController : MonoBehaviour
 
             buffStates[i].duration -= Time.deltaTime;
             buffStates[i].buff.Buffproceeding(aimObject);
-            if (buffStates[i].duration < 0)
+            if (buffStates[i].duration <= 0)
             {
                 Debug.Log("End");
                 buffStates[i].duration = 0;
@@ -113,6 +113,15 @@ public class BuffController : MonoBehaviour
 
         }
     }
+
+    public void AllBuffDelete()
+    {
+        for (int i = 0; i < buffStates.Count; i++)
+        {
+            buffStates[i].duration = 0;
+        }
+    }
+
 
 
 }
