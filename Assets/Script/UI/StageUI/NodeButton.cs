@@ -17,21 +17,6 @@ public class NodeButton : MonoBehaviour
     private EventTrigger eventTrigger;
     public StageNode<TemporaryData> nodeInfo { get; set; }
 
-    public void Start()
-    {
-        eventTrigger = GetComponent<EventTrigger>();
-        EventTrigger.Entry enterEntry = new EventTrigger.Entry();
-        enterEntry.eventID = EventTriggerType.PointerEnter;
-        enterEntry.callback.AddListener((data) => { OnEnterViewDatas((PointerEventData)data); });
-
-        EventTrigger.Entry existEntry = new EventTrigger.Entry();
-        existEntry.eventID = EventTriggerType.PointerExit;
-        existEntry.callback.AddListener((data) => { OnExitViewDatas((PointerEventData)data); });
-
-        eventTrigger.triggers.Add(enterEntry);
-        eventTrigger.triggers.Add(existEntry);
-
-    }
     public void SceneInit(StageNodeState state)
     {
         foreach(SceneData data in sceneDatas)
@@ -68,19 +53,7 @@ public class NodeButton : MonoBehaviour
         OnClickNode();
     }
 
-    private void OnEnterViewDatas(PointerEventData data)
-    {
-        Nodedatas nodedatas = (Nodedatas)nodeInfo.data.obj;
-        List<CharactorData> charactorDatas= nodedatas.GetCardDatas<CharactorData>();
-        List<EffectData> effectDatas = nodedatas.GetCardDatas<EffectData>();
-
-    }
-
-    private void OnExitViewDatas(PointerEventData data)
-    {
-
-
-    }
+   
 
 
     private void OnClickNode()
@@ -112,13 +85,16 @@ public class NodeButton : MonoBehaviour
         }
 
 
-       PlayerPrefs.SetInt("playerlevel" , nodeInfo.level);
-       PlayerPrefs.SetInt("playerindex" , nodeInfo.index);
 
-       StageManager.Instance.ClearChange(nodeInfo.level, nodeInfo.index);
+        dataManager.Currentindex = nodeInfo.level;
+        dataManager.Currentlevel = nodeInfo.index;
+
+     
+       
        SceneManager.LoadScene(sceneName);
 
     }
+
 
 
 }
@@ -130,3 +106,4 @@ public class SceneData
     public Sprite icon;
     public StageNodeState state;
 }
+

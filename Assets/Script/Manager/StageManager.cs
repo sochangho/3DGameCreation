@@ -17,7 +17,7 @@ public class StageManager : GameManager<StageManager>
     int maxlevel = 7;
     int maxNodeCnt = 3;
 
-    
+    public StageButtonState buttonState = StageButtonState.Hiden;
 
 
     public void DataSaveNode(object parameter)

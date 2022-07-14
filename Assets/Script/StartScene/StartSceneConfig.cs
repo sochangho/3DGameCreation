@@ -12,8 +12,14 @@ public class StartSceneConfig : MonoBehaviour
     public void Start()
     {
         startButton.onClick.AddListener( characterMotion.StartGameMotion);
-        
+        ExitButton.onClick.AddListener(OnClickExit);
     }
+
+    public void OnClickExit()
+    {
+        GameSystemManager.Instance.GameExit();
+    }
+
 
 
 

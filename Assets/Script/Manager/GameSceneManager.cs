@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameSceneManager : GameManager<GameSceneManager>
 {
     public Player ownPlayer;
@@ -18,6 +19,11 @@ public class GameSceneManager : GameManager<GameSceneManager>
     private Coroutine gamecorutin;
 
    public bool is_gameEnd = false;
+
+
+    public Button exitbutton;
+    public GameGiveup gameGiveupUI;
+    public Transform parentTransform;
 
     public void Awake()
     {
@@ -51,6 +57,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
     public void Start()
     {
         EventManager.Emit("GamePlayinit", null);
+        exitbutton.onClick.AddListener(ExitButton);
     }
 
 
@@ -340,10 +347,6 @@ public class GameSceneManager : GameManager<GameSceneManager>
 
     public void VectoryJudgment(object parameter)
     {
-
-
-
-
         ParameterHelper parameterHelper = (ParameterHelper)parameter;
 
         Player player = parameterHelper.GetParameter<Player>();
@@ -372,46 +375,51 @@ public class GameSceneManager : GameManager<GameSceneManager>
                 Charater charater = (Charater)oponentAim;
                 charater.CharacterStop();
             }
-        }
-
-
-        
+        }       
         if (player.playertype == PlayerType.Oponent)
         {
-
-
-            stateUi.Win(() => {
-
-
-                endGame.gameObject.SetActive(true);
-                DataAddManager.Instance.DataAdd(tower);
-
-                int gold = PlayerPrefs.GetInt("gold");
-                gold += 1000;
-                PlayerPrefs.SetInt("gold", gold);
-
-                endGame.EndGameSet("게임 클리어\ngold+1000", SceneTransition);
-
-
-            });
-
+            GameWin(tower);
         }
         else if (player.playertype == PlayerType.Own)
-        {
-            // 패배
-            // 처음으로 되돌아간다.
-            // 게임씬매니저의 함수 호출
-
-            stateUi.GameOver(() => {
-                PlayerPrefs.SetInt("playersave", 0);
-                endGame.gameObject.SetActive(true);
-                endGame.EndGameSet(" 패배 ", SceneTransition);
-
-            });
-
+        {           
+            GameOver();
         }
 
     }
+
+    private void GameWin(Tower tower)
+    {
+        stateUi.Win(() => {
+
+
+            endGame.gameObject.SetActive(true);
+            DataAddManager.Instance.DataAdd(tower);
+
+            int gold = PlayerPrefs.GetInt("gold");
+            gold += 1000;
+            PlayerPrefs.SetInt("gold", gold);
+
+            endGame.EndGameSet("게임 클리어\ngold+1000", SceneTransition);
+
+            PlayerPrefs.SetInt("playerlevel", RerayDataManager.Instance.Currentlevel);
+            PlayerPrefs.SetInt("playerindex", RerayDataManager.Instance.Currentindex);
+
+            StageManager.Instance
+            .ClearChange(RerayDataManager.Instance.Currentlevel
+            , RerayDataManager.Instance.Currentindex);
+        });
+    }
+
+    private void GameOver()
+    {
+        stateUi.GameOver(() => {
+            PlayerPrefs.SetInt("playersave", 0);
+            endGame.gameObject.SetActive(true);
+            endGame.EndGameSet(" 패배 ", SceneTransition);
+
+        });
+    }
+
 
 
     public void MonsterSpwan(Transform transform)
@@ -613,7 +621,14 @@ public class GameSceneManager : GameManager<GameSceneManager>
         spwanObjet = obj;
     }
 
-    
+    private void ExitButton()
+    {
+       GameGiveup gUI = Instantiate(gameGiveupUI);
+       gUI.transform.parent = parentTransform;
+       gUI.GetComponent<RectTransform>().localPosition = Vector2.zero;
+       gUI.GetComponent<RectTransform>().localScale = Vector2.one ;
+       
+    }
 
  
 

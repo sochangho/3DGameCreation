@@ -26,3 +26,9 @@ public enum TowerState
     Attack,
     Die
 }
+
+public enum StageButtonState
+{
+    View,
+    Hiden,
+}

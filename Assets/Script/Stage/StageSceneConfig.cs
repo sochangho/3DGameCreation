@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 using System.IO;
 public class StageSceneConfig : MonoBehaviour
 {
     public Inventory inventory;
     public Canvas canvas;
     public Canvas infoCanvas;
+    
     public Button cardInventoryButton;
+    public Button backButton;
+    public Button exitButton;
 
     public List<CharactorData> datas;
     public List<EffectData> effectdatas;
     public List<TowerData> towerdatas;
+
+    public EndGame gameExit;
 
     private void Awake()
     {
@@ -36,13 +43,15 @@ public class StageSceneConfig : MonoBehaviour
         {
 
            EventManager.Emit("LoadScene", null);
-           //EventManager.Emit("MakeScene", null);
-            
+                      
         }
 
 
         cardInventoryButton.onClick.AddListener(InventoryButtonClick);
         cardInventoryButton.onClick.AddListener(ButtonUiActive);
+
+        backButton.onClick.AddListener(OnClickBack);
+        exitButton.onClick.AddListener(OnClickCreateGameExit);
         
     }
 
@@ -107,4 +116,25 @@ public class StageSceneConfig : MonoBehaviour
 
 
     }
+
+    private void OnClickCreateGameExit()
+    {
+        EndGame endGame = Instantiate(gameExit);
+        endGame.transform.parent = canvas.transform;
+        endGame.GetComponent<RectTransform>().localPosition = Vector2.zero;
+        endGame.GetComponent<RectTransform>().localScale = Vector2.one;
+
+        endGame.EndGameSet("게임을 종료할까요??", Exit);
+
+    }
+
+    private void Exit()
+    {
+        GameSystemManager.Instance.GameExit();
+    }
+
+    private void OnClickBack()
+    {
+        SceneManager.LoadScene("StartScene");
+    } 
 }

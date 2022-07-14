@@ -9,6 +9,9 @@ public class RerayDataManager : GameManager<RerayDataManager>
     public List<EffectData> effectDatas = new List<EffectData>();
     public TowerData towerData;
 
+    public int Currentlevel { get; set; }
+    public int Currentindex { get; set; }
+
     void Awake()
     {
         DontDestroyOnLoad(this);
