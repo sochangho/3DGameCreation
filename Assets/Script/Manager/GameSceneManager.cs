@@ -404,9 +404,7 @@ public class GameSceneManager : GameManager<GameSceneManager>
             PlayerPrefs.SetInt("playerlevel", RerayDataManager.Instance.Currentlevel);
             PlayerPrefs.SetInt("playerindex", RerayDataManager.Instance.Currentindex);
 
-            StageManager.Instance
-            .ClearChange(RerayDataManager.Instance.Currentlevel
-            , RerayDataManager.Instance.Currentindex);
+            StageManager.Instance.ClearChange(RerayDataManager.Instance.Currentlevel , RerayDataManager.Instance.Currentindex);
         });
     }
 

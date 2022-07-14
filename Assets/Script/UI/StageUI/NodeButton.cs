@@ -100,10 +100,10 @@ public class NodeButton : MonoBehaviour
             int random = Random.Range(0, towerDatas.Length);
             dataManager.DataAdd(datas, towerDatas[random]);
 
-            dataManager.Currentindex = nodeInfo.level;
-            dataManager.Currentlevel = nodeInfo.index;
+            dataManager.Currentindex = nodeInfo.index;
+            dataManager.Currentlevel = nodeInfo.level;
 
-
+      
         }
         else
         {
