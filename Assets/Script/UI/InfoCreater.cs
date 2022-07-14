@@ -20,9 +20,9 @@ public class InfoCreater : MonoBehaviour
     {
         canvasGroup.alpha = 1;
 
-        while(0 < canvasGroup.alpha)
+        while (0 < canvasGroup.alpha)
         {
-            canvasGroup.alpha -= 0.006f;
+            canvasGroup.alpha -= 0.003f;
 
             yield return null;
         }

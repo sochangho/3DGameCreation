@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class NodeButton : MonoBehaviour
 {
-
+    public InfoCreater infoCreater;
     public List<SceneData> sceneDatas;
     private Button button;
     private Image image;
@@ -19,9 +19,9 @@ public class NodeButton : MonoBehaviour
 
     public void SceneInit(StageNodeState state)
     {
-        foreach(SceneData data in sceneDatas)
+        foreach (SceneData data in sceneDatas)
         {
-            if(data.state == state)
+            if (data.state == state)
             {
                 sceneName = data.scene;
 
@@ -35,12 +35,12 @@ public class NodeButton : MonoBehaviour
         }
 
 
-        if(button == null)
+        if (button == null)
         {
             button = GetComponent<Button>();
         }
 
-        if(image == null)
+        if (image == null)
         {
             image = GetComponent<Image>();
         }
@@ -53,20 +53,38 @@ public class NodeButton : MonoBehaviour
         OnClickNode();
     }
 
-   
+
 
 
     private void OnClickNode()
     {
 
-        //Á¤º¸Àü´Ş
-       RerayDataManager dataManager = RerayDataManager.Instance;
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        RerayDataManager dataManager = RerayDataManager.Instance;
 
 
-       Nodedatas nodedatas = (Nodedatas)nodeInfo.data.obj;
+        Nodedatas nodedatas = (Nodedatas)nodeInfo.data.obj;
 
         if (nodedatas.state != StageNodeState.Shop)
         {
+
+
+            int cnt = StageManager.Instance.DeckCardsCnt();
+
+            if (cnt < 5)
+            {
+
+
+                InfoCreater obj = Instantiate(infoCreater);
+                obj.transform.parent = FindObjectOfType<StageSceneConfig>().canvas.transform;
+                obj.GetComponent<RectTransform>().localScale = Vector2.one;
+                obj.GetComponent<RectTransform>().localPosition = Vector2.zero;
+                obj.infoText.text = "5ê°œì˜ ì¹´ë“œë¥¼ ê³¨ë¼ì£¼ì„¸ìš”.";
+
+
+                return;
+            }
+
             List<ScriptableObject> datas = nodedatas.datas;
 
             TowerData[] towerDatas = Resources.LoadAll<TowerData>("TowerData");
@@ -74,24 +92,34 @@ public class NodeButton : MonoBehaviour
 
 
 
-            if(towerDatas.Length == 0)
+            if (towerDatas.Length == 0)
             {
-                Debug.LogError("Å¸¿ö µ¥ÀÌÅÍ X");
+                Debug.LogError("Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ X");
                 return;
-            }            
+            }
             int random = Random.Range(0, towerDatas.Length);
             dataManager.DataAdd(datas, towerDatas[random]);
 
+            dataManager.Currentindex = nodeInfo.level;
+            dataManager.Currentlevel = nodeInfo.index;
+
+
+        }
+        else
+        {
+
+            PlayerPrefs.SetInt("playerlevel", nodeInfo.level);
+            PlayerPrefs.SetInt("playerindex", nodeInfo.index);
+
+            StageManager.Instance
+            .ClearChange(nodeInfo.level
+            , nodeInfo.index);
         }
 
 
 
-        dataManager.Currentindex = nodeInfo.level;
-        dataManager.Currentlevel = nodeInfo.index;
 
-     
-       
-       SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName);
 
     }
 

@@ -27,10 +27,10 @@ public class StageManager : GameManager<StageManager>
 
         for (int i = 0; i < nodesDic.Count; i++)
         {
-            for(int j = 0; j < nodesDic[i].Count; j++)
+            for (int j = 0; j < nodesDic[i].Count; j++)
             {
-               MapNodesData mapNodesData = new MapNodesData();
-               Nodedatas nodedatas = (Nodedatas)nodesDic[i][j].data.obj;
+                MapNodesData mapNodesData = new MapNodesData();
+                Nodedatas nodedatas = (Nodedatas)nodesDic[i][j].data.obj;
                 mapNodesData.level = nodesDic[i][j].level;
                 mapNodesData.index = nodesDic[i][j].index;
                 mapNodesData.type = (int)nodedatas.state;
@@ -39,8 +39,8 @@ public class StageManager : GameManager<StageManager>
                 mapNodesData.childeIndex = new List<int>();
                 mapNodesData.monsterNames = new List<string>();
                 mapNodesData.effectNames = new List<string>();
-               
-                for (int parent = 0;  parent < nodesDic[i][j].parent.Count; parent++)
+
+                for (int parent = 0; parent < nodesDic[i][j].parent.Count; parent++)
                 {
 
                     mapNodesData.parentIndex.Add(nodesDic[i][j].parent[parent].index);
@@ -58,15 +58,15 @@ public class StageManager : GameManager<StageManager>
                     {
                         mapNodesData.monsterNames.Add(nodedatas.datas[d].name);
                     }
-                    else if(nodedatas.datas[d] is EffectData)
+                    else if (nodedatas.datas[d] is EffectData)
                     {
 
                         mapNodesData.effectNames.Add(nodedatas.datas[d].name);
                     }
                 }
 
-                
-                
+
+
                 maptotalData.mapNodesDatas.Add(mapNodesData);
             }
 
@@ -77,27 +77,27 @@ public class StageManager : GameManager<StageManager>
     }
 
 
-    public void ClearChange(int level , int index)
+    public void ClearChange(int level, int index)
     {
         string pathData = File.ReadAllText(Application.dataPath + "/MapNodes.json");
         MaptotalData maptotalData = JsonUtility.FromJson<MaptotalData>(pathData);
 
 
-      var findData =  maptotalData.mapNodesDatas.Find(x => x.level == level && x.index == index);
-      findData.clear = (int)Clear.Yes;
+        var findData = maptotalData.mapNodesDatas.Find(x => x.level == level && x.index == index);
+        findData.clear = (int)Clear.Yes;
 
-      File.WriteAllText(Application.dataPath + "/MapNodes.json", JsonUtility.ToJson(maptotalData));
+        File.WriteAllText(Application.dataPath + "/MapNodes.json", JsonUtility.ToJson(maptotalData));
     }
 
 
     public void DataLoadNode(object paramter)
     {
-        if(!File.Exists(Application.dataPath + "/MapNodes.json"))
+        if (!File.Exists(Application.dataPath + "/MapNodes.json"))
         {
             PlayerPrefs.SetInt("playersave", 1);
             PlayerPrefs.SetInt("playerlevel", 0);
             PlayerPrefs.SetInt("playerindex", 0);
-            PlayerPrefs.SetInt("gold", 0);
+            PlayerPrefs.SetInt("gold", 100000);
 
             EventManager.Emit("MakeScene", null);
             return;
@@ -110,21 +110,21 @@ public class StageManager : GameManager<StageManager>
 
 
 
-        for(int i = 0;  i < maptotalData.mapNodesDatas.Count; i++)
+        for (int i = 0; i < maptotalData.mapNodesDatas.Count; i++)
         {
             TemporaryData temporaryData = new TemporaryData();
             Nodedatas nodedatas = new Nodedatas();
             StageNode<TemporaryData> stageNode = new StageNode<TemporaryData>();
-            
-            
-            List<string> monsterNames =  maptotalData.mapNodesDatas[i].monsterNames;
+
+
+            List<string> monsterNames = maptotalData.mapNodesDatas[i].monsterNames;
             List<string> effectNames = maptotalData.mapNodesDatas[i].effectNames;
 
 
             for (int strindex = 0; strindex < monsterNames.Count; strindex++)
             {
                 string pathStr = string.Format("data/{0}", monsterNames[strindex]);
-                CharactorData loadCharactor =  Resources.Load<CharactorData>(pathStr);
+                CharactorData loadCharactor = Resources.Load<CharactorData>(pathStr);
                 nodedatas.datas.Add(loadCharactor);
 
             }
@@ -153,7 +153,7 @@ public class StageManager : GameManager<StageManager>
 
             nodesDic[stageNode.level].Add(stageNode);
 
-            if(!nodesDic.ContainsKey(stageNode.level - 1))
+            if (!nodesDic.ContainsKey(stageNode.level - 1))
             {
                 continue;
             }
@@ -161,7 +161,7 @@ public class StageManager : GameManager<StageManager>
             List<int> parants = maptotalData.mapNodesDatas[i].parentIndex;
             for (int parent = 0; parent < parants.Count; parent++)
             {
-                StageNode<TemporaryData>  parantnode =  nodesDic[stageNode.level - 1][parants[parent]];
+                StageNode<TemporaryData> parantnode = nodesDic[stageNode.level - 1][parants[parent]];
                 stageNode.parent.Add(parantnode);
                 parantnode.children.Add(stageNode);
             }
@@ -175,7 +175,7 @@ public class StageManager : GameManager<StageManager>
 
 
     public void MakeinitStage(object parmater)
-   {
+    {
         int index = 0;
         for (int i = 0; i < maxlevel; i++)
         {
@@ -184,7 +184,7 @@ public class StageManager : GameManager<StageManager>
 
         TemporaryData data = new TemporaryData();
         data.obj = RandomCardSetting();
-     
+
 
         StageNode<TemporaryData> stageNode = new StageNode<TemporaryData>();
         stageNode.data = data;
@@ -192,20 +192,20 @@ public class StageManager : GameManager<StageManager>
         stageNode.index = index;
         stageNode.clear = Clear.No;
         AddNodesDicData(stageNode.level, stageNode);
-        
-        
-        
+
+
+
         nodelevel++;
 
-        for(int i = 1; i < nodesDic.Count; i++)
+        for (int i = 1; i < nodesDic.Count; i++)
         {
             int randomCnt = Random.Range(2, maxNodeCnt + 1);
             index = 0;
-            for(int r = 0; r < randomCnt; r++)
+            for (int r = 0; r < randomCnt; r++)
             {
                 TemporaryData newdata = new TemporaryData();
                 newdata.obj = RandomCardSetting();
-                
+
 
                 StageNode<TemporaryData> newstageNode = new StageNode<TemporaryData>();
                 newstageNode.data = newdata;
@@ -217,21 +217,21 @@ public class StageManager : GameManager<StageManager>
                 index++;
             }
 
-            
+
             nodelevel++;
 
         }
 
         NodesLink();
     }
-    
+
 
 
     private void NodesLink()
     {
 
-        
-        for(int i = 0; i < nodesDic.Count; i++)
+
+        for (int i = 0; i < nodesDic.Count; i++)
         {
             if (!nodesDic.ContainsKey(i))
             {
@@ -246,12 +246,12 @@ public class StageManager : GameManager<StageManager>
             }
 
 
-            if(nodesDic[i].Count == 1)
+            if (nodesDic[i].Count == 1)
             {
 
                 nodesDic[i][0].children.AddRange(nodesDic[next]);
 
-                for(int childeInx = 0; childeInx < nodesDic[next].Count; childeInx++)
+                for (int childeInx = 0; childeInx < nodesDic[next].Count; childeInx++)
                 {
                     nodesDic[next][childeInx].parent.Add(nodesDic[i][0]);
                 }
@@ -323,14 +323,14 @@ public class StageManager : GameManager<StageManager>
         return nodedatas;
     }
 
-    
-    
 
 
 
-    
 
-    private void AddNodesDicData(int level , StageNode<TemporaryData> stageNode)
+
+
+
+    private void AddNodesDicData(int level, StageNode<TemporaryData> stageNode)
     {
         if (nodesDic.ContainsKey(level))
         {
@@ -341,10 +341,10 @@ public class StageManager : GameManager<StageManager>
 
     private void PrintTree(StageNode<TemporaryData> stageNode)
     {
-       
 
 
-        foreach(var child in stageNode.children)
+
+        foreach (var child in stageNode.children)
         {
             PrintTree(child);
 
@@ -356,4 +356,22 @@ public class StageManager : GameManager<StageManager>
     {
         PrintTree(root);
     }
+
+    public int DeckCardsCnt()
+    {
+
+        if (!File.Exists(Application.dataPath + "/player.json"))
+        {
+            return 0;
+        }
+
+
+        string pathData = File.ReadAllText(Application.dataPath + "/player.json");
+        PlayerData playerData = JsonUtility.FromJson<PlayerData>(pathData);
+
+        return playerData.cardDackNames.Count;
+
+    }
+
+
 }

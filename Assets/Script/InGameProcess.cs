@@ -14,23 +14,23 @@ public class InGameProcess : MonoBehaviour
 
 
     public void Awake()
-    {         
+    {
         EventManager.On("GameStart", GameTimerStart);
     }
 
     public void GameTimerStart(object obj)
     {
         StartCoroutine(GameTimerRouitin());
-        
+
     }
 
 
     IEnumerator GameTimerRouitin()
     {
         timer.TimerStart();
-        timer.TimerSet(curtime , maxtime);
+        timer.TimerSet(curtime, maxtime);
 
-        while(curtime < maxtime)
+        while (curtime < maxtime)
         {
             curtime += Time.deltaTime;
             timer.TimerSet(curtime, maxtime);
@@ -50,7 +50,53 @@ public class InGameProcess : MonoBehaviour
             Player ownplayer = GameSceneManager.Instance.ownPlayer;
             Player oponentplayer = GameSceneManager.Instance.oponentPlayer;
 
-            if (ownplayer.tower.hp > oponentplayer.tower.hp)
+            var ownObj = ownplayer.GetObjects<AimObject>();
+            var oponentObj = oponentplayer.GetObjects<AimObject>();
+
+            Tower ownTower = null;
+            Tower oponentTower = null;
+
+            for (int i = 0; i < ownObj.Count; i++)
+            {
+                if (ownObj[i] is Tower)
+                {
+
+                    ownTower = ownObj[i] as Tower;
+                    break;
+                }
+
+            }
+
+            for (int i = 0; i < oponentObj.Count; i++)
+            {
+
+                if (oponentObj[i] is Tower)
+                {
+
+                    oponentTower = oponentObj[i] as Tower;
+                    break;
+                }
+
+            }
+
+            if (ownTower == null)
+            {
+
+                Debug.LogError("타워 x");
+            }
+            if (oponentTower == null)
+            {
+
+                Debug.LogError("타워 x");
+            }
+
+            float ownHp = ownTower.cur_hp / ownTower.hp;
+            float oponentHp = oponentTower.cur_hp / oponentTower.hp;
+
+
+
+
+            if (ownHp > oponentHp)
             {
                 parameterHelper.objList.Add(oponentplayer);
                 parameterHelper.objList.Add(oponentplayer.tower);
@@ -66,10 +112,10 @@ public class InGameProcess : MonoBehaviour
 
 
         }
-       
 
-        
-       
+
+
+
     }
 
 

@@ -10,7 +10,7 @@ public class StageSceneConfig : MonoBehaviour
     public Inventory inventory;
     public Canvas canvas;
     public Canvas infoCanvas;
-    
+
     public Button cardInventoryButton;
     public Button backButton;
     public Button exitButton;
@@ -34,7 +34,7 @@ public class StageSceneConfig : MonoBehaviour
             PlayerPrefs.SetInt("playersave", 1);
             PlayerPrefs.SetInt("playerlevel", 0);
             PlayerPrefs.SetInt("playerindex", 0);
-            PlayerPrefs.SetInt("gold", 0);
+            PlayerPrefs.SetInt("gold", 100000);
 
             EventManager.Emit("MakeScene", null);
 
@@ -42,8 +42,8 @@ public class StageSceneConfig : MonoBehaviour
         else
         {
 
-           EventManager.Emit("LoadScene", null);
-                      
+            EventManager.Emit("LoadScene", null);
+
         }
 
 
@@ -52,7 +52,7 @@ public class StageSceneConfig : MonoBehaviour
 
         backButton.onClick.AddListener(OnClickBack);
         exitButton.onClick.AddListener(OnClickCreateGameExit);
-        
+
     }
 
 
@@ -62,23 +62,23 @@ public class StageSceneConfig : MonoBehaviour
     private void PlayerDataSetInit(object parameter)
     {
         PlayerPrefs.SetInt("playersave", 1);
-        
+
         PlayerData playerData = new PlayerData();
-   
+
 
         foreach (CharactorData data in datas)
         {
-            
-                playerData.cardNames.Add(data.name);
-            
+
+            playerData.cardNames.Add(data.name);
+
         }
 
-        foreach(EffectData data in effectdatas)
+        foreach (EffectData data in effectdatas)
         {
             playerData.effectNams.Add(data.name);
         }
 
-        foreach(TowerData towerData in towerdatas)
+        foreach (TowerData towerData in towerdatas)
         {
 
             playerData.towerNames.Add(towerData.name);
@@ -93,16 +93,16 @@ public class StageSceneConfig : MonoBehaviour
     public void InventoryButtonClick()
     {
 
-       Inventory go =  Instantiate(inventory);
-       go.transform.parent = canvas.transform;
-       go.GetComponent<RectTransform>().localPosition = new Vector2(-6.654907f, -11f);
-       
+        Inventory go = Instantiate(inventory);
+        go.transform.parent = canvas.transform;
+        go.GetComponent<RectTransform>().localPosition = new Vector2(-6.654907f, -11f);
+
     }
     public void TowerInvButtonClick()
     {
 
     }
-   
+
     public void ButtonUiActive()
     {
         if (cardInventoryButton.interactable)
@@ -124,7 +124,7 @@ public class StageSceneConfig : MonoBehaviour
         endGame.GetComponent<RectTransform>().localPosition = Vector2.zero;
         endGame.GetComponent<RectTransform>().localScale = Vector2.one;
 
-        endGame.EndGameSet("°ÔÀÓÀ» Á¾·áÇÒ±î¿ä??", Exit);
+        endGame.EndGameSet("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ï¿½ï¿½??", Exit);
 
     }
 
@@ -136,5 +136,5 @@ public class StageSceneConfig : MonoBehaviour
     private void OnClickBack()
     {
         SceneManager.LoadScene("StartScene");
-    } 
+    }
 }

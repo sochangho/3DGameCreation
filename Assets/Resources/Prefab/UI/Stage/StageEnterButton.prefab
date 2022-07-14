@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a576af8f250014598143abebce8895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoCreater: {fileID: 7424766055410397544, guid: 6ac677e282741a1419b15fdd79002ea8, type: 3}
   sceneDatas:
   - scene: ShopScene
     icon: {fileID: 21300000, guid: 4357542239285ff42a0e21d204db01ce, type: 3}
