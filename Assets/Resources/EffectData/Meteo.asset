@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Meteo
   m_EditorClassIdentifier: 
   effectName: "\uBA54\uD14C\uC624"
-  subscrips: 
+  subscrips: "\uBA54\uD14C\uC624"
   cost: 3
+  price: 0
   effect: {fileID: 2096948806329273965, guid: fa5abcd795c7b5e4fa22e3c47c7688a9, type: 3}
   sprite: {fileID: 21300000, guid: 92b315788e6ebb34f90dddacbca17e68, type: 3}

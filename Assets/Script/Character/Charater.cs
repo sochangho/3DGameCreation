@@ -15,27 +15,7 @@ public class Charater : AimObject , ICardSelectCondition
     //public CharactorData data;
 
     public bool is_Die = false;
-    public float Speed
-    {
 
-        get
-        {
-            float v = speed;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is SeepdBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-              
-            return v;
-        }
-
-    }
 
     public CharaterState state;
    
@@ -67,7 +47,7 @@ public class Charater : AimObject , ICardSelectCondition
  
         attack.init(this);
         buffController.BuffTarget(this);
-        playerNav.speed = Speed;
+        playerNav.speed = speed;
         playerNav.baseOffset = 0.1f;
     }
 
@@ -118,7 +98,7 @@ public class Charater : AimObject , ICardSelectCondition
         }
 
 
-        cur_hp -= (attackCha.Damage - attackCha.Damage * Defence / 100);
+        cur_hp -= (attackCha.damage - attackCha.damage * defence / 100);
 
         base.Hit(attackCha);
         
@@ -209,7 +189,7 @@ public class Charater : AimObject , ICardSelectCondition
 
                     if (!FindOverlapSphere())
                     {
-                        playerNav.speed = Speed;
+                        playerNav.speed = speed;
                         playerNav.SetDestination(new Vector3(attackTarget.gameObject.transform.position.x,
                             transform.position.y
                             , attackTarget.gameObject.transform.position.z));

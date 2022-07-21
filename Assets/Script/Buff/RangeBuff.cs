@@ -15,4 +15,13 @@ public class RangeBuff : Buff
 
         return rangeBuff;
     }
+    public override void BuffStart(AimObject parameter)
+    {
+        parameter.range += value;
+    }
+    public override void BuffEnd(AimObject parameter)
+    {
+        parameter.range -= value;
+    }
+
 }

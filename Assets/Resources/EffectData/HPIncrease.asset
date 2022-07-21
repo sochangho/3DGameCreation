@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: HPIncrease
   m_EditorClassIdentifier: 
   effectName: "\uD68C\uBCF5"
-  subscrips: 
+  subscrips: "HP 100\uC99D\uAC00"
   cost: 2
+  price: 0
   effect: {fileID: 745411306516420427, guid: 4e40a42022b5f0741867c345abcaa852, type: 3}
   sprite: {fileID: 21300000, guid: 469666c66ffb3884bbe14f02266ed1cf, type: 3}

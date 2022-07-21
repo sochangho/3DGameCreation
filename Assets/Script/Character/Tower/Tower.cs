@@ -17,24 +17,7 @@ public class Tower : AimObject
    // public TowerData data;
 
 
-    public float AttackDelayTime
-    {
-        get
-        {
-            float v = attackdelayTime;
-            List<Buff> buffs = buffController.GetBuffs();
 
-            foreach (Buff buff in buffs)
-            {
-                if (buff is AttackDelayBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-    }
 
 
    override public void Awake()
@@ -72,7 +55,7 @@ public class Tower : AimObject
 
 
 
-        cur_hp -= (damage.Damage - damage.Damage * Defence / 100);
+        cur_hp -= (damage.damage - damage.damage * defence / 100);
 
         base.Hit(damage);
         if (cur_hp <= 0)
@@ -153,7 +136,7 @@ public class Tower : AimObject
 
                 rotationHead.LookAt(lookPos);
 
-                if (Time.time < curTime + AttackDelayTime)
+                if (Time.time < curTime + attackdelayTime)
                 {
                     
                     

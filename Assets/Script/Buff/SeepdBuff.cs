@@ -15,4 +15,14 @@ public class SeepdBuff : Buff
 
         return speedBuff;
     }
+    public override void BuffStart(AimObject parameter)
+    {
+        parameter.defence += value;
+    }
+
+    public override void BuffEnd(AimObject parameter)
+    {
+        parameter.defence -= value;
+    }
+
 }

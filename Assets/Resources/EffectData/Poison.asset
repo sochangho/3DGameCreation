@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Poison
   m_EditorClassIdentifier: 
   effectName: Poison
-  subscrips: 
+  subscrips: "10\uCD08\uAC04 3\uC529 \uAC10\uC18C"
   cost: 2
+  price: 0
   effect: {fileID: 6637169421780067062, guid: 54265c544235a5f46a78940f01333fdf, type: 3}
   sprite: {fileID: 21300000, guid: 31d2ae62e6494394b8f2a626dd23b836, type: 3}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class FarAwayAttack : Attack , INodeTileDetect
+public class FarAwayAttack : Attack 
 {
     public Projectile projectile;
     public ProjectileParticle projectileParticle;
@@ -117,7 +117,7 @@ public class FarAwayAttack : Attack , INodeTileDetect
 
 
 
-   public Node NodeDetect(OponentPlayer player)
+   override public Node NodeDetect(OponentPlayer player)
    {
 
 

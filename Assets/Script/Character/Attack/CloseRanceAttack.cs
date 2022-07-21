@@ -26,7 +26,7 @@ public class CloseRanceAttack : Attack , INodeTileDetect
     }
 
 
-   public Node NodeDetect(OponentPlayer player)
+   override public Node NodeDetect(OponentPlayer player)
    {
 
         GameSceneManager gsm = GameSceneManager.Instance;

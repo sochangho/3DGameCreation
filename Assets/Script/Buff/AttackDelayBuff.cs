@@ -14,4 +14,28 @@ public class AttackDelayBuff : Buff
 
         return attackDelayBuff;
     }
+
+    public override void BuffStart(AimObject parameter)
+    {
+        if(parameter is Tower)
+        {
+            Tower  tower = parameter as Tower;
+
+            tower.attackdelayTime -= value;
+
+        }
+    }
+
+
+    public override void BuffEnd(AimObject parameter)
+    {
+        if (parameter is Tower)
+        {
+            Tower tower = parameter as Tower;
+
+            tower.attackdelayTime += value;
+
+        }
+    }
+
 }

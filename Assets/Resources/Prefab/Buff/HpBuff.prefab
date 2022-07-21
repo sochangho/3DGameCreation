@@ -45,6 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffEffect: {fileID: 1985021036806770, guid: 872d641a39b1d6a4584d42c9cc50cc0c, type: 3}
   buffName: HpBuff
-  value: 10
+  value: 100
   duration: 1
   buffType: 0

@@ -41,72 +41,7 @@ public class AimObject : Card ,IAttacked,IObjectInfo
         }
    }
 
-    public float Defence
-    {
-        get
-        {
-            float v = defence;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is DefenceBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-    }
-
-    public float Damage
-    {
-        get
-        {
-            float v = damage;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is DamageBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-
-
-
-    }
-
-
-
-
-    public float Range
-    {
-
-        get
-        {
-            float v = range;
-            List<Buff> buffs = buffController.GetBuffs();
-
-            foreach (Buff buff in buffs)
-            {
-                if (buff is AttackDelayBuff)
-                {
-
-                    v += buff.value;
-                }
-            }
-            return v;
-        }
-
-
-    }
-
+   
 
   
 

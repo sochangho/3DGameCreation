@@ -14,4 +14,12 @@ public class DamageBuff : Buff
 
         return damageBuff;
     }
+    public override void BuffStart(AimObject parameter)
+    {
+        parameter.damage += value;
+    }
+    public override void BuffEnd(AimObject parameter)
+    {
+        parameter.damage -= value;
+    }
 }
